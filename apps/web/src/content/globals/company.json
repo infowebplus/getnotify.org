@@ -1,0 +1,26 @@
+{
+  "name": "GetNotify",
+  "tagline": "Send notifications via WhatsApp messages",
+  "description": "GetNotify is a powerful backend service that enables you to send custom WhatsApp messages to groups, schedule notifications, and trigger automated messages based on actions like new orders. Keep your customers and team informed instantly through WhatsApp.",
+  "shortDescription": "GetNotify is a powerful backend service that enables you to send custom WhatsApp messages to groups, schedule notifications, and trigger automated messages based on actions like new orders. Keep your customers and team informed instantly through WhatsApp.",
+  "contactEmail": "hello@getnotify.org",
+  "supportEmail": "support@getnotify.org",
+  "phone": "+1 (555) 123-4567",
+  "address": {
+    "street": "123 Innovation Drive",
+    "city": "San Francisco",
+    "state": "CA",
+    "zip": "94102",
+    "country": "United States"
+  },
+  "founded": "2024",
+  "social": {
+    "twitter": "https://twitter.com/getnotify",
+    "linkedin": "https://linkedin.com/company/getnotify",
+    "github": "https://github.com/getnotify"
+  },
+  "legal": {
+    "jurisdiction": "State of California, United States",
+    "lastUpdated": "2024-12-15"
+  }
+}

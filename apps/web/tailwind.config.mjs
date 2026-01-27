@@ -1,0 +1,71 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#eefbf3',
+          100: '#d6f5e3',
+          200: '#b0eacb',
+          300: '#7cd9ac',
+          400: '#45c288',
+          500: '#22a76b',
+          600: '#158756',
+          700: '#126c47',
+          800: '#11563a',
+          900: '#0f4731',
+          950: '#07281b',
+        },
+        accent: {
+          50: '#f0fdf6',
+          100: '#dcfcea',
+          200: '#bbf7d6',
+          300: '#86efb8',
+          400: '#4ade91',
+          500: '#22c56e',
+          600: '#16a355',
+          700: '#158045',
+          800: '#166539',
+          900: '#145331',
+          950: '#052e19',
+        },
+        neutral: {
+          50: '#fafafa',
+          100: '#f4f4f5',
+          200: '#e4e4e7',
+          300: '#d4d4d8',
+          400: '#a1a1aa',
+          500: '#71717a',
+          600: '#52525b',
+          700: '#3f3f46',
+          800: '#27272a',
+          900: '#18181b',
+          950: '#09090b',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
+      },
+      spacing: { 18: '4.5rem', 88: '22rem', 128: '32rem' },
+      borderRadius: { '4xl': '2rem' },
+      boxShadow: {
+        soft: '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+        glow: '0 0 40px -10px rgba(34, 167, 107, 0.3)',
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'slide-up': 'slideUp 0.5s ease-out forwards',
+        'slide-down': 'slideDown 0.3s ease-out forwards',
+      },
+      keyframes: {
+        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+        slideDown: { '0%': { opacity: '0', transform: 'translateY(-10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+      },
+    },
+  },
+  plugins: [],
+};

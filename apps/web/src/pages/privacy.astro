@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const page = (await getCollection('pages')).find((e: CollectionEntry<'pages'>) => e.id === 'privacy');
+const data = page?.data ?? { title: 'Privacy - GetNotify', description: '' };
+const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
+const company = (globals.company || {}) as Record<string, unknown>;
+const legal = (company.legal || {}) as Record<string, string>;
+---
+
+<BaseLayout title={data.title} description={data.description} noindex={data.noindex}>
+  <article class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-3xl">
+      <h1 class="heading-lg mb-6">Privacy Policy</h1>
+      <p class="text-body-sm mb-8">Last updated: {legal.lastUpdated ?? '2024'}.</p>
+      <div class="prose prose-neutral dark:prose-invert max-w-none">
+        <p>This Privacy Policy describes how {String(company.name)} collects, uses, and shares your information when you use our website and services.</p>
+        <h2 class="heading-sm mt-8 mb-2">Information we collect</h2>
+        <p>We collect information you provide (e.g. account details, contact form) and usage data (e.g. logs, cookies) to operate and improve the Service.</p>
+        <h2 class="heading-sm mt-8 mb-2">How we use it</h2>
+        <p>We use your information to provide the Service, communicate with you, and improve our offering. We do not sell your personal information.</p>
+        <h2 class="heading-sm mt-8 mb-2">Contact</h2>
+        <p>For privacy requests, contact us at {String(company.contactEmail ?? '')}.</p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

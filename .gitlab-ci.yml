@@ -1,0 +1,173 @@
+# GetNotify — CI & Deploy via GitLab
+# CI: lint, typecheck, build on MR/push. Deploy: on push to main (path-based).
+#
+# Required CI/CD variables (Settings → CI/CD → Variables) for deploy:
+#   Web:      SSH_PRIVATE_KEY, DEPLOY_USER, DEPLOY_HOST, DEPLOY_PATH
+#   Docs:     DOCS_SSH_PRIVATE_KEY, DOCS_DEPLOY_USER, DOCS_DEPLOY_HOST, DOCS_DEPLOY_PATH
+#   Dashboard: DASHBOARD_SSH_PRIVATE_KEY, DASHBOARD_DEPLOY_USER, DASHBOARD_DEPLOY_HOST, DASHBOARD_DEPLOY_PATH
+# Mark SSH keys as "Masked" and "Protected"; protect deploy vars for main only.
+# See docs/README.md and docs/internal/ (ci-cd, deployment).
+
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  NODE_VERSION: "20"
+  PHP_VERSION: "8.2"
+
+# --- Test (CI) ---
+
+web:lint:
+  stage: test
+  image: node:${NODE_VERSION}-alpine
+  cache:
+    key: yarn-${CI_COMMIT_REF_SLUG}
+    paths: [node_modules]
+  before_script:
+    - yarn install --frozen-lockfile
+  script:
+    - yarn turbo run lint --filter=@getnotify/web
+    - yarn turbo run typecheck --filter=@getnotify/web
+
+docs:build-ci:
+  stage: test
+  image: node:${NODE_VERSION}-alpine
+  cache:
+    key: yarn-${CI_COMMIT_REF_SLUG}
+    paths: [node_modules]
+  before_script:
+    - yarn install --frozen-lockfile
+  script:
+    - yarn turbo run build --filter=@getnotify/docs
+  variables:
+    PUBLIC_DOCS_ORIGIN: "https://docs.getnotify.org"
+
+dashboard:lint:
+  stage: test
+  image: php:${PHP_VERSION}-cli
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq git unzip libxml2-utils > /dev/null
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - cd apps/dashboard && composer install --prefer-dist --no-interaction
+    - cd apps/dashboard && cp .env.example .env || true
+    - cd apps/dashboard && php artisan key:generate --no-interaction || true
+  script:
+    - cd apps/dashboard && ./vendor/bin/pint --test
+  allow_failure: true
+
+# --- Build (for deploy) ---
+
+web:build:
+  stage: build
+  image: node:${NODE_VERSION}-alpine
+  cache:
+    key: yarn-${CI_COMMIT_REF_SLUG}
+    paths: [node_modules]
+  before_script:
+    - yarn install --frozen-lockfile
+  script:
+    - yarn turbo run build --filter=@getnotify/web
+  artifacts:
+    paths: [apps/web/dist]
+  variables:
+    PUBLIC_SITE_ORIGIN: "https://getnotify.org"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes: [apps/web/**, yarn.lock, package.json]
+
+docs:build:
+  stage: build
+  image: node:${NODE_VERSION}-alpine
+  cache:
+    key: yarn-${CI_COMMIT_REF_SLUG}
+    paths: [node_modules]
+  before_script:
+    - yarn install --frozen-lockfile
+  script:
+    - yarn turbo run build --filter=@getnotify/docs
+  artifacts:
+    paths: [apps/docs/build]
+  variables:
+    PUBLIC_DOCS_ORIGIN: "https://docs.getnotify.org"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes: [apps/docs/**, yarn.lock, package.json]
+
+dashboard:build:
+  stage: build
+  image: php:${PHP_VERSION}-cli
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq git unzip libxml2-utils > /dev/null
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  script:
+    - cd apps/dashboard && composer install --prefer-dist --no-dev --no-interaction --optimize-autoloader
+    - cd apps/dashboard && php artisan --version || true
+  artifacts:
+    paths: [apps/dashboard]
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes: [apps/dashboard/**]
+
+# --- Deploy ---
+
+web:deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client rsync
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+  script:
+    - rsync -avz --delete -e "ssh -o StrictHostKeyChecking=accept-new" apps/web/dist/ "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes: [apps/web/**, yarn.lock, package.json]
+  needs: [web:build]
+  environment:
+    name: production
+    url: https://getnotify.org
+
+docs:deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client rsync
+    - eval $(ssh-agent -s)
+    - echo "$DOCS_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -H "$DOCS_DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+  script:
+    - rsync -avz --delete -e "ssh -o StrictHostKeyChecking=accept-new" apps/docs/build/ "${DOCS_DEPLOY_USER}@${DOCS_DEPLOY_HOST}:${DOCS_DEPLOY_PATH}/"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes: [apps/docs/**, yarn.lock, package.json]
+  needs: [docs:build]
+  environment:
+    name: docs
+    url: https://docs.getnotify.org
+
+dashboard:deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client rsync
+    - eval $(ssh-agent -s)
+    - echo "$DASHBOARD_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -H "$DASHBOARD_DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+  script:
+    - rsync -avz --delete -e "ssh -o StrictHostKeyChecking=accept-new" apps/dashboard/ "${DASHBOARD_DEPLOY_USER}@${DASHBOARD_DEPLOY_HOST}:${DASHBOARD_DEPLOY_PATH}/"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes: [apps/dashboard/**]
+  needs: [dashboard:build]
+  environment:
+    name: dashboard
+    url: https://dashboard.getnotify.org

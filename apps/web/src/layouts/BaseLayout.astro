@@ -1,0 +1,90 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  noindex?: boolean;
+  ogImage?: string;
+}
+
+const { title, description, canonical, noindex = false, ogImage } = Astro.props;
+
+const globalsEntries = await getCollection('globals');
+const globals = Object.fromEntries(globalsEntries.map((e: CollectionEntry<'globals'>) => [e.id, e.data])) as Record<string, Record<string, unknown>>;
+const company = (globals.company || {}) as Record<string, unknown>;
+const nav = (globals.nav || {}) as Record<string, unknown>;
+const footer = (globals.footer || {}) as Record<string, unknown>;
+const content = (globals.content || {}) as Record<string, unknown>;
+const dashboard = (content.dashboard || {}) as Record<string, string>;
+const dashboardBase = (dashboard.baseUrl ?? '').replace(/\/$/, '');
+const dashboardLoginUrl = dashboardBase ? `${dashboardBase}${(dashboard.loginPath ?? '/admin/login').startsWith('/') ? dashboard.loginPath : `/${dashboard.loginPath}`}` : '';
+const dashboardRegisterUrl = dashboardBase ? `${dashboardBase}${(dashboard.registerPath ?? '/admin/register').startsWith('/') ? dashboard.registerPath : `/${dashboard.registerPath}`}` : '';
+
+const siteOrigin = import.meta.env.PUBLIC_SITE_ORIGIN || 'https://getnotify.org';
+const canonicalUrl = canonical ? new URL(canonical, siteOrigin).href : Astro.url.href;
+const defaultOgImage = '/assets/img/logo.svg';
+const ogImageUrl = ogImage ? new URL(ogImage, siteOrigin).href : new URL(defaultOgImage, siteOrigin).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#22a76b" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
+    <title>{title}</title>
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Dark mode - prevent flash -->
+    <script is:inline define:vars={{}}>
+      (function() {
+        const saved = localStorage.getItem('theme');
+        const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && dark)) document.documentElement.classList.add('dark');
+      })();
+    </script>
+
+    <!-- Cookiebot: set data-cbid in env -->
+    {import.meta.env.PUBLIC_COOKIEBOT_ID && (
+      <script is:inline id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid={import.meta.env.PUBLIC_COOKIEBOT_ID} data-blockingmode="auto" type="text/javascript" defer></script>
+    )}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+    <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={String(company.name ?? 'GetNotify')} />
+    <meta property="og:image" content={ogImageUrl} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+      </head>
+  <body class="min-h-screen flex flex-col font-sans text-neutral-700 bg-white antialiased dark:bg-neutral-900 dark:text-neutral-200">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <Header nav={nav} currentPath={Astro.url.pathname} dashboardLoginUrl={dashboardLoginUrl} dashboardRegisterUrl={dashboardRegisterUrl} />
+    <main id="main-content" class="flex-1" tabindex="-1">
+      <slot />
+    </main>
+    <Footer footer={footer} />
+    <script src="../scripts/main.ts"></script>
+  </body>
+</html>

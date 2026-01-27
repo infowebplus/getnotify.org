@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const page = (await getCollection('pages')).find((e: CollectionEntry<'pages'>) => e.id === 'faq');
+const data = page?.data ?? { title: 'FAQ - GetNotify', description: '' };
+const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
+const faq = (globals.faq || {}) as Record<string, unknown>;
+const categories = (faq.categories || []) as Array<{ name: string; questions: Array<{ id: string; question: string; answer: string }> }>;
+---
+
+<BaseLayout title={data.title} description={data.description}>
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom">
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <span class="badge-primary mb-4">FAQ</span>
+        <h1 class="heading-lg mb-4">Frequently asked questions</h1>
+        <p class="text-body">{data.description}</p>
+      </div>
+      <div class="max-w-3xl mx-auto card">
+        {categories.map((cat) => (
+          <>
+            <h2 class="text-lg font-bold text-neutral-900 dark:text-white mt-8 mb-4 first:mt-0">{cat.name}</h2>
+            {cat.questions.map((q) => (
+              <div class="faq-item" id={`faq-${q.id}`}>
+                <button type="button" class="faq-button" aria-expanded="false" aria-controls={`answer-${q.id}`}>
+                  <span>{q.question}</span>
+                  <svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div class="faq-answer" id={`answer-${q.id}`} aria-hidden="true"><p>{q.answer}</p></div>
+              </div>
+            ))}
+          </>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

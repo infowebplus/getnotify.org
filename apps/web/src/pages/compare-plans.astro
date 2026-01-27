@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
+const plans = (globals.plans || {}) as Record<string, unknown>;
+const planList = (plans.plans || []) as Array<Record<string, unknown>>;
+const comparison = (plans.comparison || { categories: [] }) as { categories: Array<{ name: string; features: Array<Record<string, unknown>> }> };
+---
+
+<BaseLayout title="Compare plans - GetNotify" description="Compare GetNotify plans and choose the right one for your business.">
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom">
+      <h1 class="heading-lg text-center mb-12">Compare plans</h1>
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[600px] border border-neutral-200 dark:border-neutral-700 rounded-xl overflow-hidden">
+          <thead>
+            <tr class="bg-neutral-100 dark:bg-neutral-800">
+              <th class="text-left p-4 font-semibold">Feature</th>
+              {planList.map((p) => {
+                const pd = p.priceDisplay as { monthly?: string } | string | null | undefined;
+                const monthly = typeof pd === 'object' && pd && typeof pd.monthly === 'string' ? pd.monthly : '';
+                return (
+                  <th class="text-center p-4 font-semibold">{String(p.name)}<br /><span class="font-normal text-neutral-500 text-sm">{monthly}</span></th>
+                );
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {comparison.categories?.flatMap((cat) => {
+              const headerRow = <tr class="bg-neutral-50 dark:bg-neutral-800/50"><td colspan={(planList.length + 1)} class="font-semibold p-3">{cat.name}</td></tr>;
+              const featureRows = (cat.features || []).map((f) => {
+                const feat = f as any;
+                return (
+                  <tr class="border-t border-neutral-200 dark:border-neutral-700">
+                    <td class="p-3 font-medium">{String(feat.name)}</td>
+                    {planList.map((p) => {
+                      const v = feat[String(p.id)];
+                      const display = v === true ? '✓' : v === false ? '—' : String(v ?? '');
+                      return <td class="text-center p-3">{display}</td>;
+                    })}
+                  </tr>
+                );
+              });
+              return [headerRow, ...featureRows];
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p class="text-center mt-8"><a href="/pricing/" class="link">View pricing →</a></p>
+    </div>
+  </section>
+</BaseLayout>

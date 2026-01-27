@@ -1,0 +1,28 @@
+{
+  "categories": [
+    {
+      "name": "General",
+      "questions": [
+        { "id": "what-is-whatsapp-notify", "question": "What is GetNotify?", "answer": "GetNotify is a backend service that enables you to send notifications via WhatsApp messages. You can send custom messages to groups, schedule notifications, and trigger automated messages based on actions like new orders. Perfect for businesses that need reliable WhatsApp notification delivery." },
+        { "id": "who-is-it-for", "question": "Who is GetNotify for?", "answer": "GetNotify is designed for businesses of all sizes that need to send WhatsApp notifications. Whether you're an e-commerce store sending order updates, a SaaS platform sending alerts, or any business that needs automated WhatsApp messaging, we have a plan that fits your needs." },
+        { "id": "getting-started", "question": "How do I get started?", "answer": "Getting started is easy! Sign up for a free account, connect your WhatsApp Business API, and start sending notifications. Our API documentation will guide you through the integration process. You can test with our free plan that includes 100 messages per month." }
+      ]
+    },
+    {
+      "name": "Pricing & Plans",
+      "questions": [
+        { "id": "whatsapp-cost", "question": "How much does WhatsApp cost?", "answer": "According to the Facebook pricing model, WhatsApp is an additional charge on top of your GetNotify plan. You're charged for each new conversation depending on the country code and conversation category. Your business's first 1000 Service conversations each month are FREE." },
+        { "id": "free-trial", "question": "Is there a free trial?", "answer": "Yes! All paid plans come with a 14-day free trial. No credit card required. You can explore all features and decide which plan works best for your team." },
+        { "id": "change-plans", "question": "Can I change plans later?", "answer": "Absolutely. You can upgrade or downgrade your plan at any time. When upgrading, you'll get immediate access to new features. When downgrading, changes take effect at the start of your next billing cycle." },
+        { "id": "payment-methods", "question": "What payment methods do you accept?", "answer": "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers for annual plans. Enterprise customers can also pay via invoice." },
+        { "id": "refund-policy", "question": "What is your refund policy?", "answer": "We offer a 30-day money-back guarantee for all paid plans. If you're not satisfied with GetNotify for any reason, contact our support team within 30 days of your purchase for a full refund." }
+      ]
+    },
+    {
+      "name": "Features & Security",
+      "questions": [
+        { "id": "data-security", "question": "How secure is my data?", "answer": "Security is our top priority. All API communications are encrypted in transit using HTTPS/TLS. We maintain SOC 2 Type II compliance and undergo regular third-party security audits. Your WhatsApp message content and recipient data are handled with the highest security standards." }
+      ]
+    }
+  ]
+}

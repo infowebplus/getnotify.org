@@ -1,0 +1,5 @@
+{
+  "title": "GetNotify - Send notifications via WhatsApp messages",
+  "description": "GetNotify is a powerful backend service that enables you to send custom WhatsApp messages to groups, schedule notifications, and trigger automated messages based on actions like new orders. Keep your customers and team informed instantly through WhatsApp.",
+  "template": "home"
+}

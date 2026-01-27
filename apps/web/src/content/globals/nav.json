@@ -1,0 +1,19 @@
+{
+  "brand": {
+    "name": "GetNotify",
+    "logo": "/assets/img/logo.svg",
+    "href": "/"
+  },
+  "items": [
+    { "label": "Home", "href": "/", "primary": false },
+    { "label": "About", "href": "/about/", "primary": false },
+    { "label": "Pricing", "href": "/pricing/", "primary": false },
+    { "label": "FAQ", "href": "/faq/", "primary": false },
+    { "label": "Contact", "href": "/contact/", "primary": false }
+  ],
+  "cta": { "label": "Get Started", "href": "/register/", "primary": true },
+  "auth": {
+    "login": { "label": "Log In", "href": "/login/" },
+    "register": { "label": "Sign Up Free", "href": "/register/" }
+  }
+}

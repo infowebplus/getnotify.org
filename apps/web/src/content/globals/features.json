@@ -1,0 +1,23 @@
+{
+  "features": [
+    { "id": "whatsapp-notifications", "title": "WhatsApp Notifications", "description": "Send instant notifications via WhatsApp messages. Keep your customers and team informed in real-time through the world's most popular messaging platform.", "icon": "message" },
+    { "id": "segments", "title": "Contact Segments", "description": "Organize your contacts into segments for targeted messaging. Send custom messages to specific segments based on customer preferences, location, or behavior.", "icon": "users" },
+    { "id": "scheduled-messages", "title": "Scheduled Messages", "description": "Schedule WhatsApp messages to be sent at specific times. Plan your communications in advance and never miss an important notification.", "icon": "upload" },
+    { "id": "action-triggers", "title": "Action-Triggered Messages", "description": "Automatically send WhatsApp notifications when specific actions occur, such as new orders, status updates, or system events. Set it and forget it.", "icon": "video" },
+    { "id": "api-backend", "title": "Powerful Backend API", "description": "Robust backend infrastructure that handles all WhatsApp message delivery. Reliable, scalable, and built for high-volume notifications.", "icon": "lock" },
+    { "id": "shopify-plugin", "title": "Shopify Integration", "description": "Upcoming Shopify plugin for seamless integration. Connect your store and send automated WhatsApp notifications for orders, shipping updates, and more.", "icon": "puzzle" }
+  ],
+  "includedFeatures": ["WhatsApp message delivery", "Contact segments", "Scheduled messaging", "Action-triggered notifications", "RESTful API access", "99.9% uptime guarantee", "Real-time delivery status", "Shopify plugin (coming soon)"],
+  "icons": {
+    "message": "message",
+    "users": "users",
+    "upload": "upload",
+    "video": "video",
+    "lock": "lock",
+    "puzzle": "puzzle",
+    "bolt": "bolt",
+    "shield": "shield",
+    "heart": "heart",
+    "lightbulb": "lightbulb"
+  }
+}

@@ -1,0 +1,13 @@
+/**
+ * GetNotify Docs — Docusaurus custom styles.
+ * Primary green aligned with getnotify.org.
+ */
+:root {
+  --ifm-color-primary: #22a76b;
+  --ifm-color-primary-dark: #158756;
+  --ifm-color-primary-darker: #126c47;
+  --ifm-color-primary-darkest: #0f4731;
+  --ifm-color-primary-light: #45c288;
+  --ifm-color-primary-lighter: #7cd9ac;
+  --ifm-color-primary-lightest: #b0eacb;
+}

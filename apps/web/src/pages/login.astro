@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
+const content = (globals.content || {}) as Record<string, unknown>;
+const dashboard = (content.dashboard || {}) as Record<string, string>;
+const baseUrl = (dashboard.baseUrl ?? '').replace(/\/$/, '');
+const loginPath = dashboard.loginPath ?? '/admin/login';
+const loginLabel = dashboard.loginLabel ?? 'Log in to dashboard';
+const apiLoginNote = dashboard.apiLoginNote ?? 'API keys and message sending are managed in the dashboard.';
+const dashboardLoginUrl = baseUrl ? `${baseUrl}${loginPath.startsWith('/') ? loginPath : `/${loginPath}`}` : '';
+---
+
+<BaseLayout title="Log in - GetNotify" description="Log in to your GetNotify dashboard to manage your account, API keys, and WhatsApp notifications.">
+  <section class="section bg-white dark:bg-neutral-900 min-h-[calc(100vh-12rem)] flex flex-col justify-center">
+    <div class="container-custom max-w-md mx-auto">
+      <div class="text-center mb-10">
+        <span class="badge-primary mb-4">Account</span>
+        <h1 class="heading-lg mb-4">Log in</h1>
+        <p class="text-body max-w-xl mx-auto">
+          Access your GetNotify dashboard to manage API keys, contacts, and WhatsApp messages.
+        </p>
+      </div>
+      <div class="card p-6 md:p-8">
+        <h2 class="text-lg font-semibold text-neutral-900 dark:text-white mb-6">Sign in to your account</h2>
+        {dashboardLoginUrl ? (
+          <div class="space-y-5">
+            <a
+              href={dashboardLoginUrl}
+              class="btn-primary w-full btn-lg flex items-center justify-center gap-2"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 3 0 013-3h7a3 3 0 013 3v1"/>
+              </svg>
+              {loginLabel}
+            </a>
+            <p class="text-body-sm text-center">
+              {apiLoginNote}
+            </p>
+            <div class="pt-4 border-t border-neutral-200 dark:border-neutral-700">
+              <p class="text-xs text-neutral-500 dark:text-neutral-400 text-center">
+                You’ll be taken to <span class="font-mono text-neutral-700 dark:text-neutral-300">dashboard.getnotify.org</span> to sign in securely.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div class="space-y-4">
+            <p class="text-body-sm text-neutral-600 dark:text-neutral-400">
+              Dashboard login URL is not configured. Set <code class="text-xs bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded">content.dashboard.baseUrl</code> in your content globals.
+            </p>
+            <a href="/contact/" class="link text-sm">Need access? Contact us</a>
+          </div>
+        )}
+      </div>
+      <p class="text-center text-body-sm mt-6">
+        New to GetNotify? <a href="/register/" class="link font-medium">Create an account</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

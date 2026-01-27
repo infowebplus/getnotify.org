@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const page = (await getCollection('pages')).find((e: CollectionEntry<'pages'>) => e.id === 'contact');
+const data = page?.data ?? { title: 'Contact - GetNotify', description: '' };
+const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
+const company = (globals.company || {}) as Record<string, unknown>;
+const content = (globals.content || {}) as Record<string, unknown>;
+const subjects = (content.contactSubjects || []) as Array<{ value: string; label: string }>;
+const contactForm = (content.contactForm || {}) as Record<string, string>;
+const dashboard = (content.dashboard || {}) as Record<string, string>;
+const dashboardBaseUrl = (dashboard.baseUrl ?? '').replace(/\/$/, '');
+const formSubmitUrl = contactForm.submitUrl ?? '';
+const successRedirectUrl = contactForm.successRedirectUrl ?? '';
+const headline = contactForm.headline ?? "Get in touch";
+const description = contactForm.description ?? "We'd love to hear from you. Send us a message and we'll respond as soon as we can.";
+const successMessage = contactForm.successMessage ?? "Thanks! Your message was sent. We'll get back to you soon.";
+const contactEmail = String(company.contactEmail ?? 'hello@getnotify.org');
+const address = (company.address || {}) as Record<string, string>;
+const addressLine = [address.street, address.city, address.state, address.zip, address.country].filter(Boolean).join(', ');
+const showSuccess = Astro.url.searchParams.get('sent') === '1';
+---
+
+<BaseLayout title={data.title} description={data.description}>
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-14">
+          <span class="badge-primary mb-4">Contact</span>
+          <h1 class="heading-lg mb-4">{headline}</h1>
+          <p class="text-body max-w-2xl mx-auto">{description}</p>
+        </div>
+
+        {showSuccess ? (
+          <div class="max-w-md mx-auto card text-center py-12">
+            <div class="w-14 h-14 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center mx-auto mb-4">
+              <svg class="w-7 h-7 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <h2 class="heading-sm text-neutral-900 dark:text-white mb-2">Message sent</h2>
+            <p class="text-body-sm">{successMessage}</p>
+            <a href="/" class="btn-primary mt-6">Back to home</a>
+          </div>
+        ) : (
+          <div class="grid lg:grid-cols-5 gap-10 lg:gap-14">
+            <div class="lg:col-span-2">
+              <div class="card p-6 md:p-8 h-full flex flex-col justify-center">
+                <h2 class="text-lg font-semibold text-neutral-900 dark:text-white mb-4">Contact details</h2>
+                <ul class="space-y-5">
+                  <li class="flex gap-3">
+                    <span class="flex-shrink-0 w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center" aria-hidden="true">
+                      <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    </span>
+                    <div>
+                      <span class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">Email</span>
+                      <a href={`mailto:${contactEmail}`} class="block text-neutral-900 dark:text-white font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">{contactEmail}</a>
+                    </div>
+                  </li>
+                  {addressLine && (
+                    <li class="flex gap-3">
+                      <span class="flex-shrink-0 w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center" aria-hidden="true">
+                        <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                      </span>
+                      <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">Address</span>
+                        <p class="text-neutral-700 dark:text-neutral-300">{addressLine}</p>
+                      </div>
+                    </li>
+                  )}
+                </ul>
+                <p class="text-body-sm mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-700">
+                  Responses are managed from our dashboard and typically sent within 24 hours.
+                </p>
+                {dashboardBaseUrl && (
+                  <p class="text-body-sm mt-3">
+                    <a href={`${dashboardBaseUrl}/admin/login`} target="_blank" rel="noopener noreferrer" class="link text-sm">Staff: Dashboard login</a>
+                  </p>
+                )}
+              </div>
+            </div>
+            <div class="lg:col-span-3">
+              <div class="card p-6 md:p-8">
+                <h2 class="text-lg font-semibold text-neutral-900 dark:text-white mb-6">Send a message</h2>
+                <form
+                  action={formSubmitUrl || '#'}
+                  method="post"
+                  class="space-y-5"
+                >
+                  <input type="hidden" name="success_redirect" value={successRedirectUrl} />
+                  <div class="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <label for="name" class="form-label">Name</label>
+                      <input type="text" id="name" name="name" class="form-input" required placeholder="Your name" />
+                    </div>
+                    <div>
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" id="email" name="email" class="form-input" required placeholder="you@example.com" />
+                    </div>
+                  </div>
+                  <div>
+                    <label for="subject" class="form-label">Subject</label>
+                    <select id="subject" name="subject" class="form-input" required>
+                      {subjects.filter((s) => s.value !== '').map((s) => (
+                        <option value={s.value}>{s.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label for="message" class="form-label">Message</label>
+                    <textarea id="message" name="message" class="form-input min-h-[140px] resize-y" required placeholder="How can we help?"></textarea>
+                  </div>
+                  <button type="submit" class="btn-primary w-full sm:w-auto px-8">
+                    Send message
+                  </button>
+                </form>
+                {!formSubmitUrl && (
+                  <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-4">
+                    Form submissions will be delivered to the dashboard once the contact API is configured. For now, email us at <a href={`mailto:${contactEmail}`} class="link">{contactEmail}</a>.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

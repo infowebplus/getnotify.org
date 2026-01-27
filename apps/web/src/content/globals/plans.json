@@ -1,0 +1,74 @@
+{
+  "currency": "USD",
+  "interval": "month",
+  "plans": [
+    {
+      "id": "starter",
+      "name": "Starter",
+      "description": "Perfect for small businesses and startups getting started with WhatsApp notifications.",
+      "price": { "monthly": 0, "yearly": 0 },
+      "priceDisplay": { "monthly": "Free", "yearly": "Free" },
+      "interval": "forever",
+      "recommended": false,
+      "features": ["Up to 100 messages/month", "Basic WhatsApp notifications", "Shared phone number", "Up to 2 segments", "Up to 100 contacts", "Email support"],
+      "cta": { "text": "Start Free", "href": "/register/" },
+      "idealFor": "Small Businesses"
+    },
+    {
+      "id": "pro",
+      "name": "Pro",
+      "description": "For growing businesses that need scheduled messages and action triggers.",
+      "price": { "monthly": 29, "yearly": 290 },
+      "priceDisplay": { "monthly": "$29", "yearly": "$290" },
+      "interval": "per month",
+      "recommended": true,
+      "features": ["Up to 1,000 messages/month", "Scheduled messages", "Action-triggered notifications", "1 phone number", "Up to 10 segments", "Up to 1,000 contacts", "Priority email support", "Full API access", "Delivery status tracking", "Webhook support"],
+      "cta": { "text": "Start Free Trial", "href": "/register/?plan=pro" },
+      "idealFor": "Growing Businesses"
+    },
+    {
+      "id": "business",
+      "name": "Business",
+      "description": "Enterprise-grade features for high-volume WhatsApp notifications.",
+      "price": { "monthly": 99, "yearly": 990 },
+      "priceDisplay": { "monthly": "$99", "yearly": "$990" },
+      "interval": "per month",
+      "recommended": false,
+      "features": ["Everything in Pro", "Up to 10,000 messages/month", "3 phone numbers", "Up to 50 segments", "Up to 20,000 contacts", "24/7 phone & email support", "Advanced security & compliance", "Custom integrations", "Admin controls & audit logs", "Dedicated account manager", "99.9% uptime SLA", "Shopify plugin access (when available)"],
+      "cta": { "text": "Start Free Trial", "href": "/register/?plan=business" },
+      "idealFor": "Large Organizations"
+    }
+  ],
+  "enterprise": {
+    "name": "Enterprise",
+    "description": "Custom solutions for the largest organizations with high-volume WhatsApp notification needs.",
+    "features": ["Custom message volume limits", "Dedicated infrastructure", "Custom contracts & SLAs", "Onboarding & training", "Premium support", "White-label options", "Custom Shopify integration"]
+  },
+  "comparison": {
+    "categories": [
+      {
+        "name": "WhatsApp Features",
+        "features": [
+          { "name": "WhatsApp notifications", "starter": true, "pro": true, "business": true },
+          { "name": "Segments", "starter": "Up to 2", "pro": "Up to 10", "business": "Up to 50" },
+          { "name": "Scheduled messages", "starter": false, "pro": true, "business": true },
+          { "name": "Action triggers", "starter": false, "pro": true, "business": true }
+        ]
+      },
+      {
+        "name": "Message Limits",
+        "features": [
+          { "name": "Messages/month", "starter": "Up to 100", "pro": "Up to 1,000", "business": "Up to 10,000" },
+          { "name": "API access", "starter": false, "pro": true, "business": true }
+        ]
+      },
+      {
+        "name": "Support",
+        "features": [
+          { "name": "Email support", "starter": "Community", "pro": "Priority", "business": "24/7" },
+          { "name": "Phone support", "starter": false, "pro": false, "business": true }
+        ]
+      }
+    ]
+  }
+}

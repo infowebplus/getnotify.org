@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const page = (await getCollection('pages')).find((e: CollectionEntry<'pages'>) => e.id === 'pricing');
+const data = page?.data ?? { title: 'Pricing - GetNotify', description: '' };
+const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
+const plans = (globals.plans || {}) as Record<string, unknown>;
+const content = (globals.content || {}) as Record<string, unknown>;
+const planList = (plans.plans || []) as Array<Record<string, unknown>>;
+const pricingFaq = (content.pricingFaq || []) as Array<{ id: string; question: string; answer: string }>;
+---
+
+<BaseLayout title={data.title} description={data.description}>
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="badge-primary mb-4">Pricing</span>
+        <h1 class="heading-lg mb-4">Plans for every team size</h1>
+        <p class="text-body">Start free and scale as you grow. No hidden fees, cancel anytime.</p>
+      </div>
+
+      <div class="flex items-center justify-center gap-4 mb-12">
+        <span class="pricing-toggle-label text-sm font-medium text-neutral-600 dark:text-neutral-400" data-label="monthly">Monthly</span>
+        <button type="button" class="pricing-toggle relative w-14 h-7 bg-neutral-200 dark:bg-neutral-700 rounded-full transition-colors" aria-checked="false" role="switch">
+          <span class="absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow transition-transform translate-x-1"></span>
+        </button>
+        <span class="pricing-toggle-label text-sm font-medium text-neutral-600 dark:text-neutral-400" data-label="yearly">Yearly (save 17%)</span>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-20">
+        {planList.map((plan) => {
+          const rec = Boolean(plan.recommended);
+          const pd = plan.priceDisplay as { monthly?: string; yearly?: string } | string;
+          const monthly = typeof pd === 'object' && pd ? pd.monthly : String(pd ?? '');
+          const yearly = typeof pd === 'object' && pd ? pd.yearly : '';
+          const price = plan.price as { monthly?: number; yearly?: number } | number;
+          const monthlyNum = typeof price === 'object' && price ? price.monthly : 0;
+          const yearlyNum = typeof price === 'object' && price ? price.yearly : 0;
+          const savings = monthlyNum && yearlyNum ? Math.round((1 - yearlyNum / (monthlyNum * 12)) * 100) : 0;
+          const cta = plan.cta as { href?: string; text?: string } | null | undefined;
+          const planFeatures = (plan.features as string[]) || [];
+          return (
+            <div
+              class={`plan-card ${rec ? 'plan-card-recommended' : ''}`}
+              data-plan={plan.id}
+              data-price-monthly={monthly}
+              data-price-yearly={yearly}
+              data-price-monthly-num={monthlyNum}
+              data-price-yearly-num={yearlyNum}
+              data-savings={savings}
+            >
+              {rec && <span class="badge-primary absolute top-4 right-4">Most Popular</span>}
+              <div class="mb-6">
+                <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">{String(plan.name)}</h3>
+                <p class="text-sm text-neutral-600 dark:text-neutral-400">{String(plan.description)}</p>
+              </div>
+              <div class="mb-6">
+                <span class="plan-price text-4xl font-bold text-neutral-900 dark:text-white">{monthly}</span>
+                {plan.interval !== 'forever' && <span class="plan-interval text-neutral-500 dark:text-neutral-400 text-sm">/month</span>}
+              </div>
+              <ul class="space-y-3 mb-8">
+                {planFeatures.map((f) => (
+                  <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <span class="text-sm text-neutral-600 dark:text-neutral-400">{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <a href={String(cta?.href ?? '/register/')} class={rec ? 'btn-primary w-full' : 'btn-outline w-full'}>{cta?.text ?? 'Get Started'}</a>
+            </div>
+          );
+        })}
+      </div>
+
+      <div class="max-w-3xl mx-auto">
+        <h2 class="heading-md text-center mb-8">Pricing FAQ</h2>
+        <div class="card space-y-0">
+          {pricingFaq.map((q) => (
+            <div class="faq-item">
+              <button type="button" class="faq-button" aria-expanded="false"><span>{q.question}</span><svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+              <div class="faq-answer"><p>{q.answer}</p></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

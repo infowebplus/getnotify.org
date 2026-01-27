@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((p: CollectionEntry<'blog'>) => !p.data.draft)
+  .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="Blog - GetNotify" description="GetNotify blog: product updates and WhatsApp API tips.">
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-3xl">
+      <h1 class="heading-lg mb-8">Blog</h1>
+      <ul class="space-y-6">
+        {posts.map((post: CollectionEntry<'blog'>) => (
+          <li>
+            <a href={`/blog/${post.slug}/`} class="block card card-hover">
+              <h2 class="heading-sm mb-2">{post.data.title}</h2>
+              <p class="text-body-sm mb-2">{post.data.description}</p>
+              <time class="text-sm text-neutral-500" datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString('en-US')}</time>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

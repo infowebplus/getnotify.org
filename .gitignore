@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+apps/web/dist/
+apps/docs/build/
+build/
+
+# Turbo
+.turbo/
+
+# Astro
+.astro/
+
+# Docusaurus
+.docusaurus/
+
+# TypeScript
+*.tsbuildinfo
+
+# Linters / formatters
+.eslintcache
+.prettiercache
+.stylelintcache
+
+# Test coverage
+coverage/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log
+yarn-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Yarn 2+ (optional; uncomment if using Berry)
+# .yarn/cache/
+# .yarn/unplugged/
+# .yarn/build-state.yml
+# .yarn/install-state.gz
+# .pnp.*
+
+# Laravel / dashboard
+apps/dashboard/vendor/
+apps/dashboard/.env
+apps/dashboard/node_modules/
+apps/dashboard/storage/*.key
+apps/dashboard/bootstrap/cache/*
+!apps/dashboard/bootstrap/cache/.gitkeep
+

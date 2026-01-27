@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const page = (await getCollection('pages')).find((e: CollectionEntry<'pages'>) => e.id === 'terms');
+const data = page?.data ?? { title: 'Terms - GetNotify', description: '' };
+const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
+const company = (globals.company || {}) as Record<string, unknown>;
+const legal = (company.legal || {}) as Record<string, string>;
+---
+
+<BaseLayout title={data.title} description={data.description} noindex={data.noindex}>
+  <article class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-3xl">
+      <h1 class="heading-lg mb-6">Terms &amp; Conditions</h1>
+      <p class="text-body-sm mb-8">Last updated: {legal.lastUpdated ?? '2024'}. Jurisdiction: {legal.jurisdiction ?? 'State of California, United States'}.</p>
+      <div class="prose prose-neutral dark:prose-invert max-w-none">
+        <p>By using {String(company.name)} ("the Service"), you agree to these terms. Use the Service only in compliance with applicable law and our policies. We may modify these terms; continued use constitutes acceptance.</p>
+        <h2 class="heading-sm mt-8 mb-2">Use of the Service</h2>
+        <p>You are responsible for your account and any activity under it. Do not misuse the Service, including sending content that violates third-party rights or law.</p>
+        <h2 class="heading-sm mt-8 mb-2">Contact</h2>
+        <p>Questions? Contact us at {String(company.contactEmail ?? '')}.</p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

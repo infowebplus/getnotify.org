@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="WhatsApp QR Generator - GetNotify" description="Generate a QR code for your WhatsApp number.">
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-lg mx-auto">
+      <h1 class="heading-lg mb-4">WhatsApp QR Generator</h1>
+      <p class="text-body-sm mb-8">Enter your WhatsApp number to get a wa.me link. Use any QR generator with that link to create a QR code.</p>
+      <div class="card">
+        <form class="space-y-4" id="qr-form">
+          <div><label for="phone" class="form-label">Phone (with country code)</label><input type="tel" id="phone" name="phone" class="form-input" placeholder="15551234567" required /></div>
+          <button type="submit" class="btn-primary w-full">Get link</button>
+        </form>
+        <p id="result" class="mt-4 text-sm text-neutral-600 dark:text-neutral-400 hidden"></p>
+      </div>
+    </div>
+  </section>
+  <script is:inline define:vars={{}}>
+    document.getElementById('qr-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const phone = (form.querySelector('[name=phone]')?.value || '').replace(/\D/g, '');
+      const url = 'https://wa.me/' + phone;
+      const el = document.getElementById('result');
+      if (el) { el.textContent = 'Use this URL in a QR generator: ' + url; el.classList.remove('hidden'); }
+    });
+  </script>
+</BaseLayout>

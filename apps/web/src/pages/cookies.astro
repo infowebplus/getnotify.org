@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const page = (await getCollection('pages')).find((e: CollectionEntry<'pages'>) => e.id === 'cookies');
+const data = page?.data ?? { title: 'Cookies - GetNotify', description: '' };
+---
+
+<BaseLayout title={data.title} description={data.description} noindex={data.noindex}>
+  <article class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-3xl">
+      <h1 class="heading-lg mb-6">Cookie Policy</h1>
+      <p class="text-body-sm mb-8">We use cookies and similar technologies to run the site and to remember your preferences. You can manage your choices via our cookie banner or your browser settings.</p>
+      <div class="prose prose-neutral dark:prose-invert max-w-none">
+        <p>Essential cookies are required for the site to function. Analytics and preference cookies help us improve your experience. You can change your cookie settings at any time.</p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

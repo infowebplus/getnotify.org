@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const page = (await getCollection('pages')).find((e: CollectionEntry<'pages'>) => e.id === 'about');
+const data = page?.data ?? { title: 'About - GetNotify', description: '' };
+const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
+const company = (globals.company || {}) as Record<string, unknown>;
+const content = (globals.content || {}) as Record<string, unknown>;
+const values = (content.values || []) as Array<{ title: string; description: string; icon: string }>;
+const timeline = (content.timeline || []) as Array<{ year: string; title: string; description: string; alignment: string }>;
+---
+
+<BaseLayout title={data.title} description={data.description}>
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom">
+      <div class="max-w-3xl mx-auto text-center mb-20">
+        <span class="badge-primary mb-4">About Us</span>
+        <h1 class="heading-lg mb-4">We help businesses send notifications via WhatsApp</h1>
+        <p class="text-body">{String(company.description)}</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6 mb-24">
+        {values.map((v) => (
+          <div class="card card-hover text-center p-8">
+            <h3 class="heading-sm text-neutral-900 dark:text-white mb-3">{v.title}</h3>
+            <p class="text-body-sm">{v.description}</p>
+          </div>
+        ))}
+      </div>
+      <div class="max-w-4xl mx-auto py-8 md:py-12 rounded-3xl bg-neutral-50/80 dark:bg-neutral-800/50 px-4 sm:px-8">
+        <div class="text-center mb-16">
+          <span class="badge-primary mb-4">Milestones</span>
+          <h2 class="heading-lg">Our timeline</h2>
+          <p class="text-body mt-3 max-w-xl mx-auto">Key moments in our journey to make WhatsApp notifications simple and reliable.</p>
+        </div>
+        <div class="timeline-vertical">
+          {timeline.map((item, i) => {
+            const isLeft = item.alignment?.includes('text-right') ?? i % 2 === 0;
+            return (
+              <div class={`timeline-item flex flex-col md:flex-row md:items-stretch gap-4 md:gap-0 ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                <div class={`md:w-1/2 md:py-6 ${isLeft ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
+                  <div class={`timeline-card card p-6 text-left ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
+                    <span class="inline-block text-xs font-bold tracking-wider text-primary-600 dark:text-primary-400 uppercase">{item.year}</span>
+                    <h3 class="text-lg font-bold text-neutral-900 dark:text-white mt-2 mb-3">{item.title}</h3>
+                    <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">{item.description}</p>
+                  </div>
+                </div>
+                <div class="timeline-dot-wrap shrink-0 justify-center items-center">
+                  <div class="timeline-dot w-4 h-4 rounded-full bg-primary-500 ring-4 ring-neutral-50 dark:ring-neutral-800 shadow-md" aria-hidden="true"></div>
+                </div>
+                <div class="hidden md:block md:w-1/2 md:shrink-0"></div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

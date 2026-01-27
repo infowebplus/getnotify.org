@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="WhatsApp Link Generator - GetNotify" description="Create WhatsApp click-to-chat links for your business.">
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-lg mx-auto">
+      <h1 class="heading-lg mb-4">WhatsApp Link Generator</h1>
+      <p class="text-body-sm mb-8">Enter a phone number (with country code, no +) and optional message to generate a wa.me link.</p>
+      <div class="card">
+        <form class="space-y-4" id="link-form">
+          <div><label for="phone" class="form-label">Phone (e.g. 15551234567)</label><input type="tel" id="phone" name="phone" class="form-input" placeholder="15551234567" required /></div>
+          <div><label for="message" class="form-label">Pre-filled message (optional)</label><textarea id="message" name="message" class="form-input" rows="2" placeholder="Hello!"></textarea></div>
+          <button type="submit" class="btn-primary w-full">Generate link</button>
+        </form>
+        <p id="result" class="mt-4 text-sm text-neutral-600 dark:text-neutral-400 hidden"></p>
+      </div>
+    </div>
+  </section>
+  <script is:inline define:vars={{}}>
+    document.getElementById('link-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const phone = (form.querySelector('[name=phone]')?.value || '').replace(/\D/g, '');
+      const message = form.querySelector('[name=message]')?.value || '';
+      const url = 'https://wa.me/' + phone + (message ? '?text=' + encodeURIComponent(message) : '');
+      const el = document.getElementById('result');
+      if (el) { el.textContent = 'Link: ' + url; el.classList.remove('hidden'); }
+    });
+  </script>
+</BaseLayout>
