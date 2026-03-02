@@ -1,52 +1,200 @@
 {
   "steps": [
-    { "number": 1, "title": "Setup Your Phone Number", "description": "Setup your phone number with WhatsApp API using our simple onboarding process." },
-    { "number": 2, "title": "Add or Import Your Contacts", "description": "Manually add your contacts or bulk import them using CSV file or using our API feature." },
-    { "number": 3, "title": "Create & Send Broadcast", "description": "Create a new notification to broadcast your WhatsApp message template to your contacts. That's it. It's as simple as that!" }
+    {
+      "number": 1,
+      "title": "Connect your Meta account",
+      "description": "Embedded signup. You own the account."
+    },
+    {
+      "number": 2,
+      "title": "Templates & webhooks",
+      "description": "Dedicated Account Manager. Guided setup."
+    },
+    {
+      "number": 3,
+      "title": "Send & monitor",
+      "description": "Dashboard or API. Logs and Meta cost."
+    }
+  ],
+  "onboarding": {
+    "badge": "Setup",
+    "headline": "Dedicated human-led onboarding",
+    "headlineAlt1": "Guided setup with a Dedicated Account Manager",
+    "headlineAlt2": "Structured onboarding, included in setup",
+    "headlineAlt3": "Professional setup—time-bounded and clear",
+    "description": "During setup a Dedicated Account Manager guides you through Meta Business, WhatsApp API, templates, webhooks. One-time fee.",
+    "bullets": [
+      "Dedicated Account Manager",
+      "Meta Business + WhatsApp API",
+      "Templates & webhooks",
+      "Included in setup fee"
+    ],
+    "pricingPageBullets": [
+      "Dedicated Account Manager",
+      "Guided Meta Business Account creation",
+      "WhatsApp Cloud API configuration",
+      "Template submission, webhook setup"
+    ]
+  },
+  "onboardingPage": {
+    "stepsHeadline": "Step-by-step setup",
+    "stepsIntro": "A Dedicated Account Manager guides you through setup.",
+    "dashboardHeadline": "In the dashboard",
+    "dashboardIntro": "After setup you use the dashboard for logs, webhooks, templates.",
+    "dashboardSections": [
+      {
+        "title": "Message logs",
+        "description": "Status, timestamp, recipient. Filter and export."
+      },
+      {
+        "title": "Webhook status",
+        "description": "Endpoint, events, failure logs."
+      },
+      {
+        "title": "Template status",
+        "description": "Approved templates. Send via dashboard or API."
+      }
+    ],
+    "accountHeadline": "Your account",
+    "accountDescription": "Your Meta Business Account and number. You own it.",
+    "apiHeadline": "API & webhook",
+    "apiDescription": "Create API keys and webhook URL in the dashboard. Docs for details.",
+    "apiDocsCta": "API documentation",
+    "apiDocsUrl": "https://docs.getnotify.org",
+    "dashboardCta": "Open dashboard",
+    "dashboardCtaNote": "Manage API keys, webhooks, logs."
+  },
+  "agencyModel": {
+    "badge": "Agency model",
+    "heading": "You pay Meta directly",
+    "description": "No reselling, no markup. Your Meta account; we're the layer."
+  },
+  "differentiators": [
+    "No markup—you pay Meta for usage",
+    "Cost visibility in dashboard",
+    "You own your Meta account",
+    "We're the layer: dashboard, API, webhooks"
   ],
   "values": [
-    { "title": "Instant Delivery", "description": "WhatsApp messages are delivered instantly. Your notifications reach recipients in real-time, every time.", "icon": "bolt" },
-    { "title": "Reliable Backend", "description": "Our robust backend infrastructure ensures 99.9% uptime and reliable message delivery. Your notifications are in safe hands.", "icon": "shield" },
-    { "title": "Easy Integration", "description": "Simple API integration and upcoming Shopify plugin make it effortless to add WhatsApp notifications to your workflow.", "icon": "heart" },
-    { "title": "Automation First", "description": "Automate your notifications with scheduled messages and action triggers. Set it once and let it work for you.", "icon": "lightbulb" }
+    {
+      "title": "Instant Delivery",
+      "description": "WhatsApp messages are delivered instantly. Your notifications reach recipients in real-time, every time.",
+      "icon": "bolt"
+    },
+    {
+      "title": "Reliable Backend",
+      "description": "Our robust backend infrastructure ensures 99.9% uptime and reliable message delivery. Your notifications are in safe hands.",
+      "icon": "shield"
+    },
+    {
+      "title": "Easy Integration",
+      "description": "Simple API integration and upcoming Shopify plugin make it effortless to add WhatsApp notifications to your workflow.",
+      "icon": "heart"
+    },
+    {
+      "title": "Automation First",
+      "description": "Automate your notifications with scheduled messages and action triggers. Set it once and let it work for you.",
+      "icon": "lightbulb"
+    }
   ],
   "timeline": [
-    { "year": "2024", "title": "Company Founded", "description": "GetNotify was created to solve a simple problem: businesses need reliable WhatsApp notification delivery.", "alignment": "md:w-1/2 md:pr-12 md:text-right" },
-    { "year": "2024", "title": "Backend Launch", "description": "Launched our powerful backend API supporting group messages, scheduled notifications, and action triggers.", "alignment": "md:ml-auto md:w-1/2 md:pl-12" },
-    { "year": "2024", "title": "First Customers", "description": "Onboarded our first customers and started delivering millions of WhatsApp notifications reliably.", "alignment": "md:w-1/2 md:pr-12 md:text-right" },
-    { "year": "2025", "title": "Shopify Plugin Coming", "description": "Upcoming Shopify plugin will make it even easier for e-commerce stores to send automated WhatsApp notifications.", "alignment": "md:ml-auto md:w-1/2 md:pl-12" }
+    {
+      "year": "2024",
+      "title": "Company Founded",
+      "description": "GetNotify was created to solve a simple problem: businesses need reliable WhatsApp notification delivery.",
+      "alignment": "md:w-1/2 md:pr-12 md:text-right"
+    },
+    {
+      "year": "2024",
+      "title": "Backend Launch",
+      "description": "Launched our powerful backend API supporting group messages, scheduled notifications, and action triggers.",
+      "alignment": "md:ml-auto md:w-1/2 md:pl-12"
+    },
+    {
+      "year": "2024",
+      "title": "First Customers",
+      "description": "Onboarded our first customers and started delivering millions of WhatsApp notifications reliably.",
+      "alignment": "md:w-1/2 md:pr-12 md:text-right"
+    },
+    {
+      "year": "2025",
+      "title": "Shopify Plugin Coming",
+      "description": "Upcoming Shopify plugin will make it even easier for e-commerce stores to send automated WhatsApp notifications.",
+      "alignment": "md:ml-auto md:w-1/2 md:pl-12"
+    }
   ],
-  "trialBenefits": ["14 days free", "No credit card", "Full access"],
+  "trialBenefits": [
+    "14 days free",
+    "No credit card",
+    "Full access"
+  ],
   "dashboard": {
     "baseUrl": "https://dashboard.getnotify.org",
     "loginPath": "/admin/login",
     "registerPath": "/admin/register",
     "loginLabel": "Log in to dashboard",
     "registerLabel": "Create account",
-    "apiLoginNote": "API keys and message sending are managed in the dashboard."
+    "apiLoginNote": "API keys and sending are in the dashboard."
   },
   "contactForm": {
     "submitUrl": "",
     "successRedirectUrl": "https://getnotify.org/contact/?sent=1",
-    "headline": "Get in touch",
-    "description": "Have a question or need help? Send us a message and our team will get back to you — we often reply within 24 hours.",
-    "successMessage": "Thanks! Your message was sent. We'll get back to you soon."
+    "headline": "Contact",
+    "description": "Setup, pricing, API—reply within 24h.",
+    "successMessage": "Message sent. We'll reply soon.",
+    "contactDetailsNote": "Replies within 24h (business hours).",
+    "helpWith": [
+      "Setup & pricing",
+      "API & webhooks",
+      "Technical support"
+    ]
   },
   "contactSubjects": [
-    { "value": "", "label": "Select a topic" },
-    { "value": "general", "label": "General Inquiry" },
-    { "value": "sales", "label": "Sales Question" },
-    { "value": "support", "label": "Technical Support" },
-    { "value": "api", "label": "API Integration Help" },
-    { "value": "shopify", "label": "Shopify Plugin Inquiry" },
-    { "value": "enterprise", "label": "Enterprise Plan" },
-    { "value": "partnership", "label": "Partnership" },
-    { "value": "other", "label": "Other" }
+    {
+      "value": "",
+      "label": "Select a topic"
+    },
+    {
+      "value": "setup",
+      "label": "Setup & pricing"
+    },
+    {
+      "value": "general",
+      "label": "General inquiry"
+    },
+    {
+      "value": "support",
+      "label": "Technical support"
+    },
+    {
+      "value": "api",
+      "label": "API & integration"
+    },
+    {
+      "value": "other",
+      "label": "Other"
+    }
   ],
   "pricingFaq": [
-    { "id": "change-plans", "question": "Can I change plans later?", "answer": "Yes! You can upgrade or downgrade your plan at any time. Upgrades take effect immediately, and downgrades apply at the start of your next billing cycle." },
-    { "id": "payment-methods", "question": "What payment methods do you accept?", "answer": "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers for annual plans. Enterprise customers can pay via invoice." },
-    { "id": "free-trial", "question": "Is there a free trial?", "answer": "Yes! All paid plans come with a 14-day free trial. No credit card required to start. Test our WhatsApp notification API and see how it works for your business." },
-    { "id": "refund-policy", "question": "What's your refund policy?", "answer": "We offer a 30-day money-back guarantee on all paid plans. If you're not satisfied for any reason, contact our support team within 30 days of purchase for a full refund." }
+    {
+      "id": "change-plans",
+      "question": "Cancel platform?",
+      "answer": "Contact us to cancel, see T&C for notice period."
+    },
+    {
+      "id": "payment-methods",
+      "question": "Payment methods?",
+      "answer": "Credit card or SEPA direct debit, processed securely."
+    },
+    {
+      "id": "meta-billing",
+      "question": "Who bills messages?",
+      "answer": "Messages are billed directly by Meta. GetNotify charges only setup and platform fees."
+    },
+    {
+      "id": "refund-policy",
+      "question": "Refunds?",
+      "answer": "No refund for messages sent. Platform fees follow T&C notice periods."
+    }
   ]
 }

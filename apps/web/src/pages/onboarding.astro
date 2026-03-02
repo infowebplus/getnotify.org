@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const page = (await getCollection('pages')).find((e: CollectionEntry<'pages'>) => e.id === 'onboarding');
+const data = page?.data ?? { title: 'Onboarding - GetNotify', description: '' };
+const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
+const content = (globals.content || {}) as Record<string, unknown>;
+const dashboard = (content.dashboard || {}) as Record<string, string>;
+const onboardingData = (content.onboarding || {}) as { bullets?: string[]; description?: string };
+const onboardingPage = (content.onboardingPage || {}) as {
+  stepsHeadline?: string;
+  stepsIntro?: string;
+  dashboardHeadline?: string;
+  dashboardIntro?: string;
+  dashboardSections?: Array<{ title: string; description: string }>;
+  accountHeadline?: string;
+  accountDescription?: string;
+  apiHeadline?: string;
+  apiDescription?: string;
+  apiDocsCta?: string;
+  apiDocsUrl?: string;
+  dashboardCta?: string;
+  dashboardCtaNote?: string;
+};
+const steps = (content.steps || []) as Array<{ number: number; title: string; description: string }>;
+const dashboardBase = (dashboard.baseUrl ?? '').replace(/\/$/, '');
+const dashboardLoginUrl = dashboardBase ? `${dashboardBase}${(dashboard.loginPath ?? '/admin/login').startsWith('/') ? dashboard.loginPath : `/${dashboard.loginPath}`}` : '';
+---
+
+<BaseLayout title={data.title} description={data.description}>
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-3xl">
+      <div class="mb-12">
+        <span class="badge-primary mb-4">Setup</span>
+        <h1 class="heading-lg mb-4">Onboarding & dashboard</h1>
+        <p class="text-body">{onboardingData.description}</p>
+      </div>
+
+      <section class="mb-14" aria-labelledby="setup-steps-heading">
+        <h2 id="setup-steps-heading" class="heading-md mb-4">{onboardingPage.stepsHeadline ?? 'Step-by-step setup'}</h2>
+        <p class="text-body-sm mb-8">{onboardingPage.stepsIntro}</p>
+        <ol class="space-y-8">
+          {steps.map((step) => (
+            <li class="flex gap-6">
+              <span class="flex-shrink-0 w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-700 dark:text-primary-300 font-semibold">{step.number}</span>
+              <div>
+                <h3 class="font-semibold text-neutral-900 dark:text-white mb-1">{step.title}</h3>
+                <p class="text-sm text-neutral-600 dark:text-neutral-400">{step.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        {(onboardingData.bullets || []).length > 0 && (
+          <ul class="mt-8 space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
+            {(onboardingData.bullets || []).map((b) => (
+              <li class="flex items-start gap-2">
+                <span class="text-primary-500 mt-0.5">✓</span>
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section class="mb-14" aria-labelledby="dashboard-heading">
+        <h2 id="dashboard-heading" class="heading-md mb-4">{onboardingPage.dashboardHeadline ?? 'What you get in the dashboard'}</h2>
+        <p class="text-body-sm mb-8">{onboardingPage.dashboardIntro}</p>
+        <ul class="space-y-6">
+          {(onboardingPage.dashboardSections || []).map((s) => (
+            <li class="p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50/50 dark:bg-neutral-800/50">
+              <h3 class="font-semibold text-neutral-900 dark:text-white mb-2">{s.title}</h3>
+              <p class="text-sm text-neutral-600 dark:text-neutral-400">{s.description}</p>
+            </li>
+          ))}
+        </ul>
+        {dashboardLoginUrl && (
+          <p class="mt-6">
+            <a href={dashboardLoginUrl} class="btn-primary" target="_blank" rel="noopener noreferrer">{onboardingPage.dashboardCta ?? 'Open dashboard'}</a>
+            <span class="block mt-2 text-sm text-neutral-500 dark:text-neutral-400">{onboardingPage.dashboardCtaNote}</span>
+          </p>
+        )}
+      </section>
+
+      <section class="mb-14" aria-labelledby="account-heading">
+        <h2 id="account-heading" class="heading-md mb-4">{onboardingPage.accountHeadline ?? 'Your WhatsApp account details'}</h2>
+        <p class="text-body-sm">{onboardingPage.accountDescription}</p>
+      </section>
+
+      <section class="mb-14" aria-labelledby="api-heading">
+        <h2 id="api-heading" class="heading-md mb-4">{onboardingPage.apiHeadline ?? 'API key & webhook setup'}</h2>
+        <p class="text-body-sm mb-6">{onboardingPage.apiDescription}</p>
+        {onboardingPage.apiDocsUrl && (
+          <a href={onboardingPage.apiDocsUrl} class="btn-outline" target="_blank" rel="noopener noreferrer">{onboardingPage.apiDocsCta ?? 'API documentation'}</a>
+        )}
+      </section>
+
+      <div class="pt-8 border-t border-neutral-200 dark:border-neutral-700">
+        <a href="/pricing/" class="link font-medium">Pricing (from 400€ setup + 149€/month) →</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,27 +1,93 @@
 {
   "categories": [
     {
+      "name": "Agency model",
+      "questions": [
+        {
+          "id": "agency-what",
+          "question": "What is the agency model?",
+          "answer": "Your Meta account. You pay Meta for messages. We provide dashboard, API, webhooks. No markup."
+        },
+        {
+          "id": "agency-why",
+          "question": "Why do I pay Meta separately?",
+          "answer": "Meta bills usage. We charge setup (from 400€) + platform (149€/month)."
+        },
+        {
+          "id": "agency-account",
+          "question": "Do I own my WhatsApp account?",
+          "answer": "Yes. You own your Meta account. We help configure it at setup."
+        },
+        {
+          "id": "agency-transactional",
+          "question": "Is this for marketing campaigns?",
+          "answer": "No. We're built for transactional messages only: order updates, delivery alerts, reminders, verification codes. No marketing campaigns or CRM blasts — so you get better deliverability and compliance."
+        }
+      ]
+    },
+    {
       "name": "General",
       "questions": [
-        { "id": "what-is-whatsapp-notify", "question": "What is GetNotify?", "answer": "GetNotify is a backend service that enables you to send notifications via WhatsApp messages. You can send custom messages to groups, schedule notifications, and trigger automated messages based on actions like new orders. Perfect for businesses that need reliable WhatsApp notification delivery." },
-        { "id": "who-is-it-for", "question": "Who is GetNotify for?", "answer": "GetNotify is designed for businesses of all sizes that need to send WhatsApp notifications. Whether you're an e-commerce store sending order updates, a SaaS platform sending alerts, or any business that needs automated WhatsApp messaging, we have a plan that fits your needs." },
-        { "id": "getting-started", "question": "How do I get started?", "answer": "Getting started is easy! Sign up for a free account, connect your WhatsApp Business API, and start sending notifications. Our API documentation will guide you through the integration process. You can test with our free plan that includes 100 messages per month." }
+        {
+          "id": "what-is-getnotify",
+          "question": "What is GetNotify?",
+          "answer": "Official WhatsApp Cloud API on your Meta account. You get a dashboard, REST API, and webhooks to send transactional messages: order confirmations, alerts, OTPs. You pay Meta for messages; we're the software layer. No marketing — focus on what users expect and need."
+        },
+        {
+          "id": "who-is-it-for",
+          "question": "Who is it for?",
+          "answer": "Teams that need reliable WhatsApp notifications and an API. E‑commerce, operations, product."
+        },
+        {
+          "id": "getting-started",
+          "question": "How do I start?",
+          "answer": "Contact for setup (from 400€). Then platform (149€/month). You pay Meta for messages."
+        }
       ]
     },
     {
-      "name": "Pricing & Plans",
+      "name": "Pricing & Billing",
       "questions": [
-        { "id": "whatsapp-cost", "question": "How much does WhatsApp cost?", "answer": "According to the Facebook pricing model, WhatsApp is an additional charge on top of your GetNotify plan. You're charged for each new conversation depending on the country code and conversation category. Your business's first 1000 Service conversations each month are FREE." },
-        { "id": "free-trial", "question": "Is there a free trial?", "answer": "Yes! All paid plans come with a 14-day free trial. No credit card required. You can explore all features and decide which plan works best for your team." },
-        { "id": "change-plans", "question": "Can I change plans later?", "answer": "Absolutely. You can upgrade or downgrade your plan at any time. When upgrading, you'll get immediate access to new features. When downgrading, changes take effect at the start of your next billing cycle." },
-        { "id": "payment-methods", "question": "What payment methods do you accept?", "answer": "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers for annual plans. Enterprise customers can also pay via invoice." },
-        { "id": "refund-policy", "question": "What is your refund policy?", "answer": "We offer a 30-day money-back guarantee for all paid plans. If you're not satisfied with GetNotify for any reason, contact our support team within 30 days of your purchase for a full refund." }
+        {
+          "id": "whatsapp-cost",
+          "question": "Who bills messages?",
+          "answer": "Meta. We charge setup + platform. Dashboard shows estimated Meta cost."
+        },
+        {
+          "id": "change-plans",
+          "question": "Cancel platform?",
+          "answer": "Contact to cancel. See T&C for notice."
+        },
+        {
+          "id": "payment-methods",
+          "question": "Payment methods?",
+          "answer": "Card or SEPA."
+        },
+        {
+          "id": "refund-policy",
+          "question": "Refunds?",
+          "answer": "No refund for messages. Platform per T&C."
+        }
       ]
     },
     {
-      "name": "Features & Security",
+      "name": "Security",
       "questions": [
-        { "id": "data-security", "question": "How secure is my data?", "answer": "Security is our top priority. All API communications are encrypted in transit using HTTPS/TLS. We maintain SOC 2 Type II compliance and undergo regular third-party security audits. Your WhatsApp message content and recipient data are handled with the highest security standards." }
+        {
+          "id": "data-security",
+          "question": "Data security?",
+          "answer": "HTTPS/TLS. We do not resell data."
+        }
+      ]
+    },
+    {
+      "name": "Billing & Legal Entity",
+      "questions": [
+        {
+          "id": "legal-entity",
+          "question": "Who operates GetNotify?",
+          "answer": "Uphold SRL, Romania. Invoices from Uphold. You pay Meta for messages."
+        }
       ]
     }
   ]

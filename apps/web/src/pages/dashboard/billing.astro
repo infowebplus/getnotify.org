@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Billing - GetNotify"
+  description="View your plan, billing date, and invoice history. GetNotify dashboard billing."
+  noindex
+>
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-3xl mx-auto">
+      <h1 class="heading-lg mb-2">Billing</h1>
+      <p class="text-body-sm text-neutral-600 dark:text-neutral-400 mb-10">Manage your plan and invoices.</p>
+
+      <!-- Current Plan Card -->
+      <div class="card mb-8">
+        <h2 class="font-semibold text-neutral-900 dark:text-white mb-4">Current plan</h2>
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p class="text-xl font-bold text-neutral-900 dark:text-white">Growth</p>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">€99/month</p>
+          </div>
+          <span class="badge-primary">Active</span>
+        </div>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-4">Next billing date: March 15, 2026</p>
+        <div class="flex flex-wrap gap-3 mt-6">
+          <a href="/pricing/" class="btn-primary btn-sm">Upgrade plan</a>
+          <button type="button" class="btn-outline btn-sm" disabled>Cancel plan</button>
+        </div>
+      </div>
+
+      <!-- Invoice list -->
+      <h2 class="font-semibold text-neutral-900 dark:text-white mb-4">Invoices</h2>
+      <div class="card overflow-hidden p-0">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="border-b border-neutral-200 dark:border-neutral-700">
+                <th class="px-6 py-4 font-semibold text-neutral-700 dark:text-neutral-300">Invoice</th>
+                <th class="px-6 py-4 font-semibold text-neutral-700 dark:text-neutral-300">Date</th>
+                <th class="px-6 py-4 font-semibold text-neutral-700 dark:text-neutral-300">Status</th>
+                <th class="px-6 py-4 font-semibold text-neutral-700 dark:text-neutral-300">Amount</th>
+                <th class="px-6 py-4 font-semibold text-neutral-700 dark:text-neutral-300 w-24"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-neutral-100 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors">
+                <td class="px-6 py-4 font-mono text-neutral-900 dark:text-white">INV-2026-001</td>
+                <td class="px-6 py-4 text-neutral-600 dark:text-neutral-400">Feb 15, 2026</td>
+                <td class="px-6 py-4"><span class="badge-primary">Paid</span></td>
+                <td class="px-6 py-4 text-neutral-900 dark:text-white">€99.00</td>
+                <td class="px-6 py-4"><button type="button" class="text-primary-600 dark:text-primary-400 hover:underline text-xs font-medium">Download</button></td>
+              </tr>
+              <tr class="border-b border-neutral-100 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors">
+                <td class="px-6 py-4 font-mono text-neutral-900 dark:text-white">INV-2026-000</td>
+                <td class="px-6 py-4 text-neutral-600 dark:text-neutral-400">Jan 15, 2026</td>
+                <td class="px-6 py-4"><span class="badge-primary">Paid</span></td>
+                <td class="px-6 py-4 text-neutral-900 dark:text-white">€99.00</td>
+                <td class="px-6 py-4"><button type="button" class="text-primary-600 dark:text-primary-400 hover:underline text-xs font-medium">Download</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-6">Invoices are issued by UPHOLD GROUP SRL. For changes to your plan, contact <a href="mailto:contact@getnotify.org" class="link">contact@getnotify.org</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

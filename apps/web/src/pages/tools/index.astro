@@ -1,25 +1,20 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+const target = '/tools/whatsapp-link-generator/';
+const fullUrl = `${import.meta.env.SITE || 'https://getnotify.org'}${target}`;
 ---
-
-<BaseLayout title="Tools - GetNotify" description="Free WhatsApp tools: link generator, QR generator, pricing calculator.">
-  <section class="section bg-white dark:bg-neutral-900">
-    <div class="container-custom">
-      <h1 class="heading-lg text-center mb-12">Tools</h1>
-      <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-        <a href="/tools/whatsapp-link-generator/" class="card card-hover block text-center">
-          <h2 class="heading-sm mb-2">WhatsApp Link Generator</h2>
-          <p class="text-body-sm">Create click-to-chat links for WhatsApp.</p>
-        </a>
-        <a href="/tools/whatsapp-qr-generator/" class="card card-hover block text-center">
-          <h2 class="heading-sm mb-2">QR Code Generator</h2>
-          <p class="text-body-sm">Generate QR codes for your WhatsApp number.</p>
-        </a>
-        <a href="/tools/whatsapp-pricing-calculator/" class="card card-hover block text-center">
-          <h2 class="heading-sm mb-2">Pricing Calculator</h2>
-          <p class="text-body-sm">Estimate your WhatsApp API costs.</p>
-        </a>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tools - GetNotify</title>
+    <link rel="canonical" href={fullUrl} />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <script is:inline>
+      window.location.replace('/tools/whatsapp-link-generator/');
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to <a href={target}>WhatsApp Link Generator</a>…</p>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const todayIso = new Date().toISOString().slice(0, 10);
+const title = 'Cookie Policy - GetNotify';
+const description = 'Cookie Policy for GetNotify. Strictly necessary and analytics cookies. EU/EEA/UK. Consent-based analytics.';
+const canonical = '/legal/cookies/';
+---
+
+<BaseLayout title={title} description={description} canonical={canonical}>
+  <article class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-3xl mx-auto">
+      <header class="mb-10">
+        <h1 class="heading-lg mb-2">Cookie Policy</h1>
+        <p class="text-body-sm text-neutral-600 dark:text-neutral-400">Last updated: {todayIso}</p>
+      </header>
+
+      <div class="prose prose-neutral dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300">
+        <p>This policy applies to EU/EEA/UK visitors.</p>
+
+        <h2 class="heading-sm mt-10 mb-3">Strictly Necessary Cookies (no consent required)</h2>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li><code>cookie_consent</code></li>
+          <li><code>cookie_consent_timestamp</code></li>
+          <li><code>theme</code></li>
+          <li><code>pricing-interval</code></li>
+        </ul>
+
+        <h2 class="heading-sm mt-10 mb-3">Analytics Cookies (only with consent)</h2>
+        <p><strong>Google Analytics (gtag.js)</strong></p>
+        <p>We collect:</p>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>Page views</li>
+          <li>Session duration</li>
+          <li>Traffic source</li>
+          <li>General geographic region</li>
+        </ul>
+        <p>Cookies used:</p>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li><code>_ga</code> (2 years)</li>
+          <li><code>_ga_*</code> (2 years)</li>
+        </ul>
+        <p>Analytics are activated ONLY after user consent.</p>
+
+        <h2 id="manage" class="heading-sm mt-10 mb-3">Your choices</h2>
+        <p>Users may:</p>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>Accept all</li>
+          <li>Reject non-essential</li>
+          <li>Reopen cookie settings anytime (use the <strong>Cookie Settings</strong> link in the footer)</li>
+        </ul>
+
+        <p class="mt-8">
+          <button type="button" id="cookie-reopen" class="btn-primary">Change cookie preferences</button>
+        </p>
+
+        <h2 class="heading-sm mt-10 mb-3">Contact</h2>
+        <p><a href="mailto:hello@getnotify.org" class="link">hello@getnotify.org</a></p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<script>
+  document.getElementById('cookie-reopen')?.addEventListener('click', () => {
+    window.dispatchEvent(new Event('cookie-consent-show'));
+  });
+  if (typeof window !== 'undefined' && window.location?.hash === '#manage') {
+    window.addEventListener('DOMContentLoaded', () => {
+      window.dispatchEvent(new Event('cookie-consent-show'));
+    });
+  }
+</script>

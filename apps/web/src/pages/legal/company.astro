@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Company - GetNotify"
+  description="Legal entity and company information for GetNotify. Product of UPHOLD GROUP SRL."
+>
+  <article class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-2xl mx-auto">
+      <h1 class="heading-lg mb-2">Company</h1>
+      <p class="text-body-sm text-neutral-600 dark:text-neutral-400 mb-12">Legal and billing information.</p>
+
+      <div class="card space-y-6">
+        <dl class="grid gap-5 sm:grid-cols-1">
+          <div>
+            <dt class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">Product</dt>
+            <dd class="text-neutral-900 dark:text-white font-medium">GetNotify</dd>
+          </div>
+          <div>
+            <dt class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">Legal entity</dt>
+            <dd class="text-neutral-900 dark:text-white">UPHOLD GROUP SRL</dd>
+          </div>
+          <div>
+            <dt class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">Parent company</dt>
+            <dd class="text-neutral-900 dark:text-white">
+              <a href="https://uphold.ro" target="_blank" rel="noopener noreferrer" class="link">uphold.ro</a>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">Billing entity</dt>
+            <dd class="text-neutral-900 dark:text-white">UPHOLD GROUP SRL</dd>
+          </div>
+          <div>
+            <dt class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-1">Contact</dt>
+            <dd class="text-neutral-900 dark:text-white">
+              <a href="mailto:contact@getnotify.org" class="link">contact@getnotify.org</a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-8">Invoices are issued by UPHOLD GROUP SRL.</p>
+    </div>
+  </article>
+</BaseLayout>

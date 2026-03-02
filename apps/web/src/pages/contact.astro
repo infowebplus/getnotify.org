@@ -10,13 +10,13 @@ const company = (globals.company || {}) as Record<string, unknown>;
 const content = (globals.content || {}) as Record<string, unknown>;
 const subjects = (content.contactSubjects || []) as Array<{ value: string; label: string }>;
 const contactForm = (content.contactForm || {}) as Record<string, string>;
-const dashboard = (content.dashboard || {}) as Record<string, string>;
-const dashboardBaseUrl = (dashboard.baseUrl ?? '').replace(/\/$/, '');
 const formSubmitUrl = contactForm.submitUrl ?? '';
 const successRedirectUrl = contactForm.successRedirectUrl ?? '';
-const headline = contactForm.headline ?? "Get in touch";
-const description = contactForm.description ?? "We'd love to hear from you. Send us a message and we'll respond as soon as we can.";
-const successMessage = contactForm.successMessage ?? "Thanks! Your message was sent. We'll get back to you soon.";
+const headline = contactForm.headline ?? "Contact us";
+const description = contactForm.description ?? "Questions about setup, pricing, or the platform? Send a message — we reply during business hours, usually within 24 hours.";
+const successMessage = contactForm.successMessage ?? "Your message was sent. We'll get back to you soon.";
+const contactDetailsNote = contactForm.contactDetailsNote ?? "We reply during business hours, usually within 24 hours.";
+const helpWith = ((contactForm.helpWith as unknown) as string[] | undefined) || [];
 const contactEmail = String(company.contactEmail ?? 'hello@getnotify.org');
 const address = (company.address || {}) as Record<string, string>;
 const addressLine = [address.street, address.city, address.state, address.zip, address.country].filter(Boolean).join(', ');
@@ -30,19 +30,22 @@ const showSuccess = Astro.url.searchParams.get('sent') === '1';
         <div class="text-center mb-14">
           <span class="badge-primary mb-4">Contact</span>
           <h1 class="heading-lg mb-4">{headline}</h1>
-          <p class="text-body max-w-2xl mx-auto">{description}</p>
+          <p class="text-body text-neutral-700 dark:text-neutral-200 max-w-2xl mx-auto">{description}</p>
         </div>
 
         {showSuccess ? (
           <div class="max-w-md mx-auto card text-center py-12">
-            <div class="w-14 h-14 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center mx-auto mb-4">
-              <svg class="w-7 h-7 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <div class="w-14 h-14 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+              <svg class="w-7 h-7 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
             </div>
             <h2 class="heading-sm text-neutral-900 dark:text-white mb-2">Message sent</h2>
-            <p class="text-body-sm">{successMessage}</p>
+            <p class="text-body-sm text-neutral-600 dark:text-neutral-300">{successMessage}</p>
             <a href="/" class="btn-primary mt-6">Back to home</a>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-4">
+              <a href="/pricing/" class="link">View pricing</a> · <a href="/onboarding/" class="link">Onboarding</a>
+            </p>
           </div>
         ) : (
           <div class="grid lg:grid-cols-5 gap-10 lg:gap-14">
@@ -71,14 +74,22 @@ const showSuccess = Astro.url.searchParams.get('sent') === '1';
                     </li>
                   )}
                 </ul>
-                <p class="text-body-sm mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-700">
-                  Responses are managed from our dashboard and typically sent within 24 hours.
-                </p>
-                {dashboardBaseUrl && (
-                  <p class="text-body-sm mt-3">
-                    <a href={`${dashboardBaseUrl}/admin/login`} target="_blank" rel="noopener noreferrer" class="link text-sm">Staff: Dashboard login</a>
-                  </p>
+                {helpWith.length > 0 && (
+                  <div class="mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-700">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-3">We can help with</p>
+                    <ul class="space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
+                      {helpWith.map((item) => (
+                        <li class="flex items-start gap-2">
+                          <span class="text-primary-500 mt-0.5 flex-shrink-0">•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
+                <p class="text-body-sm text-neutral-600 dark:text-neutral-300 mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-700">
+                  {contactDetailsNote}
+                </p>
               </div>
             </div>
             <div class="lg:col-span-3">
@@ -88,20 +99,21 @@ const showSuccess = Astro.url.searchParams.get('sent') === '1';
                   action={formSubmitUrl || '#'}
                   method="post"
                   class="space-y-5"
+                  aria-label="Contact form"
                 >
                   <input type="hidden" name="success_redirect" value={successRedirectUrl} />
                   <div class="grid sm:grid-cols-2 gap-5">
                     <div>
                       <label for="name" class="form-label">Name</label>
-                      <input type="text" id="name" name="name" class="form-input" required placeholder="Your name" />
+                      <input type="text" id="name" name="name" class="form-input" required placeholder="Your name" autocomplete="name" />
                     </div>
                     <div>
                       <label for="email" class="form-label">Email</label>
-                      <input type="email" id="email" name="email" class="form-input" required placeholder="you@example.com" />
+                      <input type="email" id="email" name="email" class="form-input" required placeholder="you@example.com" autocomplete="email" />
                     </div>
                   </div>
                   <div>
-                    <label for="subject" class="form-label">Subject</label>
+                    <label for="subject" class="form-label">Topic</label>
                     <select id="subject" name="subject" class="form-input" required>
                       {subjects.filter((s) => s.value !== '').map((s) => (
                         <option value={s.value}>{s.label}</option>
@@ -110,17 +122,12 @@ const showSuccess = Astro.url.searchParams.get('sent') === '1';
                   </div>
                   <div>
                     <label for="message" class="form-label">Message</label>
-                    <textarea id="message" name="message" class="form-input min-h-[140px] resize-y" required placeholder="How can we help?"></textarea>
+                    <textarea id="message" name="message" class="form-input min-h-[140px] resize-y" required placeholder="Tell us how we can help..." rows={5}></textarea>
                   </div>
                   <button type="submit" class="btn-primary w-full sm:w-auto px-8">
                     Send message
                   </button>
                 </form>
-                {!formSubmitUrl && (
-                  <p class="text-sm text-neutral-500 dark:text-neutral-400 mt-4">
-                    Form submissions will be delivered to the dashboard once the contact API is configured. For now, email us at <a href={`mailto:${contactEmail}`} class="link">{contactEmail}</a>.
-                  </p>
-                )}
               </div>
             </div>
           </div>

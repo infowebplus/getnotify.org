@@ -1,19 +1,11 @@
 {
-  "brand": {
-    "name": "GetNotify",
-    "logo": "/assets/img/logo.svg",
-    "href": "/"
-  },
+  "brand": { "name": "GetNotify", "logo": "/assets/img/logo.svg", "href": "/" },
   "items": [
-    { "label": "Home", "href": "/", "primary": false },
-    { "label": "About", "href": "/about/", "primary": false },
-    { "label": "Pricing", "href": "/pricing/", "primary": false },
-    { "label": "FAQ", "href": "/faq/", "primary": false },
-    { "label": "Contact", "href": "/contact/", "primary": false }
+    { "label": "Home", "href": "/" },
+    { "label": "Pricing", "href": "/pricing/" },
+    { "label": "FAQ", "href": "/faq/" },
+    { "label": "Contact", "href": "/contact/" }
   ],
-  "cta": { "label": "Get Started", "href": "/register/", "primary": true },
-  "auth": {
-    "login": { "label": "Log In", "href": "/login/" },
-    "register": { "label": "Sign Up Free", "href": "/register/" }
-  }
+  "cta": { "label": "Get started", "href": "/register/", "primary": true },
+  "auth": { "login": { "label": "Log in", "href": "/login/" }, "register": { "label": "Sign up", "href": "/register/" } }
 }

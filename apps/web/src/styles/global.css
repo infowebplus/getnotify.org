@@ -15,7 +15,7 @@
     @apply inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
   }
   .btn-primary {
-    @apply btn bg-primary-500 text-white hover:bg-primary-600 hover:shadow-lg hover:shadow-primary-500/25 focus-visible:ring-primary-500 active:bg-primary-700 active:scale-[0.98];
+    @apply btn bg-primary-500 text-white hover:bg-primary-600 hover:shadow-lg hover:shadow-primary-500/25 focus-visible:ring-primary-500 active:bg-primary-700 active:scale-[0.98] transition-all duration-200 ease-out;
   }
   .btn-secondary {
     @apply btn bg-neutral-100 text-neutral-700 hover:bg-neutral-200 focus-visible:ring-neutral-400 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700;
@@ -39,12 +39,72 @@
     @apply bg-white rounded-2xl border border-neutral-200 p-6 transition-all duration-300 dark:bg-neutral-800 dark:border-neutral-700;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
   }
-  .dark .card {
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.2);
-  }
-  .card-hover { @apply hover:border-neutral-300 hover:shadow-lg hover:-translate-y-0.5 dark:hover:border-neutral-600 dark:hover:shadow-none; }
-  .plan-card { @apply card relative overflow-hidden; }
+  .card-hover { @apply hover:border-neutral-300 hover:shadow-lg hover:-translate-y-0.5 dark:hover:border-neutral-600 dark:hover:shadow-none transition-all duration-200; }
+  .plan-card { @apply card relative overflow-visible flex flex-col; }
   .plan-card-recommended { @apply border-primary-500 ring-2 ring-primary-500/20 dark:border-primary-400; }
+  .plan-card-features-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #d4d4d4 transparent;
+  }
+  .dark .plan-card-features-scroll { scrollbar-color: #52525b transparent; }
+  .pricing-tooltip-fixed {
+    position: fixed !important;
+    z-index: 9999;
+    overflow: visible !important;
+  }
+  .term-tooltip-panel {
+    overflow: visible;
+    box-sizing: border-box;
+  }
+  .compare-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  /* Info / callout messages with icon */
+  .info-callout {
+    @apply flex gap-3 p-4 rounded-xl border text-sm;
+  }
+  .info-callout-neutral {
+    @apply info-callout bg-neutral-50 border-neutral-200 text-neutral-700 dark:bg-neutral-800/60 dark:border-neutral-700 dark:text-neutral-300;
+  }
+  .info-callout-primary {
+    @apply info-callout bg-primary-50 border-primary-200 text-primary-900 dark:bg-primary-950/30 dark:border-primary-800 dark:text-primary-100;
+  }
+  .info-callout-icon {
+    @apply flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center;
+  }
+  .info-callout-neutral .info-callout-icon { @apply bg-primary-100 dark:bg-primary-900/40 text-primary-600 dark:text-primary-400; }
+  .info-callout-primary .info-callout-icon { @apply bg-primary-200 dark:bg-primary-800 text-primary-700 dark:text-primary-200; }
+
+  /* Flip card for Setup */
+  .plan-card-flip {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    perspective: 1000px;
+    overflow: visible;
+  }
+  .plan-card-flip-inner {
+    @apply relative w-full h-full transition-transform duration-500;
+    transform-style: preserve-3d;
+  }
+  .plan-card-flip.flipped .plan-card-flip-inner { transform: rotateY(180deg); }
+  .plan-card-front,
+  .plan-card-back {
+    @apply absolute inset-0 w-full h-full rounded-2xl border border-neutral-200 p-6 flex flex-col;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .plan-card-front { @apply bg-white dark:bg-neutral-800 dark:border-neutral-700; }
+  .plan-card-back {
+    @apply bg-neutral-50 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700;
+    transform: rotateY(180deg);
+  }
+  .plan-card-flip .plan-card-front { @apply relative; }
+
   .faq-item { @apply border-b border-neutral-200 last:border-b-0 dark:border-neutral-700; }
   .faq-button { @apply w-full flex items-center justify-between py-5 text-left font-semibold text-neutral-900 hover:text-primary-600 transition-colors dark:text-white dark:hover:text-primary-400; }
   .faq-icon { @apply w-5 h-5 text-neutral-400 transition-transform duration-300; }

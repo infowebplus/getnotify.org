@@ -1,72 +1,217 @@
 {
-  "currency": "USD",
-  "interval": "month",
+  "sectionTitle": "WhatsApp Infrastructure for Growing Businesses",
+  "sectionSubtitle": "From one store to multi-brand operations. Transparent pricing, scalable integrations.",
+  "definitions": {
+    "standardIntegration": "Pre-built connection to Shopify, WooCommerce or common systems. No custom development required.",
+    "customWebhook": "Connection to your internal or third-party system using secure event triggers.",
+    "eventType": "A specific business action that triggers a notification (e.g. order_confirmed, appointment_created)."
+  },
+  "installationFee": {
+    "tiers": [
+      { "plan": "Foundation", "price": "from €400" },
+      { "plan": "Expansion", "price": "from €500" },
+      { "plan": "Enterprise / Agency", "price": "from €900" }
+    ],
+    "features": [
+      "Dedicated GetNotify account manager",
+      "Create & verify Meta Business Account + WABA",
+      "Phone number configuration",
+      "WhatsApp template creation & approval",
+      "Initial integration setup (your platform)",
+      "Event mapping (orders, bookings, deliveries etc.)",
+      "Custom webhook configuration",
+      "60min onboarding call + training",
+      "Spam compliance checklist & best practices",
+      "Cost dashboard setup & explanation"
+    ]
+  },
   "plans": [
     {
-      "id": "starter",
-      "name": "Starter",
-      "description": "Perfect for small businesses and startups getting started with WhatsApp notifications.",
-      "price": { "monthly": 0, "yearly": 0 },
-      "priceDisplay": { "monthly": "Free", "yearly": "Free" },
-      "interval": "forever",
+      "id": "basic",
+      "name": "Foundation",
+      "label": "For focused operations requiring a reliable and structured messaging infrastructure",
+      "priceDisplay": "€99",
+      "interval": "per month",
+      "setupLabel": "One-time setup",
       "recommended": false,
-      "features": ["Up to 100 messages/month", "Basic WhatsApp notifications", "Shared phone number", "Up to 2 segments", "Up to 100 contacts", "Email support"],
-      "cta": { "text": "Start Free", "href": "/register/" },
-      "idealFor": "Small Businesses"
+      "cta": { "text": "Start Foundation Setup", "href": "/register/" },
+      "featureGroups": [
+        {
+          "title": "Account Scope",
+          "icon": "📦",
+          "items": [
+            "1 WhatsApp Business Account",
+            "1 Brand / Project"
+          ]
+        },
+        {
+          "title": "Integrations",
+          "icon": "🔌",
+          "items": [
+            { "text": "1 Standard Integration", "definitionKey": "standardIntegration" },
+            { "text": "Up to 2 Custom Event Webhooks", "definitionKey": "customWebhook" },
+            { "text": "Up to 10 Notification Event Types", "definitionKey": "eventType" }
+          ]
+        },
+        {
+          "title": "Platform Access",
+          "icon": "⚙️",
+          "items": [
+            "Standard API Access",
+            "Cost Dashboard per WhatsApp account",
+            "Basic automatic retry"
+          ]
+        },
+        {
+          "title": "Team",
+          "icon": "👥",
+          "items": [
+            "Up to 2 users",
+            "Email support"
+          ]
+        }
+      ]
     },
     {
-      "id": "pro",
-      "name": "Pro",
-      "description": "For growing businesses that need scheduled messages and action triggers.",
-      "price": { "monthly": 29, "yearly": 290 },
-      "priceDisplay": { "monthly": "$29", "yearly": "$290" },
+      "id": "core",
+      "name": "Expansion",
+      "label": "For scaling businesses managing multiple systems",
+      "priceDisplay": "€149",
       "interval": "per month",
+      "setupLabel": "One-time setup",
       "recommended": true,
-      "features": ["Up to 1,000 messages/month", "Scheduled messages", "Action-triggered notifications", "1 phone number", "Up to 10 segments", "Up to 1,000 contacts", "Priority email support", "Full API access", "Delivery status tracking", "Webhook support"],
-      "cta": { "text": "Start Free Trial", "href": "/register/?plan=pro" },
-      "idealFor": "Growing Businesses"
+      "cta": { "text": "Upgrade to Expansion", "href": "/register/" },
+      "featureGroups": [
+        {
+          "title": "Account Scope",
+          "icon": "📦",
+          "items": [
+            "Up to 2 WhatsApp Business Accounts",
+            "2–3 Brands / Projects"
+          ]
+        },
+        {
+          "title": "Integrations",
+          "icon": "🔌",
+          "items": [
+            { "text": "3 Production-Ready Integrations", "definitionKey": "standardIntegration" },
+            { "text": "Up to 5 Custom Webhooks", "definitionKey": "customWebhook" },
+            { "text": "Unlimited Notification Event Types", "definitionKey": "eventType" }
+          ]
+        },
+        {
+          "title": "Platform Access",
+          "icon": "⚙️",
+          "items": [
+            "Full API Access with Higher Rate Limits",
+            "Logs retention: 6 months",
+            "Configurable retry logic per integration"
+          ]
+        },
+        {
+          "title": "Team",
+          "icon": "👥",
+          "items": [
+            "Team Collaboration (up to 5 users)",
+            "Email support + onboarding call"
+          ]
+        }
+      ]
     },
     {
-      "id": "business",
-      "name": "Business",
-      "description": "Enterprise-grade features for high-volume WhatsApp notifications.",
-      "price": { "monthly": 99, "yearly": 990 },
-      "priceDisplay": { "monthly": "$99", "yearly": "$990" },
-      "interval": "per month",
+      "id": "agency",
+      "name": "Enterprise / Agency",
+      "label": "For agencies and complex multi-brand environments",
+      "priceDisplay": "Custom",
+      "interval": "custom",
+      "setupLabel": "Setup",
       "recommended": false,
-      "features": ["Everything in Pro", "Up to 10,000 messages/month", "3 phone numbers", "Up to 50 segments", "Up to 20,000 contacts", "24/7 phone & email support", "Advanced security & compliance", "Custom integrations", "Admin controls & audit logs", "Dedicated account manager", "99.9% uptime SLA", "Shopify plugin access (when available)"],
-      "cta": { "text": "Start Free Trial", "href": "/register/?plan=business" },
-      "idealFor": "Large Organizations"
+      "cta": { "text": "Request Custom Plan", "href": "/contact/" },
+      "featureGroups": [
+        {
+          "title": "Account Scope",
+          "icon": "📦",
+          "items": [
+            "5–10 WhatsApp Business Accounts",
+            "5+ Brands / Projects"
+          ]
+        },
+        {
+          "title": "Integrations",
+          "icon": "🔌",
+          "items": [
+            "5+ Integrations",
+            "Unlimited Webhooks",
+            "Unlimited Event Types"
+          ]
+        },
+        {
+          "title": "Platform Access",
+          "icon": "⚙️",
+          "items": [
+            "Full API + highest rate limits",
+            "Logs retention: 12+ months",
+            "Advanced retry rules"
+          ]
+        },
+        {
+          "title": "Team",
+          "icon": "👥",
+          "items": [
+            "Unlimited users",
+            "Advanced roles & permissions",
+            "Priority support + recurring calls"
+          ]
+        }
+      ]
     }
   ],
-  "enterprise": {
-    "name": "Enterprise",
-    "description": "Custom solutions for the largest organizations with high-volume WhatsApp notification needs.",
-    "features": ["Custom message volume limits", "Dedicated infrastructure", "Custom contracts & SLAs", "Onboarding & training", "Premium support", "White-label options", "Custom Shopify integration"]
-  },
+  "invoiceFootnote": "Invoices issued by UPHOLD S.R.L.",
   "comparison": {
     "categories": [
       {
-        "name": "WhatsApp Features",
+        "name": "Account Scope",
+        "icon": "📦",
         "features": [
-          { "name": "WhatsApp notifications", "starter": true, "pro": true, "business": true },
-          { "name": "Segments", "starter": "Up to 2", "pro": "Up to 10", "business": "Up to 50" },
-          { "name": "Scheduled messages", "starter": false, "pro": true, "business": true },
-          { "name": "Action triggers", "starter": false, "pro": true, "business": true }
+          { "name": "WhatsApp Business Accounts", "basic": "1", "core": "Up to 2", "agency": "5–10" },
+          { "name": "Brands / Projects", "basic": "1", "core": "2–3", "agency": "5+" },
+          { "name": "Phone numbers", "basic": "Up to 20 (subject to Meta approval)", "core": "Up to 40 (subject to Meta approval)", "agency": "Up to 200 (subject to Meta approval)" }
         ]
       },
       {
-        "name": "Message Limits",
+        "name": "Integrations",
+        "icon": "🔌",
         "features": [
-          { "name": "Messages/month", "starter": "Up to 100", "pro": "Up to 1,000", "business": "Up to 10,000" },
-          { "name": "API access", "starter": false, "pro": true, "business": true }
+          { "name": "Production-Ready Integrations", "basic": "1 production-ready integration (Shopify, WooCommerce or Booking system)", "core": "3 production-ready integrations (Shopify, Woo, ERP, CRM)", "agency": "5+ production-ready integrations (standard + custom)" },
+          { "name": "Custom Webhooks", "basic": "Up to 2", "core": "Up to 5", "agency": "Unlimited" },
+          { "name": "Notification Event Types", "basic": "Up to 10", "core": "Unlimited", "agency": "Unlimited" }
         ]
       },
       {
-        "name": "Support",
+        "name": "Platform Access",
+        "icon": "⚙️",
         "features": [
-          { "name": "Email support", "starter": "Community", "pro": "Priority", "business": "24/7" },
-          { "name": "Phone support", "starter": false, "pro": false, "business": true }
+          { "name": "API Access", "basic": "Standard", "core": "Full API access with higher rate limits", "agency": "Full API access with highest rate limits" },
+          { "name": "Message Logs", "basic": "30 days", "core": "6 months", "agency": "12+ months" },
+          { "name": "Cost Dashboard", "basic": "Per WhatsApp account", "core": "—", "agency": "—" },
+          { "name": "Retry logic", "basic": "Basic automatic", "core": "Configurable per integration", "agency": "Advanced rules" }
+        ]
+      },
+      {
+        "name": "Team",
+        "icon": "👥",
+        "features": [
+          { "name": "Users", "basic": "Up to 2", "core": "Team Collaboration (up to 5 users)", "agency": "Unlimited" },
+          { "name": "Support", "basic": "Email", "core": "Email + onboarding call", "agency": "Priority + recurring calls" }
+        ]
+      },
+      {
+        "name": "Infrastructure & Reliability",
+        "icon": "🛡",
+        "features": [
+          { "name": "Infrastructure uptime", "basic": "99.9%", "core": "99.9%", "agency": "SLA-backed uptime" },
+          { "name": "Webhook delivery verification", "basic": "✓", "core": "✓", "agency": "✓" },
+          { "name": "Secure token handling", "basic": "✓", "core": "✓", "agency": "✓" }
         ]
       }
     ]

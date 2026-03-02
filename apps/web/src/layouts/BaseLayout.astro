@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -30,6 +31,7 @@ const siteOrigin = import.meta.env.PUBLIC_SITE_ORIGIN || 'https://getnotify.org'
 const canonicalUrl = canonical ? new URL(canonical, siteOrigin).href : Astro.url.href;
 const defaultOgImage = '/assets/img/logo.svg';
 const ogImageUrl = ogImage ? new URL(ogImage, siteOrigin).href : new URL(defaultOgImage, siteOrigin).href;
+const gaId = typeof import.meta.env.PUBLIC_GA_ID === 'string' ? import.meta.env.PUBLIC_GA_ID : '';
 ---
 
 <!doctype html>
@@ -85,6 +87,38 @@ const ogImageUrl = ogImage ? new URL(ogImage, siteOrigin).href : new URL(default
       <slot />
     </main>
     <Footer footer={footer} />
+    {!import.meta.env.PUBLIC_COOKIEBOT_ID && <CookieBanner />}
+    <script is:inline define:vars={{ gaId }}>
+      (function() {
+        function loadGaIfConsent() {
+          if (!gaId) return;
+          try {
+            var raw = localStorage.getItem('cookie_consent');
+            if (!raw) return;
+            var v = JSON.parse(raw);
+            if (!v || !v.analytics) return;
+            if (typeof navigator !== 'undefined' && (navigator.doNotTrack === '1' || window.doNotTrack === '1')) return;
+            if (window.__getnotifyGaLoaded) return;
+            window.__getnotifyGaLoaded = true;
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ dataLayer.push(arguments); }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', gaId, {
+              anonymize_ip: true,
+              allow_google_signals: false,
+              allow_ad_personalization_signals: false
+            });
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+            document.head.appendChild(s);
+          } catch (e) {}
+        }
+        window.__enableGetNotifyAnalytics = loadGaIfConsent;
+        loadGaIfConsent();
+      })();
+    </script>
     <script src="../scripts/main.ts"></script>
   </body>
 </html>

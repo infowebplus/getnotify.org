@@ -1,31 +1,313 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolsTabs from '../../components/ToolsTabs.astro';
 ---
 
-<BaseLayout title="WhatsApp Pricing Calculator - GetNotify" description="Estimate your WhatsApp Business API messaging costs.">
+<BaseLayout title="WhatsApp Pricing Calculator - GetNotify" description="Estimate WhatsApp Business API costs by market and conversation type. Meta per-message pricing model (from July 2025).">
   <section class="section bg-white dark:bg-neutral-900">
-    <div class="container-custom max-w-lg mx-auto">
+    <div class="container-custom max-w-2xl mx-auto">
+      <ToolsTabs current="pricing" />
       <h1 class="heading-lg mb-4">Pricing calculator</h1>
-      <p class="text-body-sm mb-8">Rough estimate based on conversation tiers. Actual pricing depends on country and conversation type.</p>
-      <div class="card">
-        <form class="space-y-4" id="calc-form">
-          <div><label for="messages" class="form-label">Messages per month (approx.)</label><input type="number" id="messages" name="messages" class="form-input" value="1000" min="1" /></div>
-          <button type="submit" class="btn-primary w-full">Estimate</button>
+      <p class="text-body-sm text-neutral-600 dark:text-neutral-400 mb-2">
+        Estimate based on Meta's per-message pricing (effective <strong>July 1, 2025</strong>), updated for January 2026 rate changes.
+        Rates vary by recipient country and message type. <strong>Rates are maintained manually</strong> — Meta does not provide a public API for messaging prices; verify on the official page.
+        <a href="https://business.whatsapp.com/products/platform-pricing" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline">WhatsApp Business Platform Pricing</a>.
+      </p>
+
+      <div class="card mb-8">
+        <form class="space-y-5" id="calc-form" novalidate>
+          <div>
+            <label for="country" class="form-label">Recipient market</label>
+            <select id="country" name="country" class="form-input">
+              <optgroup label="Countries">
+                <option value="AR">Argentina</option>
+                <option value="BR">Brazil</option>
+                <option value="CA">Canada</option>
+                <option value="CL">Chile</option>
+                <option value="CO">Colombia</option>
+                <option value="EG">Egypt</option>
+                <option value="FR">France</option>
+                <option value="DE">Germany</option>
+                <option value="IN">India</option>
+                <option value="ID">Indonesia</option>
+                <option value="IL">Israel</option>
+                <option value="IT">Italy</option>
+                <option value="MY">Malaysia</option>
+                <option value="MX">Mexico</option>
+                <option value="NL">Netherlands</option>
+                <option value="NG">Nigeria</option>
+                <option value="US">North America (US/CA)</option>
+                <option value="PK">Pakistan</option>
+                <option value="PE">Peru</option>
+                <option value="RO">Romania</option>
+                <option value="RU">Russia</option>
+                <option value="SA">Saudi Arabia</option>
+                <option value="ZA">South Africa</option>
+                <option value="ES">Spain</option>
+                <option value="TR">Turkey</option>
+                <option value="AE">United Arab Emirates</option>
+                <option value="GB">United Kingdom</option>
+              </optgroup>
+              <optgroup label="Regions">
+                <option value="OTHER_AFRICA">Rest of Africa</option>
+                <option value="OTHER_APAC">Rest of Asia Pacific</option>
+                <option value="OTHER_EEUR">Rest of Central & Eastern Europe</option>
+                <option value="OTHER_LATAM">Rest of Latin America</option>
+                <option value="OTHER_MEAST">Rest of Middle East</option>
+                <option value="OTHER_WEUR">Rest of Western Europe</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div>
+            <label for="currency" class="form-label">Currency</label>
+            <select id="currency" name="currency" class="form-input">
+              <option value="AUD">Australian Dollar (AUD)</option>
+              <option value="USD" selected>Dollars (USD)</option>
+              <option value="EUR">Euro (EUR)</option>
+              <option value="INR">Indian Rupee (INR)</option>
+              <option value="IDR">Indonesian Rupiah (IDR)</option>
+              <option value="MXN">Mexican Pesos (MXN)</option>
+              <option value="GBP">Pound Sterling (GBP)</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="type" class="form-label">Message type</label>
+            <select id="type" name="type" class="form-input">
+              <option value="authentication">Authentication</option>
+              <option value="marketing">Marketing</option>
+              <option value="utility">Utility</option>
+              <option value="service">Service</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="messages" class="form-label">Template messages per month</label>
+            <input type="number" id="messages" name="messages" class="form-input" value="1000" min="1" max="10000000" step="1" inputmode="numeric" placeholder="e.g. 1000" aria-describedby="messages-error" />
+            <p id="messages-error" class="text-xs text-red-600 dark:text-red-400 mt-1 hidden" role="alert"></p>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Only outbound template messages are charged. Incoming messages are always free.</p>
+          </div>
+
+          <button type="submit" class="btn-primary w-full">Estimate cost</button>
         </form>
-        <p id="result" class="mt-4 text-sm text-neutral-600 dark:text-neutral-400 hidden"></p>
       </div>
+
+      <div id="calc-result" class="card hidden">
+        <h2 class="font-semibold text-neutral-900 dark:text-white mb-4">Estimate</h2>
+        <dl class="space-y-2 text-sm">
+          <div class="flex justify-between"><dt class="text-neutral-600 dark:text-neutral-400">Messages sent</dt><dd id="out-messages"></dd></div>
+          <div class="flex justify-between"><dt class="text-neutral-600 dark:text-neutral-400">Rate per message</dt><dd id="out-rate"></dd></div>
+          <div class="flex justify-between"><dt class="text-neutral-600 dark:text-neutral-400">Meta (template message fees)</dt><dd id="out-meta"></dd></div>
+          <div class="flex justify-between pt-2 border-t border-neutral-200 dark:border-neutral-700 font-medium"><dt>Total (monthly)</dt><dd id="out-total"></dd></div>
+        </dl>
+        <p id="out-note" class="text-xs text-neutral-500 dark:text-neutral-400 mt-4 hidden"></p>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-2">
+          <a id="out-verify-link" href="https://business.whatsapp.com/products/platform-pricing" target="_blank" rel="noopener noreferrer" class="text-primary-600 dark:text-primary-400 underline">Verify this rate on the official pricing page</a> (opens with same market, currency and category).
+        </p>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+          Rates shown are Meta's published rates; your BSP may add markups.
+        </p>
+      </div>
+
     </div>
   </section>
-  <script is:inline define:vars={{}}>
-    document.getElementById('calc-form')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const n = Math.max(0, parseInt(form.querySelector('[name=messages]')?.value || '0', 10) || 0);
-      const el = document.getElementById('result');
-      if (el) {
-        el.textContent = 'For ' + n + ' messages/month, consider our Pro plan ($29/mo). WhatsApp conversation fees apply per Meta\'s pricing.';
-        el.classList.remove('hidden');
+
+  <script is:inline>
+    (function() {
+      /**
+       * WhatsApp per-message rates (effective July 1, 2025, updated Jan 2026).
+       * Source: Meta official pricing page + Jan 2026 rate changes.
+       * Currency: USD unless noted. EUR markets use EUR. UK uses GBP. India uses INR. Indonesia uses IDR.
+       *
+       * For simplicity (calculator shows in USD/EUR), EUR/GBP markets are stored in their native currency
+       * but we display the currency symbol for clarity.
+       *
+       * Fields: marketing, utility, authentication, service (always 0), currency, symbol
+       */
+      var RATES = {
+        AR:          { marketing: 0.0618, utility: 0.0260, authentication: 0.0260, service: 0, currency: 'USD', symbol: '$' },
+        BR:          { marketing: 0.0625, utility: 0.0068, authentication: 0.0068, service: 0, currency: 'USD', symbol: '$' },
+        CA:          { marketing: 0.0250, utility: 0.0040, authentication: 0.0040, service: 0, currency: 'USD', symbol: '$' },
+        CL:          { marketing: 0.0889, utility: 0.0200, authentication: 0.0200, service: 0, currency: 'USD', symbol: '$' },
+        CO:          { marketing: 0.0125, utility: 0.0008, authentication: 0.0008, service: 0, currency: 'USD', symbol: '$' },
+        EG:          { marketing: 0.1073, utility: 0.0036, authentication: 0.0036, service: 0, currency: 'USD', symbol: '$' },
+        FR:          { marketing: 0.1186, utility: 0.0248, authentication: 0.0248, service: 0, currency: 'EUR', symbol: '€' },
+        DE:          { marketing: 0.1131, utility: 0.0456, authentication: 0.0456, service: 0, currency: 'EUR', symbol: '€' },
+        IN:          { marketing: 0.7846, utility: 0.1150, authentication: 0.1150, service: 0, currency: 'INR', symbol: '₹' },
+        ID:          { marketing: 586.33, utility: 356.65, authentication: 356.65, service: 0, currency: 'IDR', symbol: 'Rp' },
+        IL:          { marketing: 0.0353, utility: 0.0053, authentication: 0.0053, service: 0, currency: 'USD', symbol: '$' },
+        IT:          { marketing: 0.0572, utility: 0.0248, authentication: 0.0248, service: 0, currency: 'EUR', symbol: '€' },
+        MY:          { marketing: 0.0860, utility: 0.0140, authentication: 0.0140, service: 0, currency: 'USD', symbol: '$' },
+        MX:          { marketing: 0.0305, utility: 0.0085, authentication: 0.0085, service: 0, currency: 'USD', symbol: '$' },
+        NL:          { marketing: 0.1323, utility: 0.0414, authentication: 0.0414, service: 0, currency: 'EUR', symbol: '€' },
+        NG:          { marketing: 0.0516, utility: 0.0067, authentication: 0.0067, service: 0, currency: 'USD', symbol: '$' },
+        US:          { marketing: 0.0250, utility: 0.0040, authentication: 0.0040, service: 0, currency: 'USD', symbol: '$' },
+        PK:          { marketing: 0.0473, utility: 0.0054, authentication: 0.0054, service: 0, currency: 'USD', symbol: '$' },
+        PE:          { marketing: 0.0703, utility: 0.0200, authentication: 0.0200, service: 0, currency: 'USD', symbol: '$' },
+        // Romania maps to Rest of Central & Eastern Europe (not listed individually by Meta)
+        RO:          { marketing: 0.0860, utility: 0.0212, authentication: 0.0212, service: 0, currency: 'USD', symbol: '$' },
+        RU:          { marketing: 0.0802, utility: 0.0400, authentication: 0.0400, service: 0, currency: 'USD', symbol: '$' },
+        SA:          { marketing: 0.0455, utility: 0.0107, authentication: 0.0107, service: 0, currency: 'USD', symbol: '$' },
+        ZA:          { marketing: 0.0379, utility: 0.0076, authentication: 0.0076, service: 0, currency: 'USD', symbol: '$' },
+        ES:          { marketing: 0.0509, utility: 0.0166, authentication: 0.0166, service: 0, currency: 'EUR', symbol: '€' },
+        TR:          { marketing: 0.0109, utility: 0.0053, authentication: 0.0053, service: 0, currency: 'USD', symbol: '$' },
+        AE:          { marketing: 0.0499, utility: 0.0157, authentication: 0.0157, service: 0, currency: 'USD', symbol: '$' },
+        GB:          { marketing: 0.0382, utility: 0.0159, authentication: 0.0159, service: 0, currency: 'GBP', symbol: '£' },
+        OTHER_AFRICA:{ marketing: 0.0225, utility: 0.0040, authentication: 0.0040, service: 0, currency: 'USD', symbol: '$' },
+        OTHER_APAC:  { marketing: 0.0732, utility: 0.0113, authentication: 0.0113, service: 0, currency: 'USD', symbol: '$' },
+        OTHER_EEUR:  { marketing: 0.0860, utility: 0.0212, authentication: 0.0212, service: 0, currency: 'USD', symbol: '$' },
+        OTHER_LATAM: { marketing: 0.0740, utility: 0.0113, authentication: 0.0113, service: 0, currency: 'USD', symbol: '$' },
+        OTHER_MEAST: { marketing: 0.0341, utility: 0.0091, authentication: 0.0091, service: 0, currency: 'USD', symbol: '$' },
+        OTHER_WEUR:  { marketing: 0.0592, utility: 0.0171, authentication: 0.0171, service: 0, currency: 'USD', symbol: '$' },
+      };
+
+      var regionFallback = {
+        // Map IP geo codes to RATES keys
+        'ZZ': 'OTHER_WEUR'
+      };
+
+      // Meta pricing page uses full country names and "Currency (CODE)" in the URL.
+      var META_COUNTRY_NAMES = {
+        AR: 'Argentina', BR: 'Brazil', CA: 'Canada', CL: 'Chile', CO: 'Colombia', EG: 'Egypt',
+        FR: 'France', DE: 'Germany', IN: 'India', ID: 'Indonesia', IL: 'Israel', IT: 'Italy',
+        MY: 'Malaysia', MX: 'Mexico', NL: 'Netherlands', NG: 'Nigeria', US: 'North America',
+        PK: 'Pakistan', PE: 'Peru', RO: 'Romania', RU: 'Russia', SA: 'Saudi Arabia', ZA: 'South Africa',
+        ES: 'Spain', TR: 'Turkey', AE: 'United Arab Emirates', GB: 'United Kingdom',
+        OTHER_AFRICA: 'Rest of Africa', OTHER_APAC: 'Rest of Asia Pacific',
+        OTHER_EEUR: 'Rest of Central & Eastern Europe', OTHER_LATAM: 'Rest of Latin America',
+        OTHER_MEAST: 'Rest of Middle East', OTHER_WEUR: 'Rest of Western Europe'
+      };
+      var META_CURRENCY_LABELS = { AUD: 'Australian Dollar (AUD)', USD: 'Dollars (USD)', EUR: 'Euro (EUR)', INR: 'Indian Rupee (INR)', IDR: 'Indonesian Rupiah (IDR)', MXN: 'Mexican Pesos (MXN)', GBP: 'Pound Sterling (GBP)' };
+
+      function buildOfficialPricingUrl(country, currency, category) {
+        var base = 'https://business.whatsapp.com/products/platform-pricing';
+        var countryName = META_COUNTRY_NAMES[country] || country;
+        var currencyLabel = META_CURRENCY_LABELS[currency] || currency;
+        var categoryCap = (category && category.charAt(0).toUpperCase() + category.slice(1)) || 'Authentication';
+        var params = new URLSearchParams({ country: countryName, currency: currencyLabel, category: categoryCap });
+        return base + '?' + params.toString();
       }
-    });
+
+      // Exchange rates: units of currency per 1 USD. Aligned with Meta's pricing page display (e.g. Spain Authentication €0.0166 → $0.02).
+      var UNITS_PER_USD = { USD: 1, EUR: 0.83, GBP: 0.79, AUD: 1.53, INR: 83, IDR: 15800, MXN: 17.2 };
+
+      function toDisplayCurrency(amount, fromCurrency, toCurrency) {
+        if (fromCurrency === toCurrency) return amount;
+        var perUsdFrom = UNITS_PER_USD[fromCurrency];
+        var perUsdTo = UNITS_PER_USD[toCurrency];
+        if (!perUsdFrom || !perUsdTo) return amount;
+        var inUsd = fromCurrency === 'USD' ? amount : amount / perUsdFrom;
+        return toCurrency === 'USD' ? inUsd : inUsd * perUsdTo;
+      }
+
+      function getSymbolAndCurrency(code) {
+        var symbols = { USD: '$', EUR: '€', GBP: '£', AUD: 'A$', INR: '₹', IDR: 'Rp', MXN: '$' };
+        return { symbol: symbols[code] || code, currency: code };
+      }
+
+      function formatCost(amount, symbol, currency) {
+        if (currency === 'INR' || currency === 'IDR') {
+          return symbol + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        return symbol + amount.toFixed(4).replace(/\.?0+$/, '') + ' ' + currency;
+      }
+
+      function formatTotal(amount, symbol, currency) {
+        if (currency === 'INR') return symbol + amount.toFixed(2) + ' INR';
+        if (currency === 'IDR') return symbol + Math.round(amount).toLocaleString('en-US') + ' IDR';
+        return symbol + amount.toFixed(2) + ' ' + currency;
+      }
+
+      function showMessagesError(msg) {
+        var el = document.getElementById('messages-error');
+        if (!el) return;
+        el.textContent = msg || '';
+        el.classList.toggle('hidden', !msg);
+      }
+
+      // Auto-detect country via IP
+      var countrySelect = document.getElementById('country');
+      fetch('https://ipapi.co/json/').then(function(r) { return r.json(); }).then(function(data) {
+        var code = (data && data.country_code) || '';
+        if (!code || !countrySelect) return;
+        var value = RATES[code] ? code : null;
+        if (!value) {
+          // Map to region
+          var regionMap = {
+            CA: 'CA',
+            AT: 'OTHER_WEUR', BE: 'OTHER_WEUR', CH: 'OTHER_WEUR', GR: 'OTHER_WEUR', PT: 'OTHER_WEUR',
+            PL: 'OTHER_EEUR', CZ: 'OTHER_EEUR', HU: 'OTHER_EEUR', BG: 'OTHER_EEUR', UA: 'OTHER_EEUR', SK: 'OTHER_EEUR',
+            TH: 'OTHER_APAC', PH: 'OTHER_APAC', VN: 'OTHER_APAC', SG: 'OTHER_APAC', KR: 'OTHER_APAC',
+            JO: 'OTHER_MEAST', KW: 'OTHER_MEAST', QA: 'OTHER_MEAST', BH: 'OTHER_MEAST',
+            KE: 'OTHER_AFRICA', GH: 'OTHER_AFRICA', ET: 'OTHER_AFRICA', TZ: 'OTHER_AFRICA',
+          };
+          value = regionMap[code] || null;
+        }
+        if (value && countrySelect.querySelector('option[value="' + value + '"]')) {
+          countrySelect.value = value;
+        }
+      }).catch(function() {});
+
+      document.getElementById('calc-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        showMessagesError('');
+
+        var country = countrySelect.value;
+        var type = document.getElementById('type').value;
+        var raw = document.getElementById('messages').value;
+        var messages = raw === '' ? 0 : Math.floor(parseFloat(String(raw).replace(',', '.')));
+
+        if (!Number.isFinite(messages) || messages < 1) {
+          showMessagesError('Enter a number of messages (at least 1).');
+          return;
+        }
+        if (messages > 10000000) {
+          showMessagesError('Maximum 10,000,000.');
+          return;
+        }
+
+        var rates = RATES[country] || RATES['OTHER_WEUR'];
+        var displayCurrency = document.getElementById('currency').value || 'USD';
+        var sym = getSymbolAndCurrency(displayCurrency).symbol;
+        var cur = displayCurrency;
+
+        var metaCost = 0;
+        var effectiveRate = 0;
+        var noteText = '';
+        var isFree = false;
+
+        if (type === 'service') {
+          metaCost = 0;
+          effectiveRate = 0;
+          isFree = true;
+          noteText = 'Service messages (customer-initiated, within 24h window) are free.';
+        } else {
+          effectiveRate = rates[type] || 0;
+          metaCost = messages * effectiveRate;
+        }
+
+        effectiveRate = toDisplayCurrency(effectiveRate, rates.currency, displayCurrency);
+        metaCost = toDisplayCurrency(metaCost, rates.currency, displayCurrency);
+
+        document.getElementById('out-messages').textContent = messages.toLocaleString('en-US');
+        document.getElementById('out-rate').textContent = isFree ? 'Free' : formatCost(effectiveRate, sym, cur);
+        document.getElementById('out-meta').textContent = isFree ? 'Free' : formatTotal(metaCost, sym, cur);
+        document.getElementById('out-total').textContent = isFree ? 'Free' : formatTotal(metaCost, sym, cur);
+
+        var noteEl = document.getElementById('out-note');
+        if (noteText) {
+          noteEl.textContent = noteText;
+          noteEl.classList.remove('hidden');
+        } else {
+          noteEl.classList.add('hidden');
+        }
+
+        document.getElementById('calc-result').classList.remove('hidden');
+
+        var verifyLink = document.getElementById('out-verify-link');
+        if (verifyLink) verifyLink.href = buildOfficialPricingUrl(country, displayCurrency, type);
+      });
+    })();
   </script>
 </BaseLayout>

@@ -3,6 +3,7 @@ interface Props {
   footer: Record<string, unknown>;
 }
 const { footer } = Astro.props;
+
 const description = String(footer.description ?? '');
 const cta = (footer.cta || {}) as Record<string, string>;
 const ctaLabel = cta.label ?? 'Get started';
@@ -10,6 +11,9 @@ const ctaHref = cta.href ?? '/register/';
 const columns = (footer.columns || []) as Array<{ title: string; links: Array<{ label: string; href: string; external?: boolean }> }>;
 const social = (footer.social || []) as Array<{ name: string; href: string; icon: string }>;
 const copyright = String(footer.copyright ?? '');
+const legalLine = String(footer.legalLine ?? '');
+const legalUrl = String(footer.legalUrl ?? '');
+const invoiceLine = String(footer.invoiceLine ?? '');
 const socialIconPaths: Record<string, string> = {
   twitter: '<path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>',
   linkedin: '<path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
@@ -68,16 +72,30 @@ const socialIconPaths: Record<string, string> = {
     <!-- Bottom bar -->
     <div class="py-6 border-t border-neutral-200/80 dark:border-neutral-800">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <p class="text-sm text-neutral-500 dark:text-neutral-400 order-2 sm:order-1">
-          {copyright}
-        </p>
+        <div class="order-2 sm:order-1 space-y-1">
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            {copyright}
+          </p>
+          {legalLine && (
+            <p class="text-xs text-neutral-400 dark:text-neutral-500">
+              {legalUrl ? (
+                <a href={legalUrl} target="_blank" rel="noopener noreferrer" class="hover:text-neutral-600 dark:hover:text-neutral-400 transition-colors">{legalLine}</a>
+              ) : (
+                <span>{legalLine}</span>
+              )}
+            </p>
+          )}
+          {invoiceLine && (
+            <p class="text-xs text-neutral-400 dark:text-neutral-500">{invoiceLine}</p>
+          )}
+        </div>
         <div class="flex items-center gap-2 order-1 sm:order-2">
           {social.map((s) => (
             <a
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center justify-center w-10 h-10 rounded-xl text-neutral-500 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950/50 transition-colors"
+              class="flex items-center justify-center w-10 h-10 rounded-xl text-neutral-500 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950/50 transition-colors duration-200"
               aria-label={s.name}
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" set:html={socialIconPaths[s.icon] || ''}></svg>

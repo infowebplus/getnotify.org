@@ -4,51 +4,93 @@ import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 
 const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
-const plans = (globals.plans || {}) as Record<string, unknown>;
-const planList = (plans.plans || []) as Array<Record<string, unknown>>;
-const comparison = (plans.comparison || { categories: [] }) as { categories: Array<{ name: string; features: Array<Record<string, unknown>> }> };
+const plansData = (globals.plans || {}) as Record<string, unknown>;
+const planList = (plansData.plans || []) as Array<Record<string, unknown>>;
+const comparison = (plansData.comparison || { categories: [] }) as {
+  categories: Array<{
+    name: string;
+    icon: string;
+    features: Array<Record<string, string>>;
+  }>;
+};
+const planIds = ['basic', 'core', 'agency'] as const;
 ---
 
-<BaseLayout title="Compare plans - GetNotify" description="Compare GetNotify plans and choose the right one for your business.">
+<BaseLayout
+  title="Compare plans - GetNotify"
+  description="Compare Foundation, Expansion, and Enterprise / Agency plans. Account scope, integrations, platform access, and team features side by side."
+>
   <section class="section bg-white dark:bg-neutral-900">
     <div class="container-custom">
-      <h1 class="heading-lg text-center mb-12">Compare plans</h1>
-      <div class="overflow-x-auto">
-        <table class="w-full min-w-[600px] border border-neutral-200 dark:border-neutral-700 rounded-xl overflow-hidden">
+      <h1 class="heading-lg text-center mb-4">Compare plans</h1>
+      <p class="text-center text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto mb-10">
+        Full feature detail including integration options, message logs, and support. Everything we removed from the pricing cards for a cleaner view is listed here.
+      </p>
+      <p class="text-center text-xs text-neutral-500 dark:text-neutral-400 mb-4 sm:hidden">Scroll horizontally → to see all columns</p>
+      <div class="overflow-x-auto compare-table-scroll -mx-4 px-4 sm:mx-0 sm:px-0 overflow-y-visible" style="scrollbar-gutter: stable;">
+        <table class="w-full min-w-[800px] border border-neutral-200 dark:border-neutral-700 rounded-xl overflow-hidden">
           <thead>
             <tr class="bg-neutral-100 dark:bg-neutral-800">
-              <th class="text-left p-4 font-semibold">Feature</th>
+              <th class="text-left p-4 font-semibold text-neutral-900 dark:text-white w-48">Feature</th>
               {planList.map((p) => {
-                const pd = p.priceDisplay as { monthly?: string } | string | null | undefined;
-                const monthly = typeof pd === 'object' && pd && typeof pd.monthly === 'string' ? pd.monthly : '';
+                const priceDisplay = String(p.priceDisplay ?? '');
+                const interval = String(p.interval ?? '');
+                const setupLabel = String(p.setupLabel ?? 'Setup');
+                const setupPrice = p.id === 'basic' ? 'from €400' : p.id === 'core' ? 'from €500' : 'from €900';
+                const sub = interval === 'per month' ? '/ month' : ' (quote)';
                 return (
-                  <th class="text-center p-4 font-semibold">{String(p.name)}<br /><span class="font-normal text-neutral-500 text-sm">{monthly}</span></th>
+                  <th class="text-center p-4 font-semibold text-neutral-900 dark:text-white">
+                    <span class="block">{String(p.name)}</span>
+                    <span class="font-normal text-neutral-500 dark:text-neutral-400 text-sm block mt-0.5">{priceDisplay}{sub}</span>
+                    <span class="font-normal text-neutral-500 dark:text-neutral-400 text-xs block mt-0.5">{setupLabel}: {setupPrice}</span>
+                  </th>
                 );
               })}
             </tr>
           </thead>
           <tbody>
-            {comparison.categories?.flatMap((cat) => {
-              const headerRow = <tr class="bg-neutral-50 dark:bg-neutral-800/50"><td colspan={(planList.length + 1)} class="font-semibold p-3">{cat.name}</td></tr>;
-              const featureRows = (cat.features || []).map((f) => {
-                const feat = f as any;
-                return (
-                  <tr class="border-t border-neutral-200 dark:border-neutral-700">
-                    <td class="p-3 font-medium">{String(feat.name)}</td>
-                    {planList.map((p) => {
-                      const v = feat[String(p.id)];
-                      const display = v === true ? '✓' : v === false ? '—' : String(v ?? '');
-                      return <td class="text-center p-3">{display}</td>;
-                    })}
-                  </tr>
-                );
-              });
-              return [headerRow, ...featureRows];
-            })}
+            {comparison.categories?.flatMap((cat) => [
+              <tr class="bg-neutral-50 dark:bg-neutral-800/60">
+                <td colspan={planList.length + 1} class="font-semibold text-neutral-700 dark:text-neutral-300 p-3">
+                  <span class="flex items-center gap-2">
+                    <span aria-hidden="true">{cat.icon}</span>
+                    {cat.name}
+                  </span>
+                </td>
+              </tr>,
+              ...(cat.features || []).map((f) => (
+                <tr class="border-t border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50/50 dark:hover:bg-neutral-800/30">
+                  <td class="p-3 text-sm font-medium text-neutral-800 dark:text-neutral-200">{f.name}</td>
+                  {planIds.map((id) => {
+                    const raw = f[id] ?? '—';
+                    const value = String(raw);
+                    if (value.includes('(') && value.includes(')')) {
+                      const start = value.indexOf('(');
+                      const end = value.lastIndexOf(')');
+                      const main = value.slice(0, start).trimEnd();
+                      const tooltip = value.slice(start + 1, end).trim();
+                      return (
+                        <td class="p-3 text-sm text-center text-neutral-600 dark:text-neutral-400">
+                          <span title={tooltip}>{main}</span>
+                        </td>
+                      );
+                    }
+                    return (
+                      <td class="p-3 text-sm text-center text-neutral-600 dark:text-neutral-400">
+                        {value}
+                      </td>
+                    );
+                  })}
+                </tr>
+              )),
+            ])}
           </tbody>
         </table>
       </div>
-      <p class="text-center mt-8"><a href="/pricing/" class="link">View pricing →</a></p>
+      <p class="text-center mt-8">
+        <a href="/pricing/" class="btn-primary">View pricing</a>
+      </p>
     </div>
   </section>
 </BaseLayout>
+

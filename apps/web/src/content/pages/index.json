@@ -1,5 +1,1 @@
-{
-  "title": "GetNotify - Send notifications via WhatsApp messages",
-  "description": "GetNotify is a powerful backend service that enables you to send custom WhatsApp messages to groups, schedule notifications, and trigger automated messages based on actions like new orders. Keep your customers and team informed instantly through WhatsApp.",
-  "template": "home"
-}
+{"title":"GetNotify - WhatsApp Cloud API, your account, no markup","description":"Official WhatsApp Cloud API on your Meta account. Send order updates, delivery alerts, and verification codes via dashboard, API, and webhooks. You pay Meta for messages; we’re the layer. Built for transactional use — no marketing spam.","template":"home"}

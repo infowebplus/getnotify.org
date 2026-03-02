@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const todayIso = new Date().toISOString().slice(0, 10);
+const title = 'Privacy Policy - GetNotify';
+const description = 'Privacy Policy for GetNotify. How we process personal data. Operated by UPHOLD GROUP SRL. GDPR compliant.';
+const canonical = '/legal/privacy/';
+---
+
+<BaseLayout title={title} description={description} canonical={canonical}>
+  <article class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-3xl mx-auto">
+      <header class="mb-10">
+        <h1 class="heading-lg mb-2">Privacy Policy</h1>
+        <p class="text-body-sm text-neutral-600 dark:text-neutral-400">Last updated: {todayIso}</p>
+      </header>
+
+      <div class="prose prose-neutral dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300">
+        <p>GetNotify is operated by UPHOLD GROUP SRL.</p>
+        <p>We process personal data in accordance with GDPR.</p>
+
+        <h2 class="heading-sm mt-10 mb-3">Data we process</h2>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>Account information (name, email, company)</li>
+          <li>Billing information</li>
+          <li>Technical metadata (IP, browser type)</li>
+          <li>Integration configuration</li>
+          <li>Message metadata (delivery status, timestamps)</li>
+          <li>API usage logs</li>
+        </ul>
+
+        <h2 class="heading-sm mt-10 mb-3">Legal basis</h2>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>Contract performance</li>
+          <li>Legal obligation</li>
+          <li>Legitimate interest (security)</li>
+          <li>Consent (analytics cookies)</li>
+        </ul>
+
+        <h2 class="heading-sm mt-10 mb-3">We implement</h2>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>HTTPS encryption</li>
+          <li>Access control</li>
+          <li>API key management</li>
+          <li>Infrastructure-level protections</li>
+        </ul>
+        <p>No system is 100% secure.</p>
+
+        <h2 class="heading-sm mt-10 mb-3">Third-party processors</h2>
+        <p>May include:</p>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>Hosting providers</li>
+          <li>Email providers</li>
+          <li>Google Analytics</li>
+        </ul>
+
+        <h2 class="heading-sm mt-10 mb-3">Contact</h2>
+        <p><a href="mailto:hello@getnotify.org" class="link">hello@getnotify.org</a></p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

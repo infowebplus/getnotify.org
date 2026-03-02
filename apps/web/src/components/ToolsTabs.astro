@@ -1,0 +1,40 @@
+---
+interface Props {
+  current?: 'link' | 'qr' | 'pricing';
+}
+const { current } = Astro.props;
+const tabs = [
+  { id: 'link' as const, href: '/tools/whatsapp-link-generator/', label: 'Link Generator', icon: 'link' },
+  { id: 'qr' as const, href: '/tools/whatsapp-qr-generator/', label: 'QR Generator', icon: 'qr' },
+  { id: 'pricing' as const, href: '/tools/whatsapp-pricing-calculator/', label: 'Pricing Calculator', icon: 'calc' },
+];
+const iconSvg: Record<string, string> = {
+  link: '<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>',
+  qr: '<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>',
+  calc: '<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>',
+};
+---
+
+<nav class="mb-8" aria-label="Tools">
+  <div class="w-full p-1 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 shadow-sm">
+    <ul class="flex gap-0.5">
+      {tabs.map((t) => {
+        const isActive = current === t.id;
+        return (
+          <li class="flex-1">
+            <a
+              href={t.href}
+              class={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200 ${isActive
+                ? 'bg-white dark:bg-neutral-700 text-primary-600 dark:text-primary-400 shadow-sm border border-neutral-200 dark:border-neutral-600'
+                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200 hover:bg-neutral-200/60 dark:hover:bg-neutral-700/60'}`}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              <span set:html={iconSvg[t.icon] ?? ''} />
+              {t.label}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</nav>

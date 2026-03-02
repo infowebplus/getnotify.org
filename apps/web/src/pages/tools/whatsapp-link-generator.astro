@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolsTabs from '../../components/ToolsTabs.astro';
 ---
 
 <BaseLayout title="WhatsApp Link Generator - GetNotify" description="Create WhatsApp click-to-chat links for your business.">
   <section class="section bg-white dark:bg-neutral-900">
-    <div class="container-custom max-w-lg mx-auto">
+    <div class="container-custom max-w-2xl mx-auto">
+      <ToolsTabs current="link" />
       <h1 class="heading-lg mb-4">WhatsApp Link Generator</h1>
       <p class="text-body-sm mb-8">Enter a phone number (with country code, no +) and optional message to generate a wa.me link.</p>
       <div class="card">

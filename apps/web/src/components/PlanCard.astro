@@ -1,0 +1,235 @@
+---
+type FeatureItem = string | { text: string; definitionKey?: string };
+
+interface Props {
+  plan: Record<string, unknown>;
+  installationFee: { tiers: Array<{ plan: string; price: string }>; features: string[] } | null;
+  definitions: Record<string, string>;
+}
+
+const { plan, installationFee, definitions } = Astro.props;
+const rec = Boolean(plan.recommended);
+const priceDisplay = String(plan.priceDisplay ?? '');
+const interval = String(plan.interval ?? '');
+const cta = plan.cta as { href?: string; text?: string } | null | undefined;
+const planName = String(plan.name);
+const label = String(plan.label ?? '');
+const setupLabel = String(plan.setupLabel ?? 'One-time setup');
+const setupPrice = installationFee?.tiers.find((t) => t.plan.toLowerCase() === planName.toLowerCase())?.price ?? null;
+const isCustomPrice = interval === 'custom' || priceDisplay === 'Custom';
+const featureGroups = (plan.featureGroups || []) as Array<{ title: string; icon: string; items: FeatureItem[] }>;
+---
+
+<div class={`plan-card card-hover ${rec ? 'plan-card-recommended' : ''}`} data-plan={plan.id}>
+  {rec && <span class="badge-primary absolute top-4 right-4 z-10">Most Popular</span>}
+  <div class="mb-4">
+    <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-0.5">{planName}</h3>
+    {label && <p class="text-sm text-neutral-600 dark:text-neutral-400">{label}</p>}
+  </div>
+  <div class="mb-4 p-4 rounded-xl border-2 border-primary-200 dark:border-primary-700 bg-primary-50/50 dark:bg-primary-950/30">
+    {isCustomPrice ? (
+      <span class="plan-price text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white">On request</span>
+    ) : (
+      <>
+        <span class="plan-price text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white">{priceDisplay}</span>
+        {interval === 'per month' && <span class="plan-interval text-neutral-500 dark:text-neutral-400 text-sm ml-1">/ month</span>}
+      </>
+    )}
+    {setupPrice && (
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-2">{setupLabel}: {setupPrice}</p>
+    )}
+  </div>
+  {installationFee && setupPrice && (
+    <div class="relative mb-4 group">
+      <button
+        type="button"
+        class="text-xs text-neutral-500 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 underline underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded"
+        aria-label="What's included in setup"
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-describedby={`install-tooltip-${plan.id}`}
+      >
+        What's included in setup?
+      </button>
+      <span
+        id={`install-tooltip-${plan.id}`}
+        role="tooltip"
+        class="absolute left-0 right-0 top-full mt-2 z-10 w-full max-w-full px-3 py-3 text-xs text-left rounded-xl shadow-xl bg-neutral-900 text-neutral-100 border border-neutral-700 dark:bg-neutral-200 dark:text-neutral-900 dark:border-neutral-400 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-150"
+      >
+        <span class="font-semibold block mb-2 dark:text-neutral-900">Setup includes</span>
+        <ul class="space-y-1.5 dark:text-neutral-800" role="list">
+          {installationFee.features.map((f) => (
+            <li class="flex items-start gap-1.5">
+              <span class="text-primary-400 dark:text-primary-600 mt-0.5 flex-shrink-0">✓</span>
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
+      </span>
+    </div>
+  )}
+  <div class="space-y-4 mb-6">
+    {featureGroups.map((group) => (
+      <div>
+        <h4 class="text-xs font-semibold tracking-wide text-neutral-500 dark:text-neutral-400 uppercase mb-2 flex items-center gap-1.5">
+          <span>{group.title}</span>
+        </h4>
+        <ul class="space-y-1.5" role="list">
+          {group.items.map((item: FeatureItem) => {
+            const text = typeof item === 'string' ? item : item.text;
+            const defKey =
+              typeof item === 'object' && item !== null && 'definitionKey' in item
+                ? (item as { definitionKey?: string }).definitionKey
+                : undefined;
+            const def = defKey ? definitions[defKey] : undefined;
+            const tooltipId = defKey ? `term-tooltip-${plan.id}-${defKey}` : undefined;
+            return (
+              <li class="flex items-start gap-2 text-sm text-neutral-700 dark:text-neutral-300">
+                <svg
+                  class="w-4 h-4 text-primary-500 mt-0.5 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span class="flex items-center gap-1 flex-wrap min-w-0">
+                  <span>{text}</span>
+                  {def && (
+                    <span class="pricing-term-tooltip-wrap relative inline-flex group/term flex-shrink-0">
+                      <button
+                        type="button"
+                        class="p-0.5 rounded-full text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                        aria-label="Definition"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        data-term-tooltip-id={tooltipId}
+                      >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </button>
+                      <span
+                        id={tooltipId}
+                        role="tooltip"
+                        class="term-tooltip-panel absolute left-0 bottom-full mb-1 hidden z-20 w-56 min-w-[12rem] max-w-[calc(100vw-2rem)] rounded-lg shadow-lg overflow-visible"
+                        style="box-sizing: border-box;"
+                      >
+                        <span class="block w-full px-2.5 py-2 text-xs text-left whitespace-normal break-words rounded-lg border border-neutral-600 bg-neutral-800 text-neutral-100 dark:border-neutral-500 dark:bg-neutral-700 dark:text-neutral-100">
+                          {def}
+                        </span>
+                      </span>
+                    </span>
+                  )}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    ))}
+  </div>
+  <a href={String(cta?.href ?? '/register/')} class={`${rec ? 'btn-primary' : 'btn-outline'} w-full inline-flex items-center justify-center gap-2 mt-auto`}>
+    {cta?.text ?? 'Get started'}
+    <svg class="w-4 h-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+  </a>
+</div>
+
+<script>
+  // This component renders multiple times per page (one per plan),
+  // so guard against attaching duplicate global listeners.
+  if ((window as unknown as { __getnotifyPlanCardTooltipsInit?: boolean }).__getnotifyPlanCardTooltipsInit) {
+    // no-op
+  } else {
+    (window as unknown as { __getnotifyPlanCardTooltipsInit?: boolean }).__getnotifyPlanCardTooltipsInit = true;
+
+  function positionTermTooltip(tooltip: HTMLElement, trigger: HTMLElement, placeAbove: boolean) {
+    const rect = trigger.getBoundingClientRect();
+    const padding = 12;
+    const aboveTop = rect.top - tooltip.offsetHeight - 8;
+    const wouldOverlapTop = aboveTop < padding;
+    const placeToSide = placeAbove && wouldOverlapTop;
+
+    tooltip.style.position = 'fixed';
+    tooltip.style.transform = 'none';
+    tooltip.style.maxWidth = 'min(20rem, calc(100vw - 24px))';
+
+    if (placeToSide) {
+      const spaceRight = window.innerWidth - rect.right - 8;
+      const spaceLeft = rect.left - 8;
+      if (spaceRight >= tooltip.offsetWidth || spaceRight >= spaceLeft) {
+        tooltip.style.left = `${Math.min(rect.right + 8, window.innerWidth - tooltip.offsetWidth - padding)}px`;
+      } else {
+        tooltip.style.left = `${Math.max(padding, rect.left - tooltip.offsetWidth - 8)}px`;
+      }
+      tooltip.style.top = `${Math.max(padding, Math.min(window.innerHeight - tooltip.offsetHeight - padding, rect.top + rect.height / 2 - tooltip.offsetHeight / 2))}px`;
+    } else {
+      tooltip.style.left = `${Math.max(padding, Math.min(rect.left + rect.width / 2 - tooltip.offsetWidth / 2, window.innerWidth - tooltip.offsetWidth - padding))}px`;
+      tooltip.style.top = placeAbove
+        ? `${Math.max(padding, aboveTop)}px`
+        : `${Math.min(window.innerHeight - tooltip.offsetHeight - padding, rect.bottom + 8)}px`;
+    }
+  }
+
+  function closeTermTooltips() {
+    document.querySelectorAll('.term-tooltip-panel').forEach((t) => {
+      t.classList.add('hidden');
+      t.classList.remove('!block', 'pricing-tooltip-fixed');
+      t.removeAttribute('style');
+      const trigger = document.querySelector(`[data-term-tooltip-id="${t.id}"]`);
+      if (trigger?.parentElement) trigger.parentElement.appendChild(t);
+    });
+    document.querySelectorAll('[data-term-tooltip-id]').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+  }
+
+  function openTermTooltip(tooltip: HTMLElement, btn: HTMLElement) {
+    closeTermTooltips();
+    document.body.appendChild(tooltip);
+    tooltip.classList.remove('hidden');
+    tooltip.classList.add('!block', 'pricing-tooltip-fixed');
+    requestAnimationFrame(() => positionTermTooltip(tooltip, btn, true));
+    btn.setAttribute('aria-expanded', 'true');
+  }
+
+  document.querySelectorAll('[data-term-tooltip-id]').forEach((btn) => {
+    const id = btn.getAttribute('data-term-tooltip-id');
+    const tooltip = id ? document.getElementById(id) : null;
+    if (!tooltip) return;
+    let hoverTimeout: ReturnType<typeof setTimeout> | null = null;
+    const open = () => openTermTooltip(tooltip as HTMLElement, btn as HTMLElement);
+    const close = () => {
+      if (hoverTimeout) clearTimeout(hoverTimeout);
+      hoverTimeout = setTimeout(() => closeTermTooltips(), 50);
+    };
+    const cancelClose = () => { if (hoverTimeout) clearTimeout(hoverTimeout); };
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isOpen = tooltip.classList.contains('!block');
+      closeTermTooltips();
+      if (!isOpen) open();
+    });
+    btn.addEventListener('mouseenter', () => { cancelClose(); open(); });
+    btn.addEventListener('mouseleave', close);
+    tooltip.addEventListener('mouseenter', cancelClose);
+    tooltip.addEventListener('mouseleave', close);
+    btn.addEventListener('focus', () => { cancelClose(); open(); });
+    btn.addEventListener('blur', close);
+  });
+
+  document.addEventListener('click', (e: MouseEvent) => {
+    const target = e.target as Node | null;
+    const el = target instanceof Element ? target : null;
+    if (
+      el?.closest('.term-tooltip-panel') ||
+      el?.closest('[data-term-tooltip-id]')
+    ) return;
+    closeTermTooltips();
+  });
+  }
+</script>

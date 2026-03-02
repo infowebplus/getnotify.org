@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+const page = (await getCollection('pages')).find((e: CollectionEntry<'pages'>) => e.id === 'careers');
+const data = page?.data ?? { title: 'Careers - GetNotify', description: '' };
+---
+
+<BaseLayout title={data.title} description={data.description}>
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom">
+      <div class="max-w-2xl mx-auto text-center">
+        <span class="badge-primary mb-4">Careers</span>
+        <h1 class="heading-lg mb-6">Careers at GetNotify</h1>
+        <p class="text-body mb-8">
+          We're not hiring at the moment. There are no open positions right now.
+        </p>
+        <p class="text-body-sm text-neutral-500 dark:text-neutral-400">
+          Check back later for job openings, or <a href="/contact/" class="link">get in touch</a> if you'd like to leave your details for the future.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

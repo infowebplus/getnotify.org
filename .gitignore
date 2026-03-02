@@ -32,6 +32,8 @@ coverage/
 .vscode/
 *.swp
 *.swo
+.cursor/
+.history/
 
 # OS files
 .DS_Store

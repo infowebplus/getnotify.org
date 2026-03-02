@@ -1,0 +1,33 @@
+---
+import PlanCard from './PlanCard.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  /** Tailwind classes for the grid wrapper */
+  class?: string;
+  /** Show “Compare plans in detail →” link under the grid */
+  showCompareLink?: boolean;
+}
+
+const { class: className = '', showCompareLink = true } = Astro.props;
+
+const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
+const plansData = (globals.plans || {}) as Record<string, unknown>;
+const planList = (plansData.plans || []) as Array<Record<string, unknown>>;
+const installationFee = (plansData.installationFee || null) as { tiers: Array<{ plan: string; price: string }>; features: string[] } | null;
+const definitions = (plansData.definitions || {}) as Record<string, string>;
+---
+
+<div class={`grid md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto ${className}`}>
+  {planList.map((plan) => (
+    <PlanCard plan={plan} installationFee={installationFee} definitions={definitions} />
+  ))}
+</div>
+
+{showCompareLink && (
+  <p class="text-center mt-10 mb-14">
+    <a href="/compare-plans/" class="link text-sm font-medium">Compare plans in detail →</a>
+  </p>
+)}
+

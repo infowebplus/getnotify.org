@@ -5,16 +5,82 @@ import { getCollection } from 'astro:content';
 
 const page = (await getCollection('pages')).find((e: CollectionEntry<'pages'>) => e.id === 'cookies');
 const data = page?.data ?? { title: 'Cookies - GetNotify', description: '' };
+const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
+const company = (globals.company || {}) as Record<string, unknown>;
+const legal = (company.legal || {}) as Record<string, string>;
 ---
 
 <BaseLayout title={data.title} description={data.description} noindex={data.noindex}>
   <article class="section bg-white dark:bg-neutral-900">
     <div class="container-custom max-w-3xl">
       <h1 class="heading-lg mb-6">Cookie Policy</h1>
-      <p class="text-body-sm mb-8">We use cookies and similar technologies to run the site and to remember your preferences. You can manage your choices via our cookie banner or your browser settings.</p>
+      <p class="text-body-sm text-neutral-600 dark:text-neutral-400 mb-8">Last updated: {legal.lastUpdated ?? '2024'}. This policy applies to visitors in the European Union (EU), European Economic Area (EEA), and United Kingdom (UK) and complies with the ePrivacy Directive and GDPR.</p>
+
       <div class="prose prose-neutral dark:prose-invert max-w-none">
-        <p>Essential cookies are required for the site to function. Analytics and preference cookies help us improve your experience. You can change your cookie settings at any time.</p>
+        <h2 id="what-are-cookies" class="heading-sm mt-8 mb-2">What are cookies?</h2>
+        <p>Cookies are small text files stored on your device when you visit a website. They are widely used to make sites work, remember your preferences, and understand how the site is used. We use cookies and similar technologies (e.g. local storage) only as described below.</p>
+
+        <h2 id="legal-basis" class="heading-sm mt-8 mb-2">Legal basis (GDPR)</h2>
+        <p><strong>Strictly necessary cookies</strong> are used for the legitimate interest of operating the site (e.g. security, load balancing, remembering your cookie consent and theme). We do not need your consent for these.</p>
+        <p><strong>Analytics and preference cookies</strong> are used only with your consent. You may accept all, reject non-essential, or manage preferences via our cookie banner or the link below. You can withdraw consent at any time with the same effect as rejecting non-essential cookies.</p>
+
+        <h2 id="cookies-we-use" class="heading-sm mt-8 mb-2">Cookies we use</h2>
+        <table class="w-full text-sm border-collapse border border-neutral-200 dark:border-neutral-700 my-4">
+          <thead>
+            <tr class="bg-neutral-100 dark:bg-neutral-800">
+              <th class="border border-neutral-200 dark:border-neutral-700 p-2 text-left">Name / purpose</th>
+              <th class="border border-neutral-200 dark:border-neutral-700 p-2 text-left">Type</th>
+              <th class="border border-neutral-200 dark:border-neutral-700 p-2 text-left">Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2"><code>cookie_consent</code>, <code>cookie_consent_timestamp</code></td>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2">Necessary (consent storage)</td>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2">Until you clear storage or change preferences</td>
+            </tr>
+            <tr>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2"><code>theme</code></td>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2">Necessary (preference)</td>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2">Until you clear storage</td>
+            </tr>
+            <tr>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2"><code>pricing-interval</code></td>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2">Necessary (UI preference)</td>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2">Until you clear storage</td>
+            </tr>
+            <tr>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2">Analytics (if enabled in future)</td>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2">Optional, only with consent</td>
+              <td class="border border-neutral-200 dark:border-neutral-700 p-2">As per provider; we will list them here</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 id="manage" class="heading-sm mt-8 mb-2">Manage your preferences</h2>
+        <p>You can change your cookie choices at any time:</p>
+        <ul class="list-disc pl-6 my-2">
+          <li>Use the <strong>Cookie settings</strong> link in the footer to reopen the cookie banner and choose again.</li>
+          <li>Clear your browser’s cookies and local storage for this site; the banner will appear again on your next visit.</li>
+        </ul>
+        <p class="mt-4">
+          <button type="button" id="cookie-reopen" class="btn-primary">Change cookie preferences</button>
+        </p>
+
+        <h2 id="rights" class="heading-sm mt-8 mb-2">Your rights (EU/EEA/UK)</h2>
+        <p>Under the GDPR you have the right to access, rectify, erase, restrict processing, data portability, and to object. You also have the right to withdraw consent at any time without affecting the lawfulness of processing based on consent before its withdrawal. To exercise these rights or for questions about cookies and privacy, contact us at <a href={`mailto:${company.contactEmail}`} class="text-primary-600 dark:text-primary-400 underline">{String(company.contactEmail ?? '')}</a>. You may lodge a complaint with a supervisory authority in your country.</p>
+
+        <h2 id="more" class="heading-sm mt-8 mb-2">More information</h2>
+        <p>For how we process personal data overall, see our <a href="/legal/privacy/" class="text-primary-600 dark:text-primary-400 underline">Privacy Policy</a>. For terms of use, see our <a href="/legal/terms/" class="text-primary-600 dark:text-primary-400 underline">Terms of Service</a>.</p>
       </div>
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  if (typeof window !== 'undefined' && window.location.hash === '#manage') {
+    window.addEventListener('DOMContentLoaded', () => {
+      window.dispatchEvent(new Event('cookie-consent-show'));
+    });
+  }
+</script>

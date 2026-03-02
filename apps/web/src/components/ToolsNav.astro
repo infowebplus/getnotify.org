@@ -1,0 +1,26 @@
+---
+interface Props {
+  current?: 'link' | 'qr' | 'pricing';
+}
+const { current } = Astro.props;
+const allTools = [
+  { id: 'link' as const, href: '/tools/whatsapp-link-generator/', label: 'Link Generator', description: 'Create wa.me links' },
+  { id: 'qr' as const, href: '/tools/whatsapp-qr-generator/', label: 'QR Generator', description: 'Generate QR codes' },
+  { id: 'pricing' as const, href: '/tools/whatsapp-pricing-calculator/', label: 'Pricing Calculator', description: 'Estimate Meta + GetNotify costs' },
+];
+const tools = current ? allTools.filter((t) => t.id !== current) : allTools;
+---
+
+<nav class="mt-12 pt-8 border-t border-neutral-200 dark:border-neutral-700" aria-label="Other tools">
+  <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-4">Other tools</p>
+  <ul class="flex flex-wrap gap-4">
+    {tools.map((t) => (
+      <li>
+        <a href={t.href} class="text-sm font-medium text-primary-600 dark:text-primary-400 hover:underline">
+          {t.label}
+        </a>
+        <span class="text-neutral-400 dark:text-neutral-500 ml-1">— {t.description}</span>
+      </li>
+    ))}
+  </ul>
+</nav>

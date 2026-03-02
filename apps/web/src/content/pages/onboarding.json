@@ -1,0 +1,5 @@
+{
+  "title": "Onboarding & Dashboard - GetNotify",
+  "description": "Step-by-step human-led setup. What you get in the dashboard: message logs, webhook status, template status. API key and webhook setup.",
+  "template": "default"
+}

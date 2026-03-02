@@ -51,6 +51,15 @@ function initDarkMode(): void {
   document.getElementById('dark-mode-toggle-mobile')?.addEventListener('click', run);
 }
 
+function initCookieReopen(): void {
+  document.getElementById('cookie-reopen')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('cookie_consent');
+    localStorage.removeItem('cookie_consent_timestamp');
+    window.dispatchEvent(new Event('cookie-consent-show'));
+  });
+}
+
 function initPricingToggle(): void {
   const toggles = document.querySelectorAll('.pricing-toggle');
   const cards = document.querySelectorAll('.plan-card[data-plan]');
@@ -96,6 +105,7 @@ function run(): void {
   initMobileNav();
   initFaq();
   initDarkMode();
+  initCookieReopen();
   initPricingToggle();
 }
 

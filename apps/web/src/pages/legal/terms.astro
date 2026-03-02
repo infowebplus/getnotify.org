@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const todayIso = new Date().toISOString().slice(0, 10);
+const title = 'Terms of Service - GetNotify';
+const description = 'Terms of Service for the GetNotify platform. GetNotify is operated by UPHOLD GROUP SRL, part of UPHOLD Group.';
+const canonical = '/legal/terms/';
+---
+
+<BaseLayout title={title} description={description} canonical={canonical}>
+  <article class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom max-w-3xl mx-auto">
+      <header class="mb-10">
+        <h1 class="heading-lg mb-2">Terms of Service</h1>
+        <p class="text-body-sm text-neutral-600 dark:text-neutral-400">Last updated: {todayIso}</p>
+      </header>
+
+      <div class="prose prose-neutral dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300">
+        <p class="text-body dark:text-neutral-300">These Terms of Service (“Terms”) govern the access and use of the GetNotify platform (“Service”).</p>
+        <p>GetNotify is operated by UPHOLD GROUP SRL (“Company”, “we”, “us”).<br />GetNotify is Part of UPHOLD Group.</p>
+        <p>By accessing or using the Service, you agree to these Terms.</p>
+
+        <h2 class="heading-sm mt-10 mb-3">1. Service Description</h2>
+        <p>GetNotify provides event-based WhatsApp notification infrastructure, including:</p>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>WhatsApp Business Account (WABA) integrations</li>
+          <li>Standard and custom integrations</li>
+          <li>API access</li>
+          <li>Webhook-based event triggers</li>
+          <li>Delivery monitoring</li>
+          <li>Retry logic</li>
+          <li>Logging and cost monitoring</li>
+        </ul>
+        <p>We provide infrastructure only. We do not control:</p>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>Message content created by clients</li>
+          <li>End-user relationships</li>
+          <li>WhatsApp policies</li>
+          <li>Meta platform decisions</li>
+        </ul>
+
+        <h2 class="heading-sm mt-10 mb-3">2. Account Security</h2>
+        <p>You are fully responsible for:</p>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>Maintaining confidentiality of login credentials</li>
+          <li>API keys and webhook secrets</li>
+          <li>User access permissions</li>
+          <li>Activity under your account</li>
+        </ul>
+        <p>We are NOT liable for:</p>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>Unauthorized access due to weak passwords</li>
+          <li>Phishing attacks</li>
+          <li>Credential leakage</li>
+          <li>Client-side security failures</li>
+          <li>Improper API key storage</li>
+          <li>Third-party system breaches</li>
+        </ul>
+        <p>If your account is compromised, you must notify us immediately.</p>
+        <p>We do not guarantee prevention of unauthorized access.</p>
+
+        <h2 class="heading-sm mt-10 mb-3">3. WhatsApp &amp; Third-Party Platforms</h2>
+        <p>We are not responsible for:</p>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>WhatsApp account suspensions</li>
+          <li>Meta policy changes</li>
+          <li>Third-party downtime</li>
+          <li>API changes</li>
+          <li>Pricing changes from Meta</li>
+        </ul>
+        <p>Your use must comply with WhatsApp Business policies.</p>
+
+        <h2 class="heading-sm mt-10 mb-3">4. Client Responsibility</h2>
+        <p>You are solely responsible for:</p>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>Message content</li>
+          <li>Consent collection</li>
+          <li>GDPR compliance</li>
+          <li>Opt-in management</li>
+          <li>Marketing law compliance</li>
+        </ul>
+
+        <h2 class="heading-sm mt-10 mb-3">5. Billing</h2>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>Monthly subscription fees apply.</li>
+          <li>One-time setup fees may apply.</li>
+          <li>Invoices are issued by UPHOLD GROUP SRL.</li>
+          <li>Fees are non-refundable unless required by law.</li>
+          <li>Late payments may result in suspension.</li>
+        </ul>
+
+        <h2 class="heading-sm mt-10 mb-3">6. Limitation of Liability</h2>
+        <p>To the maximum extent permitted by law:</p>
+        <ul class="list-disc pl-6 space-y-1 my-4">
+          <li>We are not liable for indirect or consequential damages.</li>
+          <li>We are not liable for lost profits or data loss.</li>
+          <li>We are not liable for third-party failures.</li>
+          <li>We are not liable for account compromise.</li>
+          <li>We are not liable for misconfiguration by the client.</li>
+        </ul>
+        <p>Total liability is limited to fees paid in the previous 3 months.</p>
+
+        <h2 class="heading-sm mt-10 mb-3">7. Governing Law</h2>
+        <p>These Terms are governed by the laws of Romania and applicable EU regulations.</p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

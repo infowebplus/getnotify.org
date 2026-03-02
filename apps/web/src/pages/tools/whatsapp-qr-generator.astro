@@ -1,29 +1,359 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolsTabs from '../../components/ToolsTabs.astro';
 ---
 
-<BaseLayout title="WhatsApp QR Generator - GetNotify" description="Generate a QR code for your WhatsApp number.">
+<BaseLayout title="WhatsApp QR Generator - GetNotify" description="Generate a customizable QR code for your WhatsApp number. Colors and logo in center.">
   <section class="section bg-white dark:bg-neutral-900">
-    <div class="container-custom max-w-lg mx-auto">
+    <div class="container-custom max-w-2xl mx-auto">
+      <ToolsTabs current="qr" />
       <h1 class="heading-lg mb-4">WhatsApp QR Generator</h1>
-      <p class="text-body-sm mb-8">Enter your WhatsApp number to get a wa.me link. Use any QR generator with that link to create a QR code.</p>
-      <div class="card">
-        <form class="space-y-4" id="qr-form">
-          <div><label for="phone" class="form-label">Phone (with country code)</label><input type="tel" id="phone" name="phone" class="form-input" placeholder="15551234567" required /></div>
-          <button type="submit" class="btn-primary w-full">Get link</button>
+      <p class="text-body-sm text-neutral-600 dark:text-neutral-400 mb-8">Number, optional message, then customize colors and add a logo. Download as PNG.</p>
+
+      <div class="card mb-8">
+        <form class="space-y-5" id="qr-form">
+          <div>
+            <label for="phone" class="form-label">Phone (with country code, no +)</label>
+            <input type="tel" id="phone" name="phone" class="form-input" placeholder="15551234567" required aria-describedby="phone-error" />
+            <p id="phone-error" class="text-xs text-red-600 dark:text-red-400 mt-1 hidden" role="alert"></p>
+          </div>
+          <div>
+            <label for="message" class="form-label">Pre-filled message (optional)</label>
+            <textarea id="message" name="message" class="form-input min-h-[80px] resize-y" placeholder="Hello!" maxlength="500" aria-describedby="message-error"></textarea>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1"><span id="message-count">0</span>/500</p>
+            <p id="message-error" class="text-xs text-red-600 dark:text-red-400 mt-1 hidden" role="alert"></p>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="fg" class="form-label">QR color</label>
+              <input type="color" id="fg" name="fg" value="#000000" class="h-10 w-full rounded border border-neutral-300 dark:border-neutral-600 cursor-pointer" />
+              <input type="text" id="fgHex" name="fgHex" value="#000000" class="form-input mt-1 text-sm" maxlength="7" placeholder="#000000" aria-describedby="fg-error" />
+              <p id="fg-error" class="text-xs text-red-600 dark:text-red-400 mt-1 hidden" role="alert"></p>
+              <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">For reliable scanning, the darker color is used for the QR pattern.</p>
+            </div>
+            <div>
+              <label for="bg" class="form-label">Background</label>
+              <input type="color" id="bg" name="bg" value="#ffffff" class="h-10 w-full rounded border border-neutral-300 dark:border-neutral-600 cursor-pointer" />
+              <input type="text" id="bgHex" name="bgHex" value="#ffffff" class="form-input mt-1 text-sm" maxlength="7" placeholder="#ffffff" aria-describedby="bg-error" />
+              <p id="bg-error" class="text-xs text-red-600 dark:text-red-400 mt-1 hidden" role="alert"></p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="size" class="form-label">Size (px)</label>
+              <select id="size" name="size" class="form-input">
+                <option value="200">200</option>
+                <option value="300" selected>300</option>
+                <option value="400">400</option>
+                <option value="512">512</option>
+              </select>
+            </div>
+            <div>
+            <label for="margin" class="form-label">Margin (quiet zone)</label>
+              <select id="margin" name="margin" class="form-input">
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="ecc" class="form-label">Error correction</label>
+              <select id="ecc" name="ecc" class="form-input">
+                <option value="L">L (7%)</option>
+                <option value="M" selected>M (15%)</option>
+                <option value="Q">Q (25%)</option>
+                <option value="H">H (30%)</option>
+              </select>
+              <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Higher = more durable, larger QR. Use H with logo.</p>
+            </div>
+            <div>
+              <label for="logoSize" class="form-label">Logo size</label>
+              <select id="logoSize" name="logoSize" class="form-input">
+                <option value="0.18">Small (18%)</option>
+                <option value="0.24" selected>Medium (24%)</option>
+                <option value="0.30">Large (30%)</option>
+              </select>
+              <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">When logo is used.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="logoPadding" class="form-label">Logo padding</label>
+              <select id="logoPadding" name="logoPadding" class="form-input">
+                <option value="4">Thin (4px)</option>
+                <option value="8" selected>Medium (8px)</option>
+                <option value="12">Large (12px)</option>
+              </select>
+            </div>
+            <div>
+              <label for="logoRound" class="form-label">Logo shape</label>
+              <select id="logoRound" name="logoRound" class="form-input">
+                <option value="square" selected>Square</option>
+                <option value="circle">Circle</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="logo" class="form-label">Logo in center (optional)</label>
+            <input type="file" id="logo" name="logo" class="form-input text-sm" accept="image/png,image/jpeg,image/webp" aria-describedby="logo-error" />
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">PNG, JPG or WebP. Max 2 MB. Error correction set to H when logo is used.</p>
+            <p id="logo-error" class="text-xs text-red-600 dark:text-red-400 mt-1 hidden" role="alert"></p>
+          </div>
+          <div id="form-errors" class="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 hidden" role="alert">
+            <p class="text-sm font-medium text-red-800 dark:text-red-200">Please fix the errors below.</p>
+            <ul id="form-errors-list" class="text-sm text-red-700 dark:text-red-300 mt-1 list-disc list-inside"></ul>
+          </div>
+          <div class="pt-6 border-t border-neutral-200 dark:border-neutral-700">
+            <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-3">Live preview</p>
+            <div class="flex justify-center">
+              <div class="flex items-center justify-center w-[200px] h-[200px] rounded-xl border-2 border-dashed border-neutral-200 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800/50">
+                <canvas id="qr-preview" width="160" height="160" class="block w-40 h-40" aria-hidden="true"></canvas>
+              </div>
+            </div>
+            <p id="preview-contrast-hint" class="text-xs text-neutral-500 dark:text-neutral-400 mt-2 text-center min-h-[2rem]" aria-live="polite"></p>
+            <p id="contrast-warning" class="text-xs text-amber-600 dark:text-amber-400 mt-2 text-center hidden" role="alert">Low contrast — this QR may not scan reliably. Use black or very dark for the pattern and white or very light for the background.</p>
+          </div>
+          <button type="submit" class="btn-primary w-full">Generate QR code</button>
         </form>
-        <p id="result" class="mt-4 text-sm text-neutral-600 dark:text-neutral-400 hidden"></p>
       </div>
+
+      <div id="qr-result" class="card text-center hidden mt-10">
+        <h2 class="text-lg font-semibold text-neutral-900 dark:text-white mb-1">Your QR code</h2>
+        <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-4">Scan to open WhatsApp chat</p>
+        <div class="flex justify-center mb-4">
+          <div class="inline-flex items-center justify-center p-4 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 shadow-sm">
+            <canvas id="qr-canvas" class="block max-w-full h-auto" aria-hidden="true"></canvas>
+          </div>
+        </div>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-3 break-all px-2" id="qr-link"></p>
+        <a id="qr-download" href="#" download="whatsapp-qr.png" class="btn-primary inline-flex">Download PNG</a>
+      </div>
+
+      <p id="qr-library-error" class="mt-4 p-4 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-sm hidden" role="alert">
+        Something went wrong. <a href="" class="underline font-medium">Refresh the page</a> and try again.
+      </p>
     </div>
   </section>
-  <script is:inline define:vars={{}}>
-    document.getElementById('qr-form')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const phone = (form.querySelector('[name=phone]')?.value || '').replace(/\D/g, '');
-      const url = 'https://wa.me/' + phone;
-      const el = document.getElementById('result');
-      if (el) { el.textContent = 'Use this URL in a QR generator: ' + url; el.classList.remove('hidden'); }
-    });
+
+  <script>
+    // @ts-nocheck
+    import QRCode from 'qrcode';
+
+    (function() {
+      var form = document.getElementById('qr-form');
+      var resultEl = document.getElementById('qr-result');
+      var canvas = document.getElementById('qr-canvas');
+      var linkEl = document.getElementById('qr-link');
+      var downloadEl = document.getElementById('qr-download');
+      var previewCanvas = document.getElementById('qr-preview');
+      var previewTimer = null;
+      var MAX_LOGO_BYTES = 2 * 1024 * 1024;
+      var PHONE_MIN = 10;
+      var PHONE_MAX = 15;
+
+      function hexFromInput(id) {
+        var el = document.getElementById(id);
+        var v = (el && el.value) || '';
+        return /^#[0-9A-Fa-f]{6}$/.test(v) ? v : (id === 'fgHex' ? '#000000' : '#ffffff');
+      }
+      function hexToLuminance(hex) {
+        var r = parseInt(hex.slice(1, 3), 16) / 255;
+        var g = parseInt(hex.slice(3, 5), 16) / 255;
+        var b = parseInt(hex.slice(5, 7), 16) / 255;
+        r = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
+        g = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4);
+        b = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4);
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      }
+      function ensureContrast(darkHex, lightHex) {
+        var lumDark = hexToLuminance(darkHex);
+        var lumLight = hexToLuminance(lightHex);
+        return lumDark <= lumLight ? { dark: darkHex, light: lightHex } : { dark: lightHex, light: darkHex };
+      }
+      function getContrastRatio(hexDark, hexLight) {
+        var L1 = hexToLuminance(hexDark);
+        var L2 = hexToLuminance(hexLight);
+        var lighter = L1 >= L2 ? L1 : L2;
+        var darker = L1 >= L2 ? L2 : L1;
+        return (lighter + 0.05) / (darker + 0.05);
+      }
+      document.getElementById('fg').addEventListener('input', function() { document.getElementById('fgHex').value = this.value; });
+      document.getElementById('bg').addEventListener('input', function() { document.getElementById('bgHex').value = this.value; });
+      document.getElementById('fgHex').addEventListener('input', function() { var v = this.value; if (/^#[0-9A-Fa-f]{6}$/.test(v)) document.getElementById('fg').value = v; });
+      document.getElementById('bgHex').addEventListener('input', function() { var v = this.value; if (/^#[0-9A-Fa-f]{6}$/.test(v)) document.getElementById('bg').value = v; });
+
+      function showError(id, msg) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = msg || '';
+        el.classList.toggle('hidden', !msg);
+      }
+      function validate() {
+        var errors = [];
+        var phone = (form.querySelector('[name=phone]').value || '').replace(/\D/g, '');
+        if (!phone || phone.length < PHONE_MIN) {
+          showError('phone-error', 'Enter a valid number with country code (at least ' + PHONE_MIN + ' digits).');
+          errors.push('Phone number is required (min ' + PHONE_MIN + ' digits).');
+        } else if (phone.length > PHONE_MAX) {
+          showError('phone-error', 'Number too long (max ' + PHONE_MAX + ' digits).');
+          errors.push('Phone number too long.');
+        } else {
+          showError('phone-error', '');
+        }
+        var msg = (form.querySelector('[name=message]').value || '').trim();
+        if (msg.length > 500) {
+          showError('message-error', 'Max 500 characters.');
+          errors.push('Message max 500 characters.');
+        } else {
+          showError('message-error', '');
+        }
+        var fgHex = (form.querySelector('[name=fgHex]') || {}).value || '';
+        if (fgHex && !/^#[0-9A-Fa-f]{6}$/.test(fgHex)) {
+          showError('fg-error', 'Use #RRGGBB (e.g. #000000).');
+          errors.push('Invalid QR color.');
+        } else {
+          showError('fg-error', '');
+        }
+        var bgHex = (form.querySelector('[name=bgHex]') || {}).value || '';
+        if (bgHex && !/^#[0-9A-Fa-f]{6}$/.test(bgHex)) {
+          showError('bg-error', 'Use #RRGGBB (e.g. #ffffff).');
+          errors.push('Invalid background color.');
+        } else {
+          showError('bg-error', '');
+        }
+        var logoInput = form.querySelector('[name=logo]');
+        var logoFile = logoInput && logoInput.files[0];
+        if (logoFile && logoFile.size > MAX_LOGO_BYTES) {
+          showError('logo-error', 'Max 2 MB.');
+          errors.push('Logo file too large (max 2 MB).');
+        } else {
+          showError('logo-error', '');
+        }
+        var errBox = document.getElementById('form-errors');
+        var errList = document.getElementById('form-errors-list');
+        if (errors.length) {
+          errBox.classList.remove('hidden');
+          errList.innerHTML = errors.map(function(e) { return '<li>' + e + '</li>'; }).join('');
+        } else {
+          errBox.classList.add('hidden');
+          errList.innerHTML = '';
+        }
+        return errors.length === 0;
+      }
+
+      document.getElementById('message').addEventListener('input', function() {
+        document.getElementById('message-count').textContent = this.value.length;
+      });
+
+      function updatePreview() {
+        var phone = (form.querySelector('[name=phone]').value || '').replace(/\D/g, '');
+        var message = (form.querySelector('[name=message]').value || '').trim();
+        var url = phone ? ('https://wa.me/' + phone + (message ? '?text=' + encodeURIComponent(message) : '')) : 'https://wa.me/0';
+        var fg = hexFromInput('fgHex');
+        var bg = hexFromInput('bgHex');
+        var colors = ensureContrast(fg, bg);
+        var swapped = colors.dark !== fg;
+        var ratio = getContrastRatio(colors.dark, colors.light);
+        var hintEl = document.getElementById('preview-contrast-hint');
+        var warnEl = document.getElementById('contrast-warning');
+        if (hintEl) {
+          hintEl.textContent = swapped ? 'Shown as darker on lighter for reliable scanning.' : '';
+        }
+        if (warnEl) {
+          warnEl.classList.toggle('hidden', ratio >= 3);
+        }
+        var margin = parseInt(form.querySelector('[name=margin]').value, 10) || 2;
+        var ecc = form.querySelector('[name=ecc]').value || 'M';
+        QRCode.toCanvas(previewCanvas, url, { width: 160, margin: margin, color: colors, errorCorrectionLevel: ecc }, function() {});
+      }
+      function schedulePreview() {
+        if (previewTimer) clearTimeout(previewTimer);
+        previewTimer = setTimeout(updatePreview, 280);
+      }
+      ['phone', 'message', 'fg', 'bg', 'fgHex', 'bgHex', 'size', 'margin', 'ecc'].forEach(function(name) {
+        var el = form.querySelector('[name=' + name + ']');
+        if (el) el.addEventListener('input', schedulePreview);
+        if (el && el.tagName === 'SELECT') el.addEventListener('change', schedulePreview);
+      });
+      schedulePreview();
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.getElementById('form-errors').classList.add('hidden');
+        if (!validate()) return;
+
+        var phone = (form.querySelector('[name=phone]').value || '').replace(/\D/g, '');
+        var message = (form.querySelector('[name=message]').value || '').trim();
+        var size = parseInt(form.querySelector('[name=size]').value, 10) || 300;
+        var logoFile = form.querySelector('[name=logo]').files[0];
+        var url = 'https://wa.me/' + phone + (message ? '?text=' + encodeURIComponent(message) : '');
+        var fg = hexFromInput('fgHex');
+        var bg = hexFromInput('bgHex');
+        var colors = ensureContrast(fg, bg);
+        var margin = parseInt(form.querySelector('[name=margin]').value, 10) || 2;
+        var ecc = form.querySelector('[name=ecc]').value || 'M';
+        var logoSizePct = parseFloat(form.querySelector('[name=logoSize]').value) || 0.24;
+        var logoPadding = parseInt(form.querySelector('[name=logoPadding]').value, 10) || 8;
+        var logoRound = form.querySelector('[name=logoRound]').value || 'square';
+
+        var opts = {
+          width: size,
+          margin: margin,
+          color: colors,
+          errorCorrectionLevel: logoFile ? 'H' : ecc
+        };
+
+        QRCode.toCanvas(canvas, url, opts, function(err) {
+          if (err) {
+            var errEl = document.getElementById('qr-library-error');
+            if (errEl) { errEl.classList.remove('hidden'); errEl.querySelector('a').setAttribute('href', window.location.href || '#'); }
+            return;
+          }
+          if (logoFile) {
+            var ctx = canvas.getContext('2d');
+            var img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+              var w = canvas.width;
+              var h = canvas.height;
+              var logoSize = Math.floor(Math.min(w, h) * logoSizePct);
+              var pad = logoPadding;
+              var x = (w - logoSize) / 2;
+              var y = (h - logoSize) / 2;
+              ctx.fillStyle = colors.light;
+              ctx.fillRect(x - pad, y - pad, logoSize + pad * 2, logoSize + pad * 2);
+              if (logoRound === 'circle') {
+                ctx.save();
+                var cx = w / 2;
+                var cy = h / 2;
+                var r = logoSize / 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.clip();
+                ctx.drawImage(img, x, y, logoSize, logoSize);
+                ctx.restore();
+              } else {
+                ctx.drawImage(img, x, y, logoSize, logoSize);
+              }
+              linkEl.textContent = url;
+              downloadEl.href = canvas.toDataURL('image/png');
+              downloadEl.download = 'whatsapp-qr.png';
+              resultEl.classList.remove('hidden');
+            };
+            img.onerror = function() { showError('logo-error', 'Could not load image.'); };
+            img.src = URL.createObjectURL(logoFile);
+          } else {
+            linkEl.textContent = url;
+            downloadEl.href = canvas.toDataURL('image/png');
+            downloadEl.download = 'whatsapp-qr.png';
+            resultEl.classList.remove('hidden');
+          }
+        });
+      });
+    })();
   </script>
 </BaseLayout>
