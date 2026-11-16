@@ -159,6 +159,10 @@
       "label": "Setup & pricing"
     },
     {
+      "value": "founding",
+      "label": "Founding customer pricing"
+    },
+    {
       "value": "general",
       "label": "General inquiry"
     },
@@ -177,6 +181,11 @@
   ],
   "pricingFaq": [
     {
+      "id": "setup-vs-subscription",
+      "question": "What is setup vs subscription?",
+      "answer": "Setup is one-time implementation and configuration. Subscription is the monthly platform fee for infrastructure, API, dashboard, and support. Meta bills messaging separately on your account."
+    },
+    {
       "id": "change-plans",
       "question": "Cancel platform?",
       "answer": "Contact us to cancel, see T&C for notice period."
@@ -189,7 +198,12 @@
     {
       "id": "meta-billing",
       "question": "Who bills messages?",
-      "answer": "Messages are billed directly by Meta. GetNotify charges only setup and platform fees."
+      "answer": "Messages are billed directly by Meta. GetNotify charges only setup and platform fees — no message markup."
+    },
+    {
+      "id": "founding",
+      "question": "What is founding pricing?",
+      "answer": "The first 5 customers can lock Foundation at €59/mo or Expansion at €89/mo for 12 months, in exchange for feedback and optional case-study permission."
     },
     {
       "id": "refund-policy",

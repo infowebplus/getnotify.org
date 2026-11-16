@@ -11,7 +11,7 @@
         {
           "id": "agency-why",
           "question": "Why do I pay Meta separately?",
-          "answer": "Meta bills usage. We charge setup (from 400€) + platform (149€/month)."
+          "answer": "Meta bills usage. We charge one-time setup (from €299) + platform (from €79/month). No message markup."
         },
         {
           "id": "agency-account",
@@ -41,7 +41,7 @@
         {
           "id": "getting-started",
           "question": "How do I start?",
-          "answer": "Contact for setup (from 400€). Then platform (149€/month). You pay Meta for messages."
+          "answer": "Pick a plan, complete setup (from €299), then pay the monthly platform fee (from €79). You pay Meta for messages separately."
         }
       ]
     },

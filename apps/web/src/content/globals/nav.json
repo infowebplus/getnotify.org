@@ -3,6 +3,7 @@
   "items": [
     { "label": "Home", "href": "/" },
     { "label": "Pricing", "href": "/pricing/" },
+    { "label": "Versus", "href": "/versus/" },
     { "label": "FAQ", "href": "/faq/" },
     { "label": "Contact", "href": "/contact/" }
   ],

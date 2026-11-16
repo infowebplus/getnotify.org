@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PlanCard from '../components/PlanCard.astro';
+import CostCalculator from '../components/CostCalculator.astro';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 
@@ -10,34 +11,144 @@ const globals = Object.fromEntries((await getCollection('globals')).map((e: Coll
 const plansData = (globals.plans || {}) as Record<string, unknown>;
 const content = (globals.content || {}) as Record<string, unknown>;
 const planList = (plansData.plans || []) as Array<Record<string, unknown>>;
-const installationFee = (plansData.installationFee || null) as { tiers: Array<{ plan: string; price: string }>; features: string[] } | null;
+const installationFee = (plansData.installationFee || null) as {
+  tiers: Array<{ plan: string; price: string; amount?: number | null }>;
+  features: string[];
+} | null;
 const definitions = (plansData.definitions || {}) as Record<string, string>;
 const sectionTitle = String(plansData.sectionTitle ?? 'Pricing');
 const sectionSubtitle = String(plansData.sectionSubtitle ?? '');
+const trustBadges = (plansData.trustBadges || []) as string[];
+const costLayers = (plansData.costLayers || null) as {
+  title: string;
+  subtitle: string;
+  items: Array<{ id: string; label: string; title: string; description: string }>;
+} | null;
+const founding = (plansData.founding || null) as {
+  enabled: boolean;
+  badge: string;
+  title: string;
+  description: string;
+  guaranteeMonths: number;
+  cta: { text: string; href: string };
+  plans: Array<{ plan: string; normal: string; founding: string }>;
+} | null;
+const calculator = (plansData.calculator || {}) as {
+  title?: string;
+  subtitle?: string;
+  metaRateNote?: string;
+  defaultMessages?: number;
+  metaRateEur?: number;
+};
 const invoiceFootnote = String(plansData.invoiceFootnote ?? '');
 const pricingFaq = (content.pricingFaq || []) as Array<{ id: string; question: string; answer: string }>;
+
+const calcPlans = planList.map((p) => {
+  const name = String(p.name);
+  const tier = installationFee?.tiers.find((t) => {
+    const tp = t.plan.toLowerCase();
+    const n = name.toLowerCase();
+    return tp === n || (n.startsWith('enterprise') && tp.startsWith('enterprise'));
+  });
+  return {
+    id: String(p.id),
+    name,
+    priceAmount: typeof p.priceAmount === 'number' ? p.priceAmount : null,
+    setupAmount: typeof tier?.amount === 'number' ? tier.amount : null,
+    foundingAmount: typeof p.foundingAmount === 'number' ? p.foundingAmount : null,
+  };
+});
 ---
 
 <BaseLayout title={data.title} description={data.description}>
   <section class="section bg-white dark:bg-neutral-900">
     <div class="container-custom">
-      <!-- Hero -->
-      <div class="text-center max-w-3xl mx-auto mb-16">
+      <div class="text-center max-w-3xl mx-auto mb-12">
         <h1 class="heading-lg mb-4">{sectionTitle}</h1>
-        {sectionSubtitle && <p class="text-body text-neutral-700 dark:text-neutral-200">{sectionSubtitle}</p>}
+        {sectionSubtitle && <p class="text-body text-neutral-700 dark:text-neutral-200 mb-6">{sectionSubtitle}</p>}
+        {trustBadges.length > 0 && (
+          <ul class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-neutral-600 dark:text-neutral-300" role="list">
+            {trustBadges.map((badge) => (
+              <li class="inline-flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {badge}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
-      <!-- Plans grid -->
-      <div class="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto mb-20">
+      {costLayers && (
+        <div class="mb-16 max-w-5xl mx-auto">
+          <div class="text-center mb-8">
+            <h2 class="heading-md mb-2">{costLayers.title}</h2>
+            <p class="text-body-sm text-neutral-600 dark:text-neutral-400">{costLayers.subtitle}</p>
+          </div>
+          <div class="grid md:grid-cols-3 gap-4">
+            {costLayers.items.map((item) => (
+              <div class="rounded-2xl border border-neutral-200 dark:border-neutral-700 p-5 bg-neutral-50/80 dark:bg-neutral-800/40">
+                <p class="text-xs font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-400 mb-2">{item.label}</p>
+                <h3 class="font-semibold text-neutral-900 dark:text-white mb-2">{item.title}</h3>
+                <p class="text-sm text-neutral-600 dark:text-neutral-400">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {founding?.enabled && (
+        <div class="max-w-4xl mx-auto mb-14 info-callout-primary">
+          <div class="info-callout-icon" aria-hidden="true">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-xs font-semibold uppercase tracking-wider mb-1 opacity-80">{founding.badge}</p>
+            <h2 class="font-semibold text-base mb-1">{founding.title}</h2>
+            <p class="text-sm opacity-90 mb-3">{founding.description}</p>
+            <div class="flex flex-wrap gap-3 text-sm mb-3">
+              {founding.plans.map((fp) => (
+                <span class="inline-flex items-center gap-2 rounded-lg bg-white/60 dark:bg-neutral-900/40 px-3 py-1.5">
+                  <span class="font-medium">{fp.plan}</span>
+                  <span class="line-through opacity-60">{fp.normal}</span>
+                  <span class="font-bold">{fp.founding}/mo</span>
+                </span>
+              ))}
+            </div>
+            <a href={founding.cta.href} class="link text-sm font-medium">{founding.cta.text} →</a>
+          </div>
+        </div>
+      )}
+
+      <div class="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto mb-12">
         {planList.map((plan) => (
           <PlanCard plan={plan} installationFee={installationFee} definitions={definitions} />
         ))}
       </div>
       <p class="text-center mb-20">
         <a href="/compare-plans/" class="link text-sm font-medium">Compare plans in detail →</a>
+        <span class="mx-3 text-neutral-300 dark:text-neutral-600">·</span>
+        <a href="/versus/" class="link text-sm font-medium">GetNotify vs alternatives →</a>
       </p>
 
-      <!-- Billing & invoicing -->
+      <div class="mb-20">
+        <CostCalculator
+          title={calculator.title}
+          subtitle={calculator.subtitle}
+          plans={calcPlans}
+          defaultMessages={calculator.defaultMessages}
+          metaRateEur={calculator.metaRateEur}
+          metaRateNote={calculator.metaRateNote}
+          foundingEnabled={Boolean(founding?.enabled)}
+        />
+        <p class="text-center mt-4 text-sm">
+          <a href="/tools/whatsapp-pricing-calculator/" class="link">Detailed Meta rate calculator by country →</a>
+        </p>
+      </div>
+
       <div class="w-full mb-20">
         <h2 class="text-center text-lg font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider mb-6">
           Billing & invoicing
@@ -58,7 +169,7 @@ const pricingFaq = (content.pricingFaq || []) as Array<{ id: string; question: s
               <ul class="space-y-1.5 text-neutral-700 dark:text-neutral-300" role="list">
                 <li class="flex items-center gap-2">
                   <span class="text-primary-500">•</span>
-                  Message usage billed by Meta (your account, no markup). We charge the platform fee only.
+                  Setup = implementation. Subscription = platform. Meta = messaging billed separately — no markup.
                 </li>
                 {invoiceFootnote && (
                   <li class="flex items-center gap-2">
@@ -100,4 +211,3 @@ const pricingFaq = (content.pricingFaq || []) as Array<{ id: string; question: s
     </div>
   </section>
 </BaseLayout>
-

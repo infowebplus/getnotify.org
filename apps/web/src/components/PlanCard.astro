@@ -15,8 +15,14 @@ const cta = plan.cta as { href?: string; text?: string } | null | undefined;
 const planName = String(plan.name);
 const label = String(plan.label ?? '');
 const setupLabel = String(plan.setupLabel ?? 'One-time setup');
-const setupPrice = installationFee?.tiers.find((t) => t.plan.toLowerCase() === planName.toLowerCase())?.price ?? null;
-const isCustomPrice = interval === 'custom' || priceDisplay === 'Custom';
+const setupPrice =
+  installationFee?.tiers.find((t) => {
+    const tier = t.plan.toLowerCase();
+    const name = planName.toLowerCase();
+    return tier === name || (name.startsWith('enterprise') && tier.startsWith('enterprise'));
+  })?.price ?? null;
+const isCustomPrice = interval === 'custom' || priceDisplay === 'Custom' || priceDisplay.startsWith('From ');
+const foundingPrice = plan.foundingPrice ? String(plan.foundingPrice) : null;
 const featureGroups = (plan.featureGroups || []) as Array<{ title: string; icon: string; items: FeatureItem[] }>;
 ---
 
@@ -27,7 +33,7 @@ const featureGroups = (plan.featureGroups || []) as Array<{ title: string; icon:
     {label && <p class="text-sm text-neutral-600 dark:text-neutral-400">{label}</p>}
   </div>
   <div class="mb-4 p-4 rounded-xl border-2 border-primary-200 dark:border-primary-700 bg-primary-50/50 dark:bg-primary-950/30">
-    {isCustomPrice ? (
+    {isCustomPrice && !priceDisplay.startsWith('From ') ? (
       <span class="plan-price text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white">On request</span>
     ) : (
       <>
@@ -36,7 +42,14 @@ const featureGroups = (plan.featureGroups || []) as Array<{ title: string; icon:
       </>
     )}
     {setupPrice && (
-      <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-2">{setupLabel}: {setupPrice}</p>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-2">
+        <span class="font-medium text-neutral-800 dark:text-neutral-200">{setupLabel}:</span> {setupPrice}
+      </p>
+    )}
+    {foundingPrice && (
+      <p class="text-xs text-primary-700 dark:text-primary-300 mt-2 font-medium">
+        Founding: {foundingPrice}/month for first 12 months
+      </p>
     )}
   </div>
   {installationFee && setupPrice && (

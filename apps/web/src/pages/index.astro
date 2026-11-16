@@ -30,6 +30,30 @@ const iconSvg: Record<string, string> = {
 <BaseLayout title={data.title} description={data.description}>
   <Hero company={company} />
 
+  <section class="section bg-white dark:bg-neutral-900 border-b border-neutral-100 dark:border-neutral-800">
+    <div class="container-custom">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <h2 class="heading-lg mb-3">Two different jobs</h2>
+        <p class="text-body-sm text-neutral-600 dark:text-neutral-400">Conversation platforms manage chats. GetNotify connects your systems to WhatsApp for operational messaging.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
+        <div class="rounded-2xl border border-neutral-200 dark:border-neutral-700 p-6 bg-neutral-50/70 dark:bg-neutral-800/40">
+          <p class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-2">Conversation platforms</p>
+          <h3 class="font-semibold text-neutral-900 dark:text-white mb-2">Shared inbox</h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400">For companies that want agents, support, sales, and marketing in one place.</p>
+        </div>
+        <div class="rounded-2xl border border-primary-500 ring-2 ring-primary-500/15 p-6 bg-primary-50/40 dark:bg-primary-950/20">
+          <p class="text-xs font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-400 mb-2">GetNotify</p>
+          <h3 class="font-semibold text-neutral-900 dark:text-white mb-2">Transactional infrastructure</h3>
+          <p class="text-sm text-neutral-600 dark:text-neutral-400">For companies that automate notifications, events, and operational WhatsApp from their own systems.</p>
+        </div>
+      </div>
+      <p class="text-center">
+        <a href="/versus/" class="link text-sm font-medium">See GetNotify vs respond.io, Twilio & 360dialog →</a>
+      </p>
+    </div>
+  </section>
+
   <section id="features" class="section bg-white dark:bg-neutral-900">
     <div class="container-custom">
       <div class="text-center max-w-2xl mx-auto mb-12">
@@ -73,10 +97,11 @@ const iconSvg: Record<string, string> = {
     <div class="container-custom">
       <div class="text-center max-w-xl mx-auto mb-12">
         <h2 class="heading-lg mb-3">Pricing</h2>
-        <p class="text-body-sm text-neutral-600 dark:text-neutral-400">Simple monthly plans. You pay Meta for messages; we charge the platform only.</p>
+        <p class="text-body-sm text-neutral-600 dark:text-neutral-400">Setup once. Subscribe for infrastructure. Meta bills messaging separately — no markup.</p>
       </div>
       <PricingPlansGrid showCompareLink={false} />
-      <div class="text-center mt-10">
+      <div class="text-center mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+        <a href="/pricing/" class="link text-sm font-medium">Full pricing & calculator →</a>
         <a href="/compare-plans/" class="link text-sm font-medium">Compare plans →</a>
       </div>
     </div>

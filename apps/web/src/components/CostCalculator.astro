@@ -1,0 +1,152 @@
+---
+interface PlanOption {
+  id: string;
+  name: string;
+  priceAmount: number | null;
+  setupAmount: number | null;
+  foundingAmount?: number | null;
+}
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  plans: PlanOption[];
+  defaultMessages?: number;
+  metaRateEur?: number;
+  metaRateNote?: string;
+  foundingEnabled?: boolean;
+}
+
+const {
+  title = 'Estimate your investment',
+  subtitle = '',
+  plans,
+  defaultMessages = 2000,
+  metaRateEur = 0.035,
+  metaRateNote = '',
+  foundingEnabled = false,
+} = Astro.props;
+
+const selectable = plans.filter((p) => p.priceAmount != null);
+---
+
+<div class="max-w-3xl mx-auto" id="cost-calculator" data-meta-rate={metaRateEur} data-founding={foundingEnabled ? '1' : '0'}>
+  <div class="text-center mb-8">
+    <h2 class="heading-md mb-3">{title}</h2>
+    {subtitle && <p class="text-body-sm text-neutral-600 dark:text-neutral-400 max-w-xl mx-auto">{subtitle}</p>}
+  </div>
+
+  <div class="card">
+    <form id="investment-calc-form" class="space-y-5" novalidate>
+      <div>
+        <label for="calc-plan" class="form-label">Plan</label>
+        <select id="calc-plan" name="plan" class="form-input">
+          {selectable.map((p) => (
+            <option
+              value={p.id}
+              data-monthly={p.priceAmount ?? ''}
+              data-setup={p.setupAmount ?? ''}
+              data-founding={p.foundingAmount ?? ''}
+              selected={p.id === 'core'}
+            >
+              {p.name}
+              {p.priceAmount != null ? ` — €${p.priceAmount}/mo` : ''}
+              {p.setupAmount != null ? ` + €${p.setupAmount} setup` : ''}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {foundingEnabled && (
+        <label class="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300 cursor-pointer">
+          <input type="checkbox" id="calc-founding" class="rounded border-neutral-300 text-primary-600 focus:ring-primary-500" />
+          Use founding customer price (first 12 months)
+        </label>
+      )}
+
+      <div>
+        <label for="calc-messages" class="form-label">Estimated transactional messages / month</label>
+        <input
+          type="number"
+          id="calc-messages"
+          name="messages"
+          class="form-input"
+          value={String(defaultMessages)}
+          min="0"
+          max="10000000"
+          step="100"
+          inputmode="numeric"
+        />
+        {metaRateNote && <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">{metaRateNote}</p>}
+      </div>
+    </form>
+
+    <dl class="mt-6 space-y-3 text-sm border-t border-neutral-200 dark:border-neutral-700 pt-6">
+      <div class="flex justify-between gap-4">
+        <dt class="text-neutral-600 dark:text-neutral-400">Monthly platform fee</dt>
+        <dd id="out-monthly" class="font-semibold text-neutral-900 dark:text-white">—</dd>
+      </div>
+      <div class="flex justify-between gap-4">
+        <dt class="text-neutral-600 dark:text-neutral-400">One-time setup</dt>
+        <dd id="out-setup" class="font-semibold text-neutral-900 dark:text-white">—</dd>
+      </div>
+      <div class="flex justify-between gap-4">
+        <dt class="text-neutral-600 dark:text-neutral-400">Estimated Meta messaging / month</dt>
+        <dd id="out-meta" class="font-semibold text-neutral-900 dark:text-white">—</dd>
+      </div>
+      <div class="flex justify-between gap-4 pt-3 border-t border-neutral-200 dark:border-neutral-700">
+        <dt class="text-neutral-800 dark:text-neutral-200 font-medium">Year 1 total (setup + 12× platform + Meta)</dt>
+        <dd id="out-annual" class="font-bold text-lg text-primary-700 dark:text-primary-300">—</dd>
+      </div>
+    </dl>
+  </div>
+</div>
+
+<script>
+  function formatEur(n: number) {
+    return new Intl.NumberFormat('en-EU', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+  }
+
+  function formatEurPrecise(n: number) {
+    return new Intl.NumberFormat('en-EU', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(n);
+  }
+
+  function updateInvestmentCalc() {
+    const root = document.getElementById('cost-calculator');
+    const select = document.getElementById('calc-plan') as HTMLSelectElement | null;
+    const messagesInput = document.getElementById('calc-messages') as HTMLInputElement | null;
+    const foundingCheck = document.getElementById('calc-founding') as HTMLInputElement | null;
+    if (!root || !select || !messagesInput) return;
+
+    const opt = select.selectedOptions[0];
+    if (!opt) return;
+
+    const metaRate = Number(root.getAttribute('data-meta-rate') || '0.035');
+    const useFounding = Boolean(foundingCheck?.checked);
+    const monthlyNormal = Number(opt.getAttribute('data-monthly') || '0');
+    const founding = opt.getAttribute('data-founding');
+    const monthly = useFounding && founding ? Number(founding) : monthlyNormal;
+    const setupRaw = opt.getAttribute('data-setup');
+    const setup = setupRaw === '' || setupRaw == null ? null : Number(setupRaw);
+    const messages = Math.max(0, Number(messagesInput.value) || 0);
+    const metaMonthly = messages * metaRate;
+    const annualPlatform = monthly * 12;
+    const annualMeta = metaMonthly * 12;
+    const year1 = (setup ?? 0) + annualPlatform + annualMeta;
+
+    const outMonthly = document.getElementById('out-monthly');
+    const outSetup = document.getElementById('out-setup');
+    const outMeta = document.getElementById('out-meta');
+    const outAnnual = document.getElementById('out-annual');
+
+    if (outMonthly) outMonthly.textContent = formatEur(monthly);
+    if (outSetup) outSetup.textContent = setup == null ? 'Custom quote' : formatEur(setup);
+    if (outMeta) outMeta.textContent = formatEurPrecise(metaMonthly);
+    if (outAnnual) outAnnual.textContent = setup == null ? `${formatEur(annualPlatform + annualMeta)} + custom setup` : formatEur(year1);
+  }
+
+  document.getElementById('calc-plan')?.addEventListener('change', updateInvestmentCalc);
+  document.getElementById('calc-messages')?.addEventListener('input', updateInvestmentCalc);
+  document.getElementById('calc-founding')?.addEventListener('change', updateInvestmentCalc);
+  updateInvestmentCalc();
+</script>

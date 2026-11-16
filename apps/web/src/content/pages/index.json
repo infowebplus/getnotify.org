@@ -1,1 +1,5 @@
-{"title":"GetNotify - WhatsApp Cloud API, your account, no markup","description":"Official WhatsApp Cloud API on your Meta account. Send order updates, delivery alerts, and verification codes via dashboard, API, and webhooks. You pay Meta for messages; we’re the layer. Built for transactional use — no marketing spam.","template":"home"}
+{
+  "title": "GetNotify - WhatsApp Infrastructure Without the Complexity",
+  "description": "Connect your systems to WhatsApp. Automate transactional messaging with Official Cloud API, direct Meta billing, and no message markup. Dashboard, API, webhooks.",
+  "template": "home"
+}

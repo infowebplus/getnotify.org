@@ -21,6 +21,8 @@ const contactEmail = String(company.contactEmail ?? 'hello@getnotify.org');
 const address = (company.address || {}) as Record<string, string>;
 const addressLine = [address.street, address.city, address.state, address.zip, address.country].filter(Boolean).join(', ');
 const showSuccess = Astro.url.searchParams.get('sent') === '1';
+const topicParam = Astro.url.searchParams.get('topic') || '';
+const selectedSubject = subjects.some((s) => s.value === topicParam) ? topicParam : (subjects.find((s) => s.value)?.value ?? '');
 ---
 
 <BaseLayout title={data.title} description={data.description}>
@@ -116,7 +118,7 @@ const showSuccess = Astro.url.searchParams.get('sent') === '1';
                     <label for="subject" class="form-label">Topic</label>
                     <select id="subject" name="subject" class="form-input" required>
                       {subjects.filter((s) => s.value !== '').map((s) => (
-                        <option value={s.value}>{s.label}</option>
+                        <option value={s.value} selected={s.value === selectedSubject}>{s.label}</option>
                       ))}
                     </select>
                   </div>

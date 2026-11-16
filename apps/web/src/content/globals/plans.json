@@ -1,6 +1,66 @@
 {
-  "sectionTitle": "WhatsApp Infrastructure for Growing Businesses",
-  "sectionSubtitle": "From one store to multi-brand operations. Transparent pricing, scalable integrations.",
+  "sectionTitle": "WhatsApp Infrastructure. Without the Complexity.",
+  "sectionSubtitle": "Connect your business systems to WhatsApp. Automate transactional messaging, manage multiple brands, and scale without building your own messaging infrastructure.",
+  "trustBadges": [
+    "Official WhatsApp Cloud API",
+    "Direct Meta Billing",
+    "No Message Markup"
+  ],
+  "costLayers": {
+    "title": "Three cost layers. No surprises.",
+    "subtitle": "Know exactly what you pay GetNotify for — and what Meta bills separately.",
+    "items": [
+      {
+        "id": "setup",
+        "label": "Setup",
+        "title": "One-time implementation",
+        "description": "Human-led configuration: Meta Business, WABA, templates, integrations, event mapping, and training."
+      },
+      {
+        "id": "subscription",
+        "label": "Subscription",
+        "title": "Monthly platform fee",
+        "description": "Infrastructure, API, dashboard, webhooks, monitoring, and support — the layer that keeps messaging running."
+      },
+      {
+        "id": "meta",
+        "label": "Meta",
+        "title": "Messaging costs",
+        "description": "Paid separately to Meta on your account. No markup from GetNotify — you see usage and estimated cost in the dashboard."
+      }
+    ]
+  },
+  "founding": {
+    "enabled": true,
+    "badge": "Founding Customers",
+    "title": "First 5 customers get founding pricing",
+    "description": "Lock in a lower monthly rate for 12 months in exchange for feedback and permission to use results as a case study (if you agree).",
+    "slots": 5,
+    "guaranteeMonths": 12,
+    "cta": {
+      "text": "Apply as founding customer",
+      "href": "/contact/?topic=founding"
+    },
+    "plans": [
+      {
+        "plan": "Foundation",
+        "normal": "€79",
+        "founding": "€59"
+      },
+      {
+        "plan": "Expansion",
+        "normal": "€119",
+        "founding": "€89"
+      }
+    ]
+  },
+  "calculator": {
+    "title": "Estimate your investment",
+    "subtitle": "Platform fee + one-time setup + estimated Meta messaging. Transparent totals you can share with finance.",
+    "metaRateNote": "Meta estimate uses a rough utility-message average for Western Europe (~€0.035/msg). Actual rates depend on country and template category.",
+    "defaultMessages": 2000,
+    "metaRateEur": 0.035
+  },
   "definitions": {
     "standardIntegration": "Pre-built connection to Shopify, WooCommerce or common systems. No custom development required.",
     "customWebhook": "Connection to your internal or third-party system using secure event triggers.",
@@ -10,15 +70,18 @@
     "tiers": [
       {
         "plan": "Foundation",
-        "price": "from €400"
+        "price": "€299",
+        "amount": 299
       },
       {
         "plan": "Expansion",
-        "price": "from €500"
+        "price": "€399",
+        "amount": 399
       },
       {
-        "plan": "Enterprise / Agency",
-        "price": "from €900"
+        "plan": "Enterprise",
+        "price": "Custom",
+        "amount": null
       }
     ],
     "features": [
@@ -38,10 +101,13 @@
     {
       "id": "basic",
       "name": "Foundation",
-      "label": "For focused operations requiring a reliable and structured messaging infrastructure",
-      "priceDisplay": "€99",
+      "label": "Reliable WhatsApp infrastructure for focused operations",
+      "priceDisplay": "€79",
+      "priceAmount": 79,
       "interval": "per month",
       "setupLabel": "One-time setup",
+      "foundingPrice": "€59",
+      "foundingAmount": 59,
       "recommended": false,
       "cta": {
         "text": "Start Foundation Setup",
@@ -97,9 +163,12 @@
       "id": "core",
       "name": "Expansion",
       "label": "For scaling businesses managing multiple systems",
-      "priceDisplay": "€149",
+      "priceDisplay": "€119",
+      "priceAmount": 119,
       "interval": "per month",
       "setupLabel": "One-time setup",
+      "foundingPrice": "€89",
+      "foundingAmount": 89,
       "recommended": true,
       "cta": {
         "text": "Upgrade to Expansion",
@@ -146,17 +215,18 @@
           "icon": "👥",
           "items": [
             "Team Collaboration (up to 5 users)",
-            "Email support + onboarding call"
+            "Priority onboarding + email support"
           ]
         }
       ]
     },
     {
       "id": "agency",
-      "name": "Enterprise / Agency",
+      "name": "Enterprise",
       "label": "For agencies and complex multi-brand environments",
-      "priceDisplay": "Custom",
-      "interval": "custom",
+      "priceDisplay": "From €249",
+      "priceAmount": 249,
+      "interval": "per month",
       "setupLabel": "Setup",
       "recommended": false,
       "cta": {
@@ -196,7 +266,7 @@
           "items": [
             "Unlimited users",
             "Advanced roles & permissions",
-            "Priority support + recurring calls"
+            "Priority support + calls"
           ]
         }
       ]
@@ -206,63 +276,63 @@
   "comparison": {
     "categories": [
       {
-        "name": "Account Scope",
+        "name": "Core limits",
         "icon": "📦",
         "features": [
           {
-            "name": "WhatsApp Business Accounts",
+            "name": "WhatsApp Accounts",
             "basic": "1",
-            "core": "Up to 2",
+            "core": "2",
             "agency": "5–10"
           },
           {
-            "name": "Brands / Projects",
+            "name": "Brands",
             "basic": "1",
             "core": "2–3",
             "agency": "5+"
           },
           {
-            "name": "Phone numbers",
-            "basic": "Up to 20 (subject to Meta approval)",
-            "core": "Up to 40 (subject to Meta approval)",
-            "agency": "Up to 200 (subject to Meta approval)"
-          }
-        ]
-      },
-      {
-        "name": "Integrations",
-        "icon": "🔌",
-        "features": [
-          {
-            "name": "Production-Ready Integrations",
-            "basic": "1 production-ready integration (Shopify, WooCommerce or Booking system)",
-            "core": "3 production-ready integrations (Shopify, Woo, ERP, CRM)",
-            "agency": "5+ production-ready integrations (standard + custom)"
+            "name": "Integrations",
+            "basic": "1",
+            "core": "3",
+            "agency": "5+"
           },
           {
-            "name": "Custom Webhooks",
-            "basic": "Up to 2",
-            "core": "Up to 5",
+            "name": "Webhooks",
+            "basic": "2",
+            "core": "5",
             "agency": "Unlimited"
           },
           {
-            "name": "Notification Event Types",
-            "basic": "Up to 10",
+            "name": "Event Types",
+            "basic": "10",
             "core": "Unlimited",
             "agency": "Unlimited"
+          },
+          {
+            "name": "API",
+            "basic": "Standard",
+            "core": "Full",
+            "agency": "Full"
+          },
+          {
+            "name": "Users",
+            "basic": "2",
+            "core": "5",
+            "agency": "Unlimited"
+          },
+          {
+            "name": "Support",
+            "basic": "Email",
+            "core": "Priority onboarding",
+            "agency": "Priority + calls"
           }
         ]
       },
       {
-        "name": "Platform Access",
-        "icon": "⚙️",
+        "name": "Platform & reliability",
+        "icon": "🛡",
         "features": [
-          {
-            "name": "API Access",
-            "basic": "Standard",
-            "core": "Full API access with higher rate limits",
-            "agency": "Full API access with highest rate limits"
-          },
           {
             "name": "Message Logs",
             "basic": "30 days",
@@ -271,57 +341,21 @@
           },
           {
             "name": "Cost Dashboard",
-            "basic": "Per WhatsApp account",
-            "core": "—",
-            "agency": "—"
+            "basic": "✓",
+            "core": "✓",
+            "agency": "✓"
           },
           {
             "name": "Retry logic",
             "basic": "Basic automatic",
             "core": "Configurable per integration",
             "agency": "Advanced rules"
-          }
-        ]
-      },
-      {
-        "name": "Team",
-        "icon": "👥",
-        "features": [
-          {
-            "name": "Users",
-            "basic": "Up to 2",
-            "core": "Team Collaboration (up to 5 users)",
-            "agency": "Unlimited"
           },
-          {
-            "name": "Support",
-            "basic": "Email",
-            "core": "Email + onboarding call",
-            "agency": "Priority + recurring calls"
-          }
-        ]
-      },
-      {
-        "name": "Infrastructure & Reliability",
-        "icon": "🛡",
-        "features": [
           {
             "name": "Infrastructure uptime",
             "basic": "99.9%",
             "core": "99.9%",
-            "agency": "SLA-backed uptime"
-          },
-          {
-            "name": "Webhook delivery verification",
-            "basic": "✓",
-            "core": "✓",
-            "agency": "✓"
-          },
-          {
-            "name": "Secure token handling",
-            "basic": "✓",
-            "core": "✓",
-            "agency": "✓"
+            "agency": "SLA-backed"
           }
         ]
       }

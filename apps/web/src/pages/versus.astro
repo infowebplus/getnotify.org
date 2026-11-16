@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const positioning = [
+  {
+    name: 'respond.io',
+    category: 'Customer conversation platform',
+    forWhom: 'Companies that want to manage conversations, agents, support, sales, and marketing in a shared inbox.',
+  },
+  {
+    name: 'GetNotify',
+    category: 'WhatsApp transactional infrastructure',
+    forWhom: 'Companies that want to connect their own systems to WhatsApp and automate notifications, events, and operational communications.',
+    highlight: true,
+  },
+];
+
+const competitors = [
+  {
+    id: 'respond',
+    name: 'respond.io',
+    tagline: 'Shared inbox & omnichannel conversations',
+  },
+  {
+    id: 'twilio',
+    name: 'Twilio',
+    tagline: 'General messaging API platform',
+  },
+  {
+    id: '360dialog',
+    name: '360dialog',
+    tagline: 'WhatsApp BSP / API access',
+  },
+];
+
+const rows: Array<{
+  feature: string;
+  getnotify: string;
+  respond: string;
+  twilio: string;
+  '360dialog': string;
+}> = [
+  {
+    feature: 'Primary job',
+    getnotify: 'Transactional notifications & event infrastructure',
+    respond: 'Agent inbox & customer conversations',
+    twilio: 'Multi-channel messaging APIs',
+    '360dialog': 'WhatsApp Business API access (BSP)',
+  },
+  {
+    feature: 'Best for',
+    getnotify: 'Orders, OTPs, alerts, system events',
+    respond: 'Support, sales, marketing chats',
+    twilio: 'Builders needing raw messaging APIs',
+    '360dialog': 'Teams needing a WhatsApp provider',
+  },
+  {
+    feature: 'Meta billing',
+    getnotify: 'Direct to Meta — no markup',
+    respond: 'Platform + usage (varies)',
+    twilio: 'Twilio rates (often marked up)',
+    '360dialog': 'BSP / Meta model',
+  },
+  {
+    feature: 'Setup model',
+    getnotify: 'Human-led setup + clear one-time fee',
+    respond: 'Self-serve / sales-assisted',
+    twilio: 'Developer self-serve',
+    '360dialog': 'Partner / self-serve',
+  },
+  {
+    feature: 'Multi-brand / multi-WABA',
+    getnotify: 'First-class (Expansion / Enterprise)',
+    respond: 'Workspace / inbox oriented',
+    twilio: 'Account & subaccount DIY',
+    '360dialog': 'Number / WABA oriented',
+  },
+  {
+    feature: 'Shared agent inbox',
+    getnotify: 'Not the product focus',
+    respond: 'Core product',
+    twilio: 'Build your own',
+    '360dialog': 'Not included',
+  },
+  {
+    feature: 'Pricing transparency',
+    getnotify: 'Platform + setup + Meta separate',
+    respond: 'Seat / conversation oriented',
+    twilio: 'Usage-heavy, complex',
+    '360dialog': 'Provider-dependent',
+  },
+];
+---
+
+<BaseLayout
+  title="GetNotify vs respond.io, Twilio & 360dialog"
+  description="GetNotify is WhatsApp transactional infrastructure — not a cheaper respond.io. Compare positioning vs conversation platforms, Twilio, and WhatsApp BSPs."
+>
+  <section class="section bg-white dark:bg-neutral-900">
+    <div class="container-custom">
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <h1 class="heading-lg mb-4">Not a cheaper inbox. Infrastructure for notifications.</h1>
+        <p class="text-body text-neutral-700 dark:text-neutral-200">
+          We don’t position GetNotify as a discounted respond.io. Conversation platforms and transactional infrastructure solve different problems.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-20">
+        {positioning.map((p) => (
+          <div
+            class={`rounded-2xl border p-6 ${
+              p.highlight
+                ? 'border-primary-500 ring-2 ring-primary-500/20 bg-primary-50/40 dark:bg-primary-950/20'
+                : 'border-neutral-200 dark:border-neutral-700 bg-neutral-50/60 dark:bg-neutral-800/40'
+            }`}
+          >
+            <p class="text-xs font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-400 mb-2">{p.category}</p>
+            <h2 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">{p.name}</h2>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">{p.forWhom}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mb-8 text-center">
+        <h2 class="heading-md mb-3">Versus top alternatives</h2>
+        <p class="text-body-sm text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+          respond.io for conversations · Twilio for general APIs · 360dialog for WhatsApp BSP access · GetNotify for operational WhatsApp infrastructure.
+        </p>
+      </div>
+
+      <p class="text-center text-xs text-neutral-500 dark:text-neutral-400 mb-4 sm:hidden">Scroll horizontally →</p>
+      <div class="overflow-x-auto compare-table-scroll -mx-4 px-4 sm:mx-0 sm:px-0 mb-12">
+        <table class="w-full min-w-[900px] border border-neutral-200 dark:border-neutral-700 rounded-xl overflow-hidden">
+          <thead>
+            <tr class="bg-neutral-100 dark:bg-neutral-800">
+              <th class="text-left p-4 font-semibold text-neutral-900 dark:text-white w-44">Dimension</th>
+              <th class="text-left p-4 font-semibold text-primary-700 dark:text-primary-300">GetNotify</th>
+              {competitors.map((c) => (
+                <th class="text-left p-4 font-semibold text-neutral-900 dark:text-white">
+                  <span class="block">{c.name}</span>
+                  <span class="block text-xs font-normal text-neutral-500 dark:text-neutral-400 mt-0.5">{c.tagline}</span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr class="border-t border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50/50 dark:hover:bg-neutral-800/30">
+                <td class="p-3 text-sm font-medium text-neutral-800 dark:text-neutral-200">{row.feature}</td>
+                <td class="p-3 text-sm text-neutral-800 dark:text-neutral-200 bg-primary-50/40 dark:bg-primary-950/20">{row.getnotify}</td>
+                <td class="p-3 text-sm text-neutral-600 dark:text-neutral-400">{row.respond}</td>
+                <td class="p-3 text-sm text-neutral-600 dark:text-neutral-400">{row.twilio}</td>
+                <td class="p-3 text-sm text-neutral-600 dark:text-neutral-400">{row['360dialog']}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="max-w-2xl mx-auto text-center rounded-2xl border border-neutral-200 dark:border-neutral-700 p-8 bg-neutral-50/80 dark:bg-neutral-800/40">
+        <h2 class="heading-sm mb-3">Choose GetNotify when…</h2>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-6">
+          You already have (or are building) systems that should trigger WhatsApp messages — ecommerce, ERP, CRM, booking — and you want infrastructure, not another place for agents to chat.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a href="/pricing/" class="btn-primary">See pricing</a>
+          <a href="/contact/" class="btn-outline">Talk to us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

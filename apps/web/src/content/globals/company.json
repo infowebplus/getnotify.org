@@ -1,8 +1,13 @@
 {
   "name": "GetNotify",
-  "tagline": "WhatsApp Cloud API. Your account. No markup.",
-  "description": "Official WhatsApp Cloud API. Your Meta account—dashboard, API, webhooks. You pay Meta; we're the layer. Transactional only: orders, alerts, OTPs. No markup. No spam.",
-  "shortDescription": "Official WhatsApp Cloud API. Your Meta account. Dashboard, API, webhooks. Transactional messages only — orders, alerts, verification.",
+  "tagline": "WhatsApp Infrastructure. Without the Complexity.",
+  "description": "Connect your business systems to WhatsApp. Automate transactional messaging, manage multiple brands and scale without building your own messaging infrastructure.",
+  "shortDescription": "WhatsApp transactional infrastructure — Official Cloud API, direct Meta billing, no message markup.",
+  "positioning": {
+    "category": "WhatsApp transactional infrastructure",
+    "forWhom": "Companies that want to connect their own systems to WhatsApp and automate notifications, events, and operational communications.",
+    "not": "A customer conversation inbox for agents, support, sales, and marketing."
+  },
   "contactEmail": "hello@getnotify.org",
   "supportEmail": "support@getnotify.org",
   "phone": "",

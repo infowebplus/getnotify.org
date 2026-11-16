@@ -6,6 +6,9 @@ import { getCollection } from 'astro:content';
 const globals = Object.fromEntries((await getCollection('globals')).map((e: CollectionEntry<'globals'>) => [e.id, e.data]));
 const plansData = (globals.plans || {}) as Record<string, unknown>;
 const planList = (plansData.plans || []) as Array<Record<string, unknown>>;
+const installationFee = (plansData.installationFee || null) as {
+  tiers: Array<{ plan: string; price: string }>;
+} | null;
 const comparison = (plansData.comparison || { categories: [] }) as {
   categories: Array<{
     name: string;
@@ -14,17 +17,27 @@ const comparison = (plansData.comparison || { categories: [] }) as {
   }>;
 };
 const planIds = ['basic', 'core', 'agency'] as const;
+
+function setupForPlan(plan: Record<string, unknown>) {
+  const name = String(plan.name).toLowerCase();
+  return (
+    installationFee?.tiers.find((t) => {
+      const tp = t.plan.toLowerCase();
+      return tp === name || (name.startsWith('enterprise') && tp.startsWith('enterprise'));
+    })?.price ?? '—'
+  );
+}
 ---
 
 <BaseLayout
   title="Compare plans - GetNotify"
-  description="Compare Foundation, Expansion, and Enterprise / Agency plans. Account scope, integrations, platform access, and team features side by side."
+  description="Compare Foundation, Expansion, and Enterprise. WhatsApp accounts, brands, integrations, webhooks, API, users, and support — side by side."
 >
   <section class="section bg-white dark:bg-neutral-900">
     <div class="container-custom">
       <h1 class="heading-lg text-center mb-4">Compare plans</h1>
       <p class="text-center text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto mb-10">
-        Full feature detail including integration options, message logs, and support. Everything we removed from the pricing cards for a cleaner view is listed here.
+        Clear limits for accounts, brands, integrations, and support — so you pick infrastructure that matches how you operate.
       </p>
       <p class="text-center text-xs text-neutral-500 dark:text-neutral-400 mb-4 sm:hidden">Scroll horizontally → to see all columns</p>
       <div class="overflow-x-auto compare-table-scroll -mx-4 px-4 sm:mx-0 sm:px-0 overflow-y-visible" style="scrollbar-gutter: stable;">
@@ -36,8 +49,8 @@ const planIds = ['basic', 'core', 'agency'] as const;
                 const priceDisplay = String(p.priceDisplay ?? '');
                 const interval = String(p.interval ?? '');
                 const setupLabel = String(p.setupLabel ?? 'Setup');
-                const setupPrice = p.id === 'basic' ? 'from €400' : p.id === 'core' ? 'from €500' : 'from €900';
-                const sub = interval === 'per month' ? '/ month' : ' (quote)';
+                const setupPrice = setupForPlan(p);
+                const sub = interval === 'per month' ? '/ month' : '';
                 return (
                   <th class="text-center p-4 font-semibold text-neutral-900 dark:text-white">
                     <span class="block">{String(p.name)}</span>
@@ -62,19 +75,7 @@ const planIds = ['basic', 'core', 'agency'] as const;
                 <tr class="border-t border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50/50 dark:hover:bg-neutral-800/30">
                   <td class="p-3 text-sm font-medium text-neutral-800 dark:text-neutral-200">{f.name}</td>
                   {planIds.map((id) => {
-                    const raw = f[id] ?? '—';
-                    const value = String(raw);
-                    if (value.includes('(') && value.includes(')')) {
-                      const start = value.indexOf('(');
-                      const end = value.lastIndexOf(')');
-                      const main = value.slice(0, start).trimEnd();
-                      const tooltip = value.slice(start + 1, end).trim();
-                      return (
-                        <td class="p-3 text-sm text-center text-neutral-600 dark:text-neutral-400">
-                          <span title={tooltip}>{main}</span>
-                        </td>
-                      );
-                    }
+                    const value = String(f[id] ?? '—');
                     return (
                       <td class="p-3 text-sm text-center text-neutral-600 dark:text-neutral-400">
                         {value}
@@ -87,10 +88,10 @@ const planIds = ['basic', 'core', 'agency'] as const;
           </tbody>
         </table>
       </div>
-      <p class="text-center mt-8">
+      <p class="text-center mt-8 flex flex-wrap items-center justify-center gap-4">
         <a href="/pricing/" class="btn-primary">View pricing</a>
+        <a href="/versus/" class="btn-outline">Compare vs competitors</a>
       </p>
     </div>
   </section>
 </BaseLayout>
-

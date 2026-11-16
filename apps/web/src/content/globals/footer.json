@@ -1,1 +1,51 @@
-{"description":"Official WhatsApp Cloud API. Your Meta account—dashboard, API, webhooks. You pay Meta; we're the layer. Transactional only: orders, alerts, OTPs. No markup. No spam.","cta":{"label":"Get started","href":"/register/"},"columns":[{"title":"Product","links":[{"label":"Compare plans","href":"/compare-plans/"},{"label":"Onboarding","href":"/onboarding/"},{"label":"FAQ","href":"/faq/"}]},{"title":"Resources","links":[{"label":"Documentation","href":"https://docs.getnotify.org","external":true},{"label":"Tools","href":"/tools/whatsapp-link-generator/"},{"label":"Blog","href":"/blog/"}]},{"title":"Company","links":[{"label":"About","href":"/about/"},{"label":"Contact","href":"/contact/"},{"label":"Careers","href":"/careers/"}]},{"title":"Legal","links":[{"label":"Terms","href":"/legal/terms/"},{"label":"Privacy","href":"/legal/privacy/"},{"label":"Cookies","href":"/legal/cookies/"}]}],"social":[{"name":"Twitter","href":"https://twitter.com/getnotify","icon":"twitter"},{"name":"LinkedIn","href":"https://linkedin.com/company/getnotify","icon":"linkedin"},{"name":"GitHub","href":"https://github.com/getnotify","icon":"github"}],"copyright":"© 2026 GetNotify. All rights reserved.","legalLine":"Product by Infowebplus","legalUrl":"https://infowebplus.com"}
+{
+  "description": "WhatsApp transactional infrastructure. Official Cloud API, direct Meta billing, no message markup. Connect your systems — automate notifications without building the stack yourself.",
+  "cta": {
+    "label": "Get started",
+    "href": "/register/"
+  },
+  "columns": [
+    {
+      "title": "Product",
+      "links": [
+        { "label": "Pricing", "href": "/pricing/" },
+        { "label": "Compare plans", "href": "/compare-plans/" },
+        { "label": "Versus", "href": "/versus/" },
+        { "label": "Onboarding", "href": "/onboarding/" },
+        { "label": "FAQ", "href": "/faq/" }
+      ]
+    },
+    {
+      "title": "Resources",
+      "links": [
+        { "label": "Documentation", "href": "https://docs.getnotify.org", "external": true },
+        { "label": "Tools", "href": "/tools/whatsapp-link-generator/" },
+        { "label": "Blog", "href": "/blog/" }
+      ]
+    },
+    {
+      "title": "Company",
+      "links": [
+        { "label": "About", "href": "/about/" },
+        { "label": "Contact", "href": "/contact/" },
+        { "label": "Careers", "href": "/careers/" }
+      ]
+    },
+    {
+      "title": "Legal",
+      "links": [
+        { "label": "Terms", "href": "/legal/terms/" },
+        { "label": "Privacy", "href": "/legal/privacy/" },
+        { "label": "Cookies", "href": "/legal/cookies/" }
+      ]
+    }
+  ],
+  "social": [
+    { "name": "Twitter", "href": "https://twitter.com/getnotify", "icon": "twitter" },
+    { "name": "LinkedIn", "href": "https://linkedin.com/company/getnotify", "icon": "linkedin" },
+    { "name": "GitHub", "href": "https://github.com/getnotify", "icon": "github" }
+  ],
+  "copyright": "© 2026 GetNotify. All rights reserved.",
+  "legalLine": "Product by Infowebplus",
+  "legalUrl": "https://infowebplus.com"
+}

@@ -84,28 +84,43 @@ Platforms that want to offer WhatsApp notifications without building the infrast
 
 ---
 
+## Positioning
+
+GetNotify is **WhatsApp transactional infrastructure** — not a customer conversation / shared-inbox platform.
+
+- Conversation platforms (e.g. respond.io): agents, support, sales, marketing in one inbox.
+- GetNotify: connect business systems to WhatsApp; automate notifications, events, and operational messaging.
+
+Headline: **WhatsApp Infrastructure. Without the Complexity.**
+
+---
+
 ## Business Model
 
-GetNotify operates on a monthly subscription model with a one-time setup fee.
+Three cost layers:
 
-Setup includes:
-- WhatsApp Business configuration
-- Integration configuration
-- Event mapping
-- Initial onboarding
+1. **Setup** — one-time implementation and configuration
+2. **Subscription** — monthly platform (API, dashboard, infrastructure, support)
+3. **Meta** — messaging billed separately on the customer’s Meta account (no markup)
 
-Invoices are issued by:
-UPHOLD GROUP SRL.
+Recommended list prices:
 
-Billing is managed in-house.
-No third-party payment processors are required.
+| Plan | Monthly | Setup |
+|------|---------|-------|
+| Foundation | €79 | €299 |
+| Expansion | €119 | €399 |
+| Enterprise | from €249 | custom |
+
+Founding customers (first 5): Foundation €59 / Expansion €89 for 12 months, in exchange for feedback and optional case study.
+
+Invoices are issued by Infowebplus / UPHOLD GROUP as applicable.
 
 ---
 
 ## Plans Overview
 
-### Basic
-For single-store businesses.
+### Foundation
+For focused operations.
 
 - 1 WhatsApp Business Account
 - 1 brand / project
@@ -116,11 +131,9 @@ For single-store businesses.
 - Basic retry logic
 - Up to 2 users
 
-Best for structured but simple setups.
-
 ---
 
-### Core (Popular)
+### Expansion (Popular)
 For growing SMBs with multiple systems.
 
 - Up to 2 WhatsApp Business Accounts
@@ -136,7 +149,7 @@ Built for operational scale.
 
 ---
 
-### Agency
+### Enterprise
 For agencies and multi-brand operators.
 
 - 5–10 WhatsApp Business Accounts
