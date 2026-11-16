@@ -69,3 +69,4 @@ apps/dashboard/storage/*.key
 apps/dashboard/bootstrap/cache/*
 !apps/dashboard/bootstrap/cache/.gitkeep
 
+.netlify
