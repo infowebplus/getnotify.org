@@ -2,6 +2,12 @@
   base = "."
   command = "yarn install --frozen-lockfile && yarn workspace @getnotify/web build"
   publish = "apps/web/dist"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- apps/web netlify.toml package.json yarn.lock"
 
 [build.environment]
   NODE_VERSION = "20"
+
+[dev]
+  targetPort = 4321
+  command = "yarn workspace @getnotify/web dev"
+  framework = "#custom"
