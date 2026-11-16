@@ -6,8 +6,23 @@
   "contactEmail": "hello@getnotify.org",
   "supportEmail": "support@getnotify.org",
   "phone": "",
-  "address": { "street": "", "city": "", "state": "", "zip": "", "country": "" },
+  "address": {
+    "street": "",
+    "city": "",
+    "state": "",
+    "zip": "",
+    "country": ""
+  },
   "founded": "2024",
-  "social": { "twitter": "https://twitter.com/getnotify", "linkedin": "https://linkedin.com/company/getnotify", "github": "https://github.com/getnotify" },
-  "legal": { "jurisdiction": "Romania", "legalEntity": "UPHOLD GROUP SRL", "legalEntityUrl": "https://uphold.ro", "lastUpdated": "2024-12-15" }
+  "social": {
+    "twitter": "https://twitter.com/getnotify",
+    "linkedin": "https://linkedin.com/company/getnotify",
+    "github": "https://github.com/getnotify"
+  },
+  "legal": {
+    "jurisdiction": "Romania",
+    "legalEntity": "Infowebplus",
+    "legalEntityUrl": "https://infowebplus.com",
+    "lastUpdated": "2024-12-15"
+  }
 }

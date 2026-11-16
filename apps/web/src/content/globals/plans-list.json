@@ -8,9 +8,18 @@
   },
   "installationFee": {
     "tiers": [
-      { "plan": "Foundation", "price": "from €400" },
-      { "plan": "Expansion", "price": "from €500" },
-      { "plan": "Enterprise / Agency", "price": "from €900" }
+      {
+        "plan": "Foundation",
+        "price": "from €400"
+      },
+      {
+        "plan": "Expansion",
+        "price": "from €500"
+      },
+      {
+        "plan": "Enterprise / Agency",
+        "price": "from €900"
+      }
     ],
     "features": [
       "Dedicated GetNotify account manager",
@@ -21,7 +30,7 @@
       "Event mapping (orders, bookings, deliveries etc.)",
       "Custom webhook configuration",
       "60min onboarding call + training",
-      "Spam compliance checklist & best practices", 
+      "Spam compliance checklist & best practices",
       "Cost dashboard setup & explanation"
     ]
   },
@@ -34,7 +43,10 @@
       "interval": "per month",
       "setupLabel": "One-time setup",
       "recommended": false,
-      "cta": { "text": "Start Foundation Setup", "href": "/register/" },
+      "cta": {
+        "text": "Start Foundation Setup",
+        "href": "/register/"
+      },
       "featureGroups": [
         {
           "title": "Account Scope",
@@ -48,9 +60,18 @@
           "title": "Integrations",
           "icon": "🔌",
           "items": [
-            { "text": "1 Standard Integration", "definitionKey": "standardIntegration" },
-            { "text": "Up to 2 Custom Event Webhooks", "definitionKey": "customWebhook" },
-            { "text": "Up to 10 Notification Event Types", "definitionKey": "eventType" }
+            {
+              "text": "1 Standard Integration",
+              "definitionKey": "standardIntegration"
+            },
+            {
+              "text": "Up to 2 Custom Event Webhooks",
+              "definitionKey": "customWebhook"
+            },
+            {
+              "text": "Up to 10 Notification Event Types",
+              "definitionKey": "eventType"
+            }
           ]
         },
         {
@@ -80,7 +101,10 @@
       "interval": "per month",
       "setupLabel": "One-time setup",
       "recommended": true,
-      "cta": { "text": "Upgrade to Expansion", "href": "/register/" },
+      "cta": {
+        "text": "Upgrade to Expansion",
+        "href": "/register/"
+      },
       "featureGroups": [
         {
           "title": "Account Scope",
@@ -94,9 +118,18 @@
           "title": "Integrations",
           "icon": "🔌",
           "items": [
-            { "text": "3 Production-Ready Integrations", "definitionKey": "standardIntegration" },
-            { "text": "Up to 5 Custom Webhooks", "definitionKey": "customWebhook" },
-            { "text": "Unlimited Notification Event Types", "definitionKey": "eventType" }
+            {
+              "text": "3 Production-Ready Integrations",
+              "definitionKey": "standardIntegration"
+            },
+            {
+              "text": "Up to 5 Custom Webhooks",
+              "definitionKey": "customWebhook"
+            },
+            {
+              "text": "Unlimited Notification Event Types",
+              "definitionKey": "eventType"
+            }
           ]
         },
         {
@@ -126,7 +159,10 @@
       "interval": "custom",
       "setupLabel": "Setup",
       "recommended": false,
-      "cta": { "text": "Request Custom Plan", "href": "/contact/" },
+      "cta": {
+        "text": "Request Custom Plan",
+        "href": "/contact/"
+      },
       "featureGroups": [
         {
           "title": "Account Scope",
@@ -166,52 +202,127 @@
       ]
     }
   ],
-  "invoiceFootnote": "Invoices issued by UPHOLD S.R.L.",
+  "invoiceFootnote": "Invoices issued by Infowebplus.",
   "comparison": {
     "categories": [
       {
         "name": "Account Scope",
         "icon": "📦",
         "features": [
-          { "name": "WhatsApp Business Accounts", "basic": "1", "core": "Up to 2", "agency": "5–10" },
-          { "name": "Brands / Projects", "basic": "1", "core": "2–3", "agency": "5+" },
-          { "name": "Phone numbers", "basic": "Up to 20 (subject to Meta approval)", "core": "Up to 40 (subject to Meta approval)", "agency": "Up to 200 (subject to Meta approval)" }
+          {
+            "name": "WhatsApp Business Accounts",
+            "basic": "1",
+            "core": "Up to 2",
+            "agency": "5–10"
+          },
+          {
+            "name": "Brands / Projects",
+            "basic": "1",
+            "core": "2–3",
+            "agency": "5+"
+          },
+          {
+            "name": "Phone numbers",
+            "basic": "Up to 20 (subject to Meta approval)",
+            "core": "Up to 40 (subject to Meta approval)",
+            "agency": "Up to 200 (subject to Meta approval)"
+          }
         ]
       },
       {
         "name": "Integrations",
         "icon": "🔌",
         "features": [
-          { "name": "Production-Ready Integrations", "basic": "1 production-ready integration (Shopify, WooCommerce or Booking system)", "core": "3 production-ready integrations (Shopify, Woo, ERP, CRM)", "agency": "5+ production-ready integrations (standard + custom)" },
-          { "name": "Custom Webhooks", "basic": "Up to 2", "core": "Up to 5", "agency": "Unlimited" },
-          { "name": "Notification Event Types", "basic": "Up to 10", "core": "Unlimited", "agency": "Unlimited" }
+          {
+            "name": "Production-Ready Integrations",
+            "basic": "1 production-ready integration (Shopify, WooCommerce or Booking system)",
+            "core": "3 production-ready integrations (Shopify, Woo, ERP, CRM)",
+            "agency": "5+ production-ready integrations (standard + custom)"
+          },
+          {
+            "name": "Custom Webhooks",
+            "basic": "Up to 2",
+            "core": "Up to 5",
+            "agency": "Unlimited"
+          },
+          {
+            "name": "Notification Event Types",
+            "basic": "Up to 10",
+            "core": "Unlimited",
+            "agency": "Unlimited"
+          }
         ]
       },
       {
         "name": "Platform Access",
         "icon": "⚙️",
         "features": [
-          { "name": "API Access", "basic": "Standard", "core": "Full API access with higher rate limits", "agency": "Full API access with highest rate limits" },
-          { "name": "Message Logs", "basic": "30 days", "core": "6 months", "agency": "12+ months" },
-          { "name": "Cost Dashboard", "basic": "Per WhatsApp account", "core": "—", "agency": "—" },
-          { "name": "Retry logic", "basic": "Basic automatic", "core": "Configurable per integration", "agency": "Advanced rules" }
+          {
+            "name": "API Access",
+            "basic": "Standard",
+            "core": "Full API access with higher rate limits",
+            "agency": "Full API access with highest rate limits"
+          },
+          {
+            "name": "Message Logs",
+            "basic": "30 days",
+            "core": "6 months",
+            "agency": "12+ months"
+          },
+          {
+            "name": "Cost Dashboard",
+            "basic": "Per WhatsApp account",
+            "core": "—",
+            "agency": "—"
+          },
+          {
+            "name": "Retry logic",
+            "basic": "Basic automatic",
+            "core": "Configurable per integration",
+            "agency": "Advanced rules"
+          }
         ]
       },
       {
         "name": "Team",
         "icon": "👥",
         "features": [
-          { "name": "Users", "basic": "Up to 2", "core": "Team Collaboration (up to 5 users)", "agency": "Unlimited" },
-          { "name": "Support", "basic": "Email", "core": "Email + onboarding call", "agency": "Priority + recurring calls" }
+          {
+            "name": "Users",
+            "basic": "Up to 2",
+            "core": "Team Collaboration (up to 5 users)",
+            "agency": "Unlimited"
+          },
+          {
+            "name": "Support",
+            "basic": "Email",
+            "core": "Email + onboarding call",
+            "agency": "Priority + recurring calls"
+          }
         ]
       },
       {
         "name": "Infrastructure & Reliability",
         "icon": "🛡",
         "features": [
-          { "name": "Infrastructure uptime", "basic": "99.9%", "core": "99.9%", "agency": "SLA-backed uptime" },
-          { "name": "Webhook delivery verification", "basic": "✓", "core": "✓", "agency": "✓" },
-          { "name": "Secure token handling", "basic": "✓", "core": "✓", "agency": "✓" }
+          {
+            "name": "Infrastructure uptime",
+            "basic": "99.9%",
+            "core": "99.9%",
+            "agency": "SLA-backed uptime"
+          },
+          {
+            "name": "Webhook delivery verification",
+            "basic": "✓",
+            "core": "✓",
+            "agency": "✓"
+          },
+          {
+            "name": "Secure token handling",
+            "basic": "✓",
+            "core": "✓",
+            "agency": "✓"
+          }
         ]
       }
     ]

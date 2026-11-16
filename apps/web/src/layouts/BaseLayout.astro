@@ -14,7 +14,7 @@ interface Props {
   ogImage?: string;
 }
 
-const { title, description, canonical, noindex = false, ogImage } = Astro.props;
+const { title, description, canonical, ogImage } = Astro.props;
 
 const globalsEntries = await getCollection('globals');
 const globals = Object.fromEntries(globalsEntries.map((e: CollectionEntry<'globals'>) => [e.id, e.data])) as Record<string, Record<string, unknown>>;
@@ -43,7 +43,7 @@ const gaId = typeof import.meta.env.PUBLIC_GA_ID === 'string' ? import.meta.env.
     <meta name="theme-color" content="#22a76b" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
     <title>{title}</title>
-    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Dark mode - prevent flash -->
